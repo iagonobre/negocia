@@ -5,7 +5,6 @@ import {
   Get,
   Patch,
   Post,
-  Request,
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -15,6 +14,9 @@ import { AuthGuard } from '../auth/auth.guard';
 
 import { CreateEmpresaDto } from './dto/create-empresa.dto';
 import { UpdateEmpresaDto } from './dto/update-empresa.dto';
+
+import type { JwtPayload } from 'src/auth/dto/jwt-payload.dto';
+import { Empresa } from 'src/auth/decorators/empresa.decorator';
 
 @ApiTags('Empresa')
 @Controller('empresa')
@@ -32,8 +34,8 @@ export class EmpresaController {
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Buscar perfil da empresa logada' })
-  async perfil(@Request() req: any) {
-    return this.empresaService.buscarPorId(req.user.sub);
+  async perfil(@Empresa() empresa: JwtPayload) {
+    return this.empresaService.buscarPorId(empresa.sub);
   }
 
   @Patch('perfil')
@@ -41,15 +43,18 @@ export class EmpresaController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Atualizar perfil da empresa logada' })
   @ApiBody({ type: UpdateEmpresaDto })
-  async atualizar(@Request() req: any, @Body() dto: UpdateEmpresaDto) {
-    return this.empresaService.atualizar(req.user.sub, dto);
+  async atualizar(
+    @Empresa() empresa: JwtPayload,
+    @Body() dto: UpdateEmpresaDto,
+  ) {
+    return this.empresaService.atualizar(empresa.sub, dto);
   }
 
   @Delete('perfil')
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Deletar empresa logada' })
-  async deletar(@Request() req: any) {
-    return this.empresaService.deletar(req.user.sub);
+  async deletar(@Empresa() empresa: JwtPayload) {
+    return this.empresaService.deletar(empresa.sub);
   }
 }
