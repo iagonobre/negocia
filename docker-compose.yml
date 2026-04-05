@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: negocia_db
+    restart: always
+    environment:
+      POSTGRES_USER: negocia
+      POSTGRES_PASSWORD: negocia
+      POSTGRES_DB: negocia
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

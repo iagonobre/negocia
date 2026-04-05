@@ -1,0 +1,101 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum StatusCliente {
+  PENDENTE
+  EM_NEGOCIACAO
+  ACORDADO
+  PAGO
+  SEM_RESPOSTA
+  RECUSADO
+}
+
+enum OrigemCliente {
+  PLANILHA
+  API
+}
+
+enum TipoPessoa {
+  FISICA
+  JURIDICA
+}
+
+model Empresa {
+  id         String   @id @default(uuid())
+  nome       String
+  email      String   @unique
+  senha      String
+  cnpj       String   @unique
+  telefone   String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  endereco      Endereco?
+  clientes      Cliente[]
+  faixasCriterio FaixaCriterio[]
+}
+
+model Endereco {
+  id          String  @id @default(uuid())
+  cep         String
+  logradouro  String
+  numero      String
+  complemento String?
+  bairro      String
+  cidade      String
+  estado      String
+
+  empresaId String  @unique
+  empresa   Empresa @relation(fields: [empresaId], references: [id])
+}
+
+model Cliente {
+  id              String        @id @default(uuid())
+  nome            String
+  email           String?
+  telefone        String
+  tipoPessoa      TipoPessoa
+  cpf             String?
+  cnpj            String?
+  valorDivida     Float
+  descricaoDivida String?
+  vencimento      DateTime
+  numeroParcelas  Int?
+  status          StatusCliente @default(PENDENTE)
+  origem          OrigemCliente
+  tentativas      Int           @default(0)
+  ultimoContato   DateTime?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  empresaId String
+  empresa   Empresa @relation(fields: [empresaId], references: [id])
+}
+
+model FaixaCriterio {
+  id                String         @id @default(uuid())
+  descricao         String
+  valorMinimo       Float
+  valorMaximo       Float
+  prazoMaximoDias   Int
+  parcelasMaximas   Int
+  descontoMaximo    Float
+  tomComunicacao    String
+  mensagemInicial   String?
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+
+  empresaId String
+  empresa   Empresa @relation(fields: [empresaId], references: [id])
+}
