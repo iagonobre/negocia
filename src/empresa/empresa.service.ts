@@ -1,0 +1,85 @@
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+
+import { EmpresaRepository } from './empresa.repository';
+import { CreateEmpresaDto } from './dto/create-empresa.dto';
+import { UpdateEmpresaDto } from './dto/update-empresa.dto';
+
+import * as bcrypt from 'bcrypt';
+
+@Injectable()
+export class EmpresaService {
+  constructor(private repository: EmpresaRepository) {}
+
+  async buscarPorId(id: string) {
+    const empresa = await this.repository.findById(id);
+
+    if (!empresa) {
+      throw new NotFoundException('Empresa não encontrada');
+    }
+
+    return empresa;
+  }
+
+  async buscarPorEmail(email: string) {
+    return this.repository.findByEmail(email);
+  }
+
+  async cadastrar(dto: CreateEmpresaDto) {
+    const emailExistente = await this.repository.findByEmail(dto.email);
+    if (emailExistente) {
+      throw new ConflictException('Este email já foi cadastrado.');
+    }
+
+    const cnpjExistente = await this.repository.findByCnpj(dto.cnpj);
+    if (cnpjExistente) {
+      throw new ConflictException('Este CNPJ já foi cadastrado.');
+    }
+
+    const senhaHash = await bcrypt.hash(dto.senha, 10);
+
+    const empresa = await this.repository.create({
+      nome: dto.nome,
+      email: dto.email,
+      senha: senhaHash,
+      cnpj: dto.cnpj,
+      telefone: dto.telefone,
+    });
+
+    const { senha, ...resultado } = empresa;
+    return resultado;
+  }
+
+  async atualizar(id: string, dto: UpdateEmpresaDto) {
+    await this.buscarPorId(id);
+
+    if (dto.email) {
+      const emailExistente = await this.repository.findByEmailExcludingId(
+        dto.email,
+        id,
+      );
+      if (emailExistente) {
+        throw new ConflictException('Este email já foi cadastrado');
+      }
+    }
+
+    const data: any = { ...dto };
+
+    if (dto.senha) {
+      data.senha = await bcrypt.hash(dto.senha, 10);
+    }
+
+    const empresa = await this.repository.update(id, data);
+    const { senha, ...resultado } = empresa;
+    return resultado;
+  }
+
+  async deletar(id: string) {
+    await this.buscarPorId(id);
+    await this.repository.delete(id);
+    return { message: 'Empresa deletada com sucesso' };
+  }
+}
