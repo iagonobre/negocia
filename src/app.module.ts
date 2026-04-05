@@ -4,6 +4,7 @@ import configuration from './config/configuration';
 import { PrismaModule } from './prisma/prisma.module';
 import { EmpresaModule } from './empresa/empresa.module';
 import { AuthModule } from './auth/auth.module';
+import { DevedorModule } from './devedor/devedor.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { AuthModule } from './auth/auth.module';
     PrismaModule,
     EmpresaModule,
     AuthModule,
+    DevedorModule,
   ],
 })
 export class AppModule {}
