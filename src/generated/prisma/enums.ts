@@ -9,7 +9,7 @@
 * 🟢 You can import this file directly.
 */
 
-export const StatusCliente = {
+export const StatusDevedor = {
   PENDENTE: 'PENDENTE',
   EM_NEGOCIACAO: 'EM_NEGOCIACAO',
   ACORDADO: 'ACORDADO',
@@ -18,15 +18,15 @@ export const StatusCliente = {
   RECUSADO: 'RECUSADO'
 } as const
 
-export type StatusCliente = (typeof StatusCliente)[keyof typeof StatusCliente]
+export type StatusDevedor = (typeof StatusDevedor)[keyof typeof StatusDevedor]
 
 
-export const OrigemCliente = {
+export const OrigemDevedor = {
   PLANILHA: 'PLANILHA',
   API: 'API'
 } as const
 
-export type OrigemCliente = (typeof OrigemCliente)[keyof typeof OrigemCliente]
+export type OrigemDevedor = (typeof OrigemDevedor)[keyof typeof OrigemDevedor]
 
 
 export const TipoPessoa = {

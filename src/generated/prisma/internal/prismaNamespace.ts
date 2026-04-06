@@ -386,7 +386,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 export const ModelName = {
   Empresa: 'Empresa',
   Endereco: 'Endereco',
-  Cliente: 'Cliente',
+  Devedor: 'Devedor',
   FaixaCriterio: 'FaixaCriterio'
 } as const
 
@@ -403,7 +403,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "empresa" | "endereco" | "cliente" | "faixaCriterio"
+    modelProps: "empresa" | "endereco" | "devedor" | "faixaCriterio"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -555,77 +555,77 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    Cliente: {
-      payload: Prisma.$ClientePayload<ExtArgs>
-      fields: Prisma.ClienteFieldRefs
+    Devedor: {
+      payload: Prisma.$DevedorPayload<ExtArgs>
+      fields: Prisma.DevedorFieldRefs
       operations: {
         findUnique: {
-          args: Prisma.ClienteFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClientePayload> | null
+          args: Prisma.DevedorFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DevedorPayload> | null
         }
         findUniqueOrThrow: {
-          args: Prisma.ClienteFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClientePayload>
+          args: Prisma.DevedorFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DevedorPayload>
         }
         findFirst: {
-          args: Prisma.ClienteFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClientePayload> | null
+          args: Prisma.DevedorFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DevedorPayload> | null
         }
         findFirstOrThrow: {
-          args: Prisma.ClienteFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClientePayload>
+          args: Prisma.DevedorFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DevedorPayload>
         }
         findMany: {
-          args: Prisma.ClienteFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClientePayload>[]
+          args: Prisma.DevedorFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DevedorPayload>[]
         }
         create: {
-          args: Prisma.ClienteCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClientePayload>
+          args: Prisma.DevedorCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DevedorPayload>
         }
         createMany: {
-          args: Prisma.ClienteCreateManyArgs<ExtArgs>
+          args: Prisma.DevedorCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
         createManyAndReturn: {
-          args: Prisma.ClienteCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClientePayload>[]
+          args: Prisma.DevedorCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DevedorPayload>[]
         }
         delete: {
-          args: Prisma.ClienteDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClientePayload>
+          args: Prisma.DevedorDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DevedorPayload>
         }
         update: {
-          args: Prisma.ClienteUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClientePayload>
+          args: Prisma.DevedorUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DevedorPayload>
         }
         deleteMany: {
-          args: Prisma.ClienteDeleteManyArgs<ExtArgs>
+          args: Prisma.DevedorDeleteManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateMany: {
-          args: Prisma.ClienteUpdateManyArgs<ExtArgs>
+          args: Prisma.DevedorUpdateManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateManyAndReturn: {
-          args: Prisma.ClienteUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClientePayload>[]
+          args: Prisma.DevedorUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DevedorPayload>[]
         }
         upsert: {
-          args: Prisma.ClienteUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClientePayload>
+          args: Prisma.DevedorUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DevedorPayload>
         }
         aggregate: {
-          args: Prisma.ClienteAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateCliente>
+          args: Prisma.DevedorAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDevedor>
         }
         groupBy: {
-          args: Prisma.ClienteGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.ClienteGroupByOutputType>[]
+          args: Prisma.DevedorGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DevedorGroupByOutputType>[]
         }
         count: {
-          args: Prisma.ClienteCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.ClienteCountAggregateOutputType> | number
+          args: Prisma.DevedorCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DevedorCountAggregateOutputType> | number
         }
       }
     }
@@ -771,7 +771,7 @@ export const EnderecoScalarFieldEnum = {
 export type EnderecoScalarFieldEnum = (typeof EnderecoScalarFieldEnum)[keyof typeof EnderecoScalarFieldEnum]
 
 
-export const ClienteScalarFieldEnum = {
+export const DevedorScalarFieldEnum = {
   id: 'id',
   nome: 'nome',
   email: 'email',
@@ -792,7 +792,7 @@ export const ClienteScalarFieldEnum = {
   empresaId: 'empresaId'
 } as const
 
-export type ClienteScalarFieldEnum = (typeof ClienteScalarFieldEnum)[keyof typeof ClienteScalarFieldEnum]
+export type DevedorScalarFieldEnum = (typeof DevedorScalarFieldEnum)[keyof typeof DevedorScalarFieldEnum]
 
 
 export const FaixaCriterioScalarFieldEnum = {
@@ -914,30 +914,30 @@ export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
 
 
 /**
- * Reference to a field of type 'StatusCliente'
+ * Reference to a field of type 'StatusDevedor'
  */
-export type EnumStatusClienteFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'StatusCliente'>
+export type EnumStatusDevedorFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'StatusDevedor'>
     
 
 
 /**
- * Reference to a field of type 'StatusCliente[]'
+ * Reference to a field of type 'StatusDevedor[]'
  */
-export type ListEnumStatusClienteFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'StatusCliente[]'>
+export type ListEnumStatusDevedorFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'StatusDevedor[]'>
     
 
 
 /**
- * Reference to a field of type 'OrigemCliente'
+ * Reference to a field of type 'OrigemDevedor'
  */
-export type EnumOrigemClienteFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OrigemCliente'>
+export type EnumOrigemDevedorFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OrigemDevedor'>
     
 
 
 /**
- * Reference to a field of type 'OrigemCliente[]'
+ * Reference to a field of type 'OrigemDevedor[]'
  */
-export type ListEnumOrigemClienteFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OrigemCliente[]'>
+export type ListEnumOrigemDevedorFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OrigemDevedor[]'>
     
 
 /**
@@ -1037,7 +1037,7 @@ export type PrismaClientOptions = ({
 export type GlobalOmitConfig = {
   empresa?: Prisma.EmpresaOmit
   endereco?: Prisma.EnderecoOmit
-  cliente?: Prisma.ClienteOmit
+  devedor?: Prisma.DevedorOmit
   faixaCriterio?: Prisma.FaixaCriterioOmit
 }
 

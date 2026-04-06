@@ -207,7 +207,7 @@ export type EmpresaWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Empresa"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Empresa"> | Date | string
   endereco?: Prisma.XOR<Prisma.EnderecoNullableScalarRelationFilter, Prisma.EnderecoWhereInput> | null
-  clientes?: Prisma.ClienteListRelationFilter
+  devedores?: Prisma.DevedorListRelationFilter
   faixasCriterio?: Prisma.FaixaCriterioListRelationFilter
 }
 
@@ -221,7 +221,7 @@ export type EmpresaOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   endereco?: Prisma.EnderecoOrderByWithRelationInput
-  clientes?: Prisma.ClienteOrderByRelationAggregateInput
+  devedores?: Prisma.DevedorOrderByRelationAggregateInput
   faixasCriterio?: Prisma.FaixaCriterioOrderByRelationAggregateInput
 }
 
@@ -238,7 +238,7 @@ export type EmpresaWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Empresa"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Empresa"> | Date | string
   endereco?: Prisma.XOR<Prisma.EnderecoNullableScalarRelationFilter, Prisma.EnderecoWhereInput> | null
-  clientes?: Prisma.ClienteListRelationFilter
+  devedores?: Prisma.DevedorListRelationFilter
   faixasCriterio?: Prisma.FaixaCriterioListRelationFilter
 }, "id" | "email" | "cnpj">
 
@@ -280,7 +280,7 @@ export type EmpresaCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   endereco?: Prisma.EnderecoCreateNestedOneWithoutEmpresaInput
-  clientes?: Prisma.ClienteCreateNestedManyWithoutEmpresaInput
+  devedores?: Prisma.DevedorCreateNestedManyWithoutEmpresaInput
   faixasCriterio?: Prisma.FaixaCriterioCreateNestedManyWithoutEmpresaInput
 }
 
@@ -294,7 +294,7 @@ export type EmpresaUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   endereco?: Prisma.EnderecoUncheckedCreateNestedOneWithoutEmpresaInput
-  clientes?: Prisma.ClienteUncheckedCreateNestedManyWithoutEmpresaInput
+  devedores?: Prisma.DevedorUncheckedCreateNestedManyWithoutEmpresaInput
   faixasCriterio?: Prisma.FaixaCriterioUncheckedCreateNestedManyWithoutEmpresaInput
 }
 
@@ -308,7 +308,7 @@ export type EmpresaUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endereco?: Prisma.EnderecoUpdateOneWithoutEmpresaNestedInput
-  clientes?: Prisma.ClienteUpdateManyWithoutEmpresaNestedInput
+  devedores?: Prisma.DevedorUpdateManyWithoutEmpresaNestedInput
   faixasCriterio?: Prisma.FaixaCriterioUpdateManyWithoutEmpresaNestedInput
 }
 
@@ -322,7 +322,7 @@ export type EmpresaUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endereco?: Prisma.EnderecoUncheckedUpdateOneWithoutEmpresaNestedInput
-  clientes?: Prisma.ClienteUncheckedUpdateManyWithoutEmpresaNestedInput
+  devedores?: Prisma.DevedorUncheckedUpdateManyWithoutEmpresaNestedInput
   faixasCriterio?: Prisma.FaixaCriterioUncheckedUpdateManyWithoutEmpresaNestedInput
 }
 
@@ -419,18 +419,18 @@ export type EmpresaUpdateOneRequiredWithoutEnderecoNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.EmpresaUpdateToOneWithWhereWithoutEnderecoInput, Prisma.EmpresaUpdateWithoutEnderecoInput>, Prisma.EmpresaUncheckedUpdateWithoutEnderecoInput>
 }
 
-export type EmpresaCreateNestedOneWithoutClientesInput = {
-  create?: Prisma.XOR<Prisma.EmpresaCreateWithoutClientesInput, Prisma.EmpresaUncheckedCreateWithoutClientesInput>
-  connectOrCreate?: Prisma.EmpresaCreateOrConnectWithoutClientesInput
+export type EmpresaCreateNestedOneWithoutDevedoresInput = {
+  create?: Prisma.XOR<Prisma.EmpresaCreateWithoutDevedoresInput, Prisma.EmpresaUncheckedCreateWithoutDevedoresInput>
+  connectOrCreate?: Prisma.EmpresaCreateOrConnectWithoutDevedoresInput
   connect?: Prisma.EmpresaWhereUniqueInput
 }
 
-export type EmpresaUpdateOneRequiredWithoutClientesNestedInput = {
-  create?: Prisma.XOR<Prisma.EmpresaCreateWithoutClientesInput, Prisma.EmpresaUncheckedCreateWithoutClientesInput>
-  connectOrCreate?: Prisma.EmpresaCreateOrConnectWithoutClientesInput
-  upsert?: Prisma.EmpresaUpsertWithoutClientesInput
+export type EmpresaUpdateOneRequiredWithoutDevedoresNestedInput = {
+  create?: Prisma.XOR<Prisma.EmpresaCreateWithoutDevedoresInput, Prisma.EmpresaUncheckedCreateWithoutDevedoresInput>
+  connectOrCreate?: Prisma.EmpresaCreateOrConnectWithoutDevedoresInput
+  upsert?: Prisma.EmpresaUpsertWithoutDevedoresInput
   connect?: Prisma.EmpresaWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.EmpresaUpdateToOneWithWhereWithoutClientesInput, Prisma.EmpresaUpdateWithoutClientesInput>, Prisma.EmpresaUncheckedUpdateWithoutClientesInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.EmpresaUpdateToOneWithWhereWithoutDevedoresInput, Prisma.EmpresaUpdateWithoutDevedoresInput>, Prisma.EmpresaUncheckedUpdateWithoutDevedoresInput>
 }
 
 export type EmpresaCreateNestedOneWithoutFaixasCriterioInput = {
@@ -456,7 +456,7 @@ export type EmpresaCreateWithoutEnderecoInput = {
   telefone: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  clientes?: Prisma.ClienteCreateNestedManyWithoutEmpresaInput
+  devedores?: Prisma.DevedorCreateNestedManyWithoutEmpresaInput
   faixasCriterio?: Prisma.FaixaCriterioCreateNestedManyWithoutEmpresaInput
 }
 
@@ -469,7 +469,7 @@ export type EmpresaUncheckedCreateWithoutEnderecoInput = {
   telefone: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  clientes?: Prisma.ClienteUncheckedCreateNestedManyWithoutEmpresaInput
+  devedores?: Prisma.DevedorUncheckedCreateNestedManyWithoutEmpresaInput
   faixasCriterio?: Prisma.FaixaCriterioUncheckedCreateNestedManyWithoutEmpresaInput
 }
 
@@ -498,7 +498,7 @@ export type EmpresaUpdateWithoutEnderecoInput = {
   telefone?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  clientes?: Prisma.ClienteUpdateManyWithoutEmpresaNestedInput
+  devedores?: Prisma.DevedorUpdateManyWithoutEmpresaNestedInput
   faixasCriterio?: Prisma.FaixaCriterioUpdateManyWithoutEmpresaNestedInput
 }
 
@@ -511,11 +511,11 @@ export type EmpresaUncheckedUpdateWithoutEnderecoInput = {
   telefone?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  clientes?: Prisma.ClienteUncheckedUpdateManyWithoutEmpresaNestedInput
+  devedores?: Prisma.DevedorUncheckedUpdateManyWithoutEmpresaNestedInput
   faixasCriterio?: Prisma.FaixaCriterioUncheckedUpdateManyWithoutEmpresaNestedInput
 }
 
-export type EmpresaCreateWithoutClientesInput = {
+export type EmpresaCreateWithoutDevedoresInput = {
   id?: string
   nome: string
   email: string
@@ -528,7 +528,7 @@ export type EmpresaCreateWithoutClientesInput = {
   faixasCriterio?: Prisma.FaixaCriterioCreateNestedManyWithoutEmpresaInput
 }
 
-export type EmpresaUncheckedCreateWithoutClientesInput = {
+export type EmpresaUncheckedCreateWithoutDevedoresInput = {
   id?: string
   nome: string
   email: string
@@ -541,23 +541,23 @@ export type EmpresaUncheckedCreateWithoutClientesInput = {
   faixasCriterio?: Prisma.FaixaCriterioUncheckedCreateNestedManyWithoutEmpresaInput
 }
 
-export type EmpresaCreateOrConnectWithoutClientesInput = {
+export type EmpresaCreateOrConnectWithoutDevedoresInput = {
   where: Prisma.EmpresaWhereUniqueInput
-  create: Prisma.XOR<Prisma.EmpresaCreateWithoutClientesInput, Prisma.EmpresaUncheckedCreateWithoutClientesInput>
+  create: Prisma.XOR<Prisma.EmpresaCreateWithoutDevedoresInput, Prisma.EmpresaUncheckedCreateWithoutDevedoresInput>
 }
 
-export type EmpresaUpsertWithoutClientesInput = {
-  update: Prisma.XOR<Prisma.EmpresaUpdateWithoutClientesInput, Prisma.EmpresaUncheckedUpdateWithoutClientesInput>
-  create: Prisma.XOR<Prisma.EmpresaCreateWithoutClientesInput, Prisma.EmpresaUncheckedCreateWithoutClientesInput>
+export type EmpresaUpsertWithoutDevedoresInput = {
+  update: Prisma.XOR<Prisma.EmpresaUpdateWithoutDevedoresInput, Prisma.EmpresaUncheckedUpdateWithoutDevedoresInput>
+  create: Prisma.XOR<Prisma.EmpresaCreateWithoutDevedoresInput, Prisma.EmpresaUncheckedCreateWithoutDevedoresInput>
   where?: Prisma.EmpresaWhereInput
 }
 
-export type EmpresaUpdateToOneWithWhereWithoutClientesInput = {
+export type EmpresaUpdateToOneWithWhereWithoutDevedoresInput = {
   where?: Prisma.EmpresaWhereInput
-  data: Prisma.XOR<Prisma.EmpresaUpdateWithoutClientesInput, Prisma.EmpresaUncheckedUpdateWithoutClientesInput>
+  data: Prisma.XOR<Prisma.EmpresaUpdateWithoutDevedoresInput, Prisma.EmpresaUncheckedUpdateWithoutDevedoresInput>
 }
 
-export type EmpresaUpdateWithoutClientesInput = {
+export type EmpresaUpdateWithoutDevedoresInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   nome?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
@@ -570,7 +570,7 @@ export type EmpresaUpdateWithoutClientesInput = {
   faixasCriterio?: Prisma.FaixaCriterioUpdateManyWithoutEmpresaNestedInput
 }
 
-export type EmpresaUncheckedUpdateWithoutClientesInput = {
+export type EmpresaUncheckedUpdateWithoutDevedoresInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   nome?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
@@ -593,7 +593,7 @@ export type EmpresaCreateWithoutFaixasCriterioInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   endereco?: Prisma.EnderecoCreateNestedOneWithoutEmpresaInput
-  clientes?: Prisma.ClienteCreateNestedManyWithoutEmpresaInput
+  devedores?: Prisma.DevedorCreateNestedManyWithoutEmpresaInput
 }
 
 export type EmpresaUncheckedCreateWithoutFaixasCriterioInput = {
@@ -606,7 +606,7 @@ export type EmpresaUncheckedCreateWithoutFaixasCriterioInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   endereco?: Prisma.EnderecoUncheckedCreateNestedOneWithoutEmpresaInput
-  clientes?: Prisma.ClienteUncheckedCreateNestedManyWithoutEmpresaInput
+  devedores?: Prisma.DevedorUncheckedCreateNestedManyWithoutEmpresaInput
 }
 
 export type EmpresaCreateOrConnectWithoutFaixasCriterioInput = {
@@ -635,7 +635,7 @@ export type EmpresaUpdateWithoutFaixasCriterioInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endereco?: Prisma.EnderecoUpdateOneWithoutEmpresaNestedInput
-  clientes?: Prisma.ClienteUpdateManyWithoutEmpresaNestedInput
+  devedores?: Prisma.DevedorUpdateManyWithoutEmpresaNestedInput
 }
 
 export type EmpresaUncheckedUpdateWithoutFaixasCriterioInput = {
@@ -648,7 +648,7 @@ export type EmpresaUncheckedUpdateWithoutFaixasCriterioInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endereco?: Prisma.EnderecoUncheckedUpdateOneWithoutEmpresaNestedInput
-  clientes?: Prisma.ClienteUncheckedUpdateManyWithoutEmpresaNestedInput
+  devedores?: Prisma.DevedorUncheckedUpdateManyWithoutEmpresaNestedInput
 }
 
 
@@ -657,12 +657,12 @@ export type EmpresaUncheckedUpdateWithoutFaixasCriterioInput = {
  */
 
 export type EmpresaCountOutputType = {
-  clientes: number
+  devedores: number
   faixasCriterio: number
 }
 
 export type EmpresaCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  clientes?: boolean | EmpresaCountOutputTypeCountClientesArgs
+  devedores?: boolean | EmpresaCountOutputTypeCountDevedoresArgs
   faixasCriterio?: boolean | EmpresaCountOutputTypeCountFaixasCriterioArgs
 }
 
@@ -679,8 +679,8 @@ export type EmpresaCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Exte
 /**
  * EmpresaCountOutputType without action
  */
-export type EmpresaCountOutputTypeCountClientesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.ClienteWhereInput
+export type EmpresaCountOutputTypeCountDevedoresArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DevedorWhereInput
 }
 
 /**
@@ -701,7 +701,7 @@ export type EmpresaSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   createdAt?: boolean
   updatedAt?: boolean
   endereco?: boolean | Prisma.Empresa$enderecoArgs<ExtArgs>
-  clientes?: boolean | Prisma.Empresa$clientesArgs<ExtArgs>
+  devedores?: boolean | Prisma.Empresa$devedoresArgs<ExtArgs>
   faixasCriterio?: boolean | Prisma.Empresa$faixasCriterioArgs<ExtArgs>
   _count?: boolean | Prisma.EmpresaCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["empresa"]>
@@ -742,7 +742,7 @@ export type EmpresaSelectScalar = {
 export type EmpresaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "nome" | "email" | "senha" | "cnpj" | "telefone" | "createdAt" | "updatedAt", ExtArgs["result"]["empresa"]>
 export type EmpresaInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   endereco?: boolean | Prisma.Empresa$enderecoArgs<ExtArgs>
-  clientes?: boolean | Prisma.Empresa$clientesArgs<ExtArgs>
+  devedores?: boolean | Prisma.Empresa$devedoresArgs<ExtArgs>
   faixasCriterio?: boolean | Prisma.Empresa$faixasCriterioArgs<ExtArgs>
   _count?: boolean | Prisma.EmpresaCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -753,7 +753,7 @@ export type $EmpresaPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   name: "Empresa"
   objects: {
     endereco: Prisma.$EnderecoPayload<ExtArgs> | null
-    clientes: Prisma.$ClientePayload<ExtArgs>[]
+    devedores: Prisma.$DevedorPayload<ExtArgs>[]
     faixasCriterio: Prisma.$FaixaCriterioPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1160,7 +1160,7 @@ readonly fields: EmpresaFieldRefs;
 export interface Prisma__EmpresaClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   endereco<T extends Prisma.Empresa$enderecoArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Empresa$enderecoArgs<ExtArgs>>): Prisma.Prisma__EnderecoClient<runtime.Types.Result.GetResult<Prisma.$EnderecoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  clientes<T extends Prisma.Empresa$clientesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Empresa$clientesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ClientePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  devedores<T extends Prisma.Empresa$devedoresArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Empresa$devedoresArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DevedorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   faixasCriterio<T extends Prisma.Empresa$faixasCriterioArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Empresa$faixasCriterioArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FaixaCriterioPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1611,27 +1611,27 @@ export type Empresa$enderecoArgs<ExtArgs extends runtime.Types.Extensions.Intern
 }
 
 /**
- * Empresa.clientes
+ * Empresa.devedores
  */
-export type Empresa$clientesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Empresa$devedoresArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Cliente
+   * Select specific fields to fetch from the Devedor
    */
-  select?: Prisma.ClienteSelect<ExtArgs> | null
+  select?: Prisma.DevedorSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Cliente
+   * Omit specific fields from the Devedor
    */
-  omit?: Prisma.ClienteOmit<ExtArgs> | null
+  omit?: Prisma.DevedorOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.ClienteInclude<ExtArgs> | null
-  where?: Prisma.ClienteWhereInput
-  orderBy?: Prisma.ClienteOrderByWithRelationInput | Prisma.ClienteOrderByWithRelationInput[]
-  cursor?: Prisma.ClienteWhereUniqueInput
+  include?: Prisma.DevedorInclude<ExtArgs> | null
+  where?: Prisma.DevedorWhereInput
+  orderBy?: Prisma.DevedorOrderByWithRelationInput | Prisma.DevedorOrderByWithRelationInput[]
+  cursor?: Prisma.DevedorWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.ClienteScalarFieldEnum | Prisma.ClienteScalarFieldEnum[]
+  distinct?: Prisma.DevedorScalarFieldEnum | Prisma.DevedorScalarFieldEnum[]
 }
 
 /**

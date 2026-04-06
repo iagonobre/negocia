@@ -139,18 +139,18 @@ export type IntNullableFilter<$PrismaModel = never> = {
   not?: Prisma.NestedIntNullableFilter<$PrismaModel> | number | null
 }
 
-export type EnumStatusClienteFilter<$PrismaModel = never> = {
-  equals?: $Enums.StatusCliente | Prisma.EnumStatusClienteFieldRefInput<$PrismaModel>
-  in?: $Enums.StatusCliente[] | Prisma.ListEnumStatusClienteFieldRefInput<$PrismaModel>
-  notIn?: $Enums.StatusCliente[] | Prisma.ListEnumStatusClienteFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumStatusClienteFilter<$PrismaModel> | $Enums.StatusCliente
+export type EnumStatusDevedorFilter<$PrismaModel = never> = {
+  equals?: $Enums.StatusDevedor | Prisma.EnumStatusDevedorFieldRefInput<$PrismaModel>
+  in?: $Enums.StatusDevedor[] | Prisma.ListEnumStatusDevedorFieldRefInput<$PrismaModel>
+  notIn?: $Enums.StatusDevedor[] | Prisma.ListEnumStatusDevedorFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumStatusDevedorFilter<$PrismaModel> | $Enums.StatusDevedor
 }
 
-export type EnumOrigemClienteFilter<$PrismaModel = never> = {
-  equals?: $Enums.OrigemCliente | Prisma.EnumOrigemClienteFieldRefInput<$PrismaModel>
-  in?: $Enums.OrigemCliente[] | Prisma.ListEnumOrigemClienteFieldRefInput<$PrismaModel>
-  notIn?: $Enums.OrigemCliente[] | Prisma.ListEnumOrigemClienteFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumOrigemClienteFilter<$PrismaModel> | $Enums.OrigemCliente
+export type EnumOrigemDevedorFilter<$PrismaModel = never> = {
+  equals?: $Enums.OrigemDevedor | Prisma.EnumOrigemDevedorFieldRefInput<$PrismaModel>
+  in?: $Enums.OrigemDevedor[] | Prisma.ListEnumOrigemDevedorFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OrigemDevedor[] | Prisma.ListEnumOrigemDevedorFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOrigemDevedorFilter<$PrismaModel> | $Enums.OrigemDevedor
 }
 
 export type IntFilter<$PrismaModel = never> = {
@@ -217,24 +217,24 @@ export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedIntNullableFilter<$PrismaModel>
 }
 
-export type EnumStatusClienteWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.StatusCliente | Prisma.EnumStatusClienteFieldRefInput<$PrismaModel>
-  in?: $Enums.StatusCliente[] | Prisma.ListEnumStatusClienteFieldRefInput<$PrismaModel>
-  notIn?: $Enums.StatusCliente[] | Prisma.ListEnumStatusClienteFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumStatusClienteWithAggregatesFilter<$PrismaModel> | $Enums.StatusCliente
+export type EnumStatusDevedorWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.StatusDevedor | Prisma.EnumStatusDevedorFieldRefInput<$PrismaModel>
+  in?: $Enums.StatusDevedor[] | Prisma.ListEnumStatusDevedorFieldRefInput<$PrismaModel>
+  notIn?: $Enums.StatusDevedor[] | Prisma.ListEnumStatusDevedorFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumStatusDevedorWithAggregatesFilter<$PrismaModel> | $Enums.StatusDevedor
   _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumStatusClienteFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumStatusClienteFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumStatusDevedorFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumStatusDevedorFilter<$PrismaModel>
 }
 
-export type EnumOrigemClienteWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.OrigemCliente | Prisma.EnumOrigemClienteFieldRefInput<$PrismaModel>
-  in?: $Enums.OrigemCliente[] | Prisma.ListEnumOrigemClienteFieldRefInput<$PrismaModel>
-  notIn?: $Enums.OrigemCliente[] | Prisma.ListEnumOrigemClienteFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumOrigemClienteWithAggregatesFilter<$PrismaModel> | $Enums.OrigemCliente
+export type EnumOrigemDevedorWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.OrigemDevedor | Prisma.EnumOrigemDevedorFieldRefInput<$PrismaModel>
+  in?: $Enums.OrigemDevedor[] | Prisma.ListEnumOrigemDevedorFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OrigemDevedor[] | Prisma.ListEnumOrigemDevedorFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOrigemDevedorWithAggregatesFilter<$PrismaModel> | $Enums.OrigemDevedor
   _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumOrigemClienteFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumOrigemClienteFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumOrigemDevedorFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumOrigemDevedorFilter<$PrismaModel>
 }
 
 export type IntWithAggregatesFilter<$PrismaModel = never> = {
@@ -394,18 +394,18 @@ export type NestedFloatFilter<$PrismaModel = never> = {
   not?: Prisma.NestedFloatFilter<$PrismaModel> | number
 }
 
-export type NestedEnumStatusClienteFilter<$PrismaModel = never> = {
-  equals?: $Enums.StatusCliente | Prisma.EnumStatusClienteFieldRefInput<$PrismaModel>
-  in?: $Enums.StatusCliente[] | Prisma.ListEnumStatusClienteFieldRefInput<$PrismaModel>
-  notIn?: $Enums.StatusCliente[] | Prisma.ListEnumStatusClienteFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumStatusClienteFilter<$PrismaModel> | $Enums.StatusCliente
+export type NestedEnumStatusDevedorFilter<$PrismaModel = never> = {
+  equals?: $Enums.StatusDevedor | Prisma.EnumStatusDevedorFieldRefInput<$PrismaModel>
+  in?: $Enums.StatusDevedor[] | Prisma.ListEnumStatusDevedorFieldRefInput<$PrismaModel>
+  notIn?: $Enums.StatusDevedor[] | Prisma.ListEnumStatusDevedorFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumStatusDevedorFilter<$PrismaModel> | $Enums.StatusDevedor
 }
 
-export type NestedEnumOrigemClienteFilter<$PrismaModel = never> = {
-  equals?: $Enums.OrigemCliente | Prisma.EnumOrigemClienteFieldRefInput<$PrismaModel>
-  in?: $Enums.OrigemCliente[] | Prisma.ListEnumOrigemClienteFieldRefInput<$PrismaModel>
-  notIn?: $Enums.OrigemCliente[] | Prisma.ListEnumOrigemClienteFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumOrigemClienteFilter<$PrismaModel> | $Enums.OrigemCliente
+export type NestedEnumOrigemDevedorFilter<$PrismaModel = never> = {
+  equals?: $Enums.OrigemDevedor | Prisma.EnumOrigemDevedorFieldRefInput<$PrismaModel>
+  in?: $Enums.OrigemDevedor[] | Prisma.ListEnumOrigemDevedorFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OrigemDevedor[] | Prisma.ListEnumOrigemDevedorFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOrigemDevedorFilter<$PrismaModel> | $Enums.OrigemDevedor
 }
 
 export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
@@ -472,24 +472,24 @@ export type NestedFloatNullableFilter<$PrismaModel = never> = {
   not?: Prisma.NestedFloatNullableFilter<$PrismaModel> | number | null
 }
 
-export type NestedEnumStatusClienteWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.StatusCliente | Prisma.EnumStatusClienteFieldRefInput<$PrismaModel>
-  in?: $Enums.StatusCliente[] | Prisma.ListEnumStatusClienteFieldRefInput<$PrismaModel>
-  notIn?: $Enums.StatusCliente[] | Prisma.ListEnumStatusClienteFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumStatusClienteWithAggregatesFilter<$PrismaModel> | $Enums.StatusCliente
+export type NestedEnumStatusDevedorWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.StatusDevedor | Prisma.EnumStatusDevedorFieldRefInput<$PrismaModel>
+  in?: $Enums.StatusDevedor[] | Prisma.ListEnumStatusDevedorFieldRefInput<$PrismaModel>
+  notIn?: $Enums.StatusDevedor[] | Prisma.ListEnumStatusDevedorFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumStatusDevedorWithAggregatesFilter<$PrismaModel> | $Enums.StatusDevedor
   _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumStatusClienteFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumStatusClienteFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumStatusDevedorFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumStatusDevedorFilter<$PrismaModel>
 }
 
-export type NestedEnumOrigemClienteWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.OrigemCliente | Prisma.EnumOrigemClienteFieldRefInput<$PrismaModel>
-  in?: $Enums.OrigemCliente[] | Prisma.ListEnumOrigemClienteFieldRefInput<$PrismaModel>
-  notIn?: $Enums.OrigemCliente[] | Prisma.ListEnumOrigemClienteFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumOrigemClienteWithAggregatesFilter<$PrismaModel> | $Enums.OrigemCliente
+export type NestedEnumOrigemDevedorWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.OrigemDevedor | Prisma.EnumOrigemDevedorFieldRefInput<$PrismaModel>
+  in?: $Enums.OrigemDevedor[] | Prisma.ListEnumOrigemDevedorFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OrigemDevedor[] | Prisma.ListEnumOrigemDevedorFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOrigemDevedorWithAggregatesFilter<$PrismaModel> | $Enums.OrigemDevedor
   _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumOrigemClienteFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumOrigemClienteFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumOrigemDevedorFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumOrigemDevedorFilter<$PrismaModel>
 }
 
 export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
