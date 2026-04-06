@@ -31,10 +31,10 @@ export class EmpresaController {
   }
 
   @Get('perfil')
-  @UseGuards(AuthGuard)
+  c(AuthGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Buscar perfil da empresa logada' })
-  async perfil(@Empresa() empresa: JwtPayload) {
+  async perfiel(@Empresa() empresa: JwtPayload) {
     return this.empresaService.buscarPorId(empresa.sub);
   }
 
