@@ -50,10 +50,10 @@ export type Empresa = Prisma.EmpresaModel
  */
 export type Endereco = Prisma.EnderecoModel
 /**
- * Model Cliente
+ * Model Devedor
  * 
  */
-export type Cliente = Prisma.ClienteModel
+export type Devedor = Prisma.DevedorModel
 /**
  * Model FaixaCriterio
  * 

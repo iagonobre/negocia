@@ -53,7 +53,7 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   Empresa: 'Empresa',
   Endereco: 'Endereco',
-  Cliente: 'Cliente',
+  Devedor: 'Devedor',
   FaixaCriterio: 'FaixaCriterio'
 } as const
 
@@ -102,7 +102,7 @@ export const EnderecoScalarFieldEnum = {
 export type EnderecoScalarFieldEnum = (typeof EnderecoScalarFieldEnum)[keyof typeof EnderecoScalarFieldEnum]
 
 
-export const ClienteScalarFieldEnum = {
+export const DevedorScalarFieldEnum = {
   id: 'id',
   nome: 'nome',
   email: 'email',
@@ -123,7 +123,7 @@ export const ClienteScalarFieldEnum = {
   empresaId: 'empresaId'
 } as const
 
-export type ClienteScalarFieldEnum = (typeof ClienteScalarFieldEnum)[keyof typeof ClienteScalarFieldEnum]
+export type DevedorScalarFieldEnum = (typeof DevedorScalarFieldEnum)[keyof typeof DevedorScalarFieldEnum]
 
 
 export const FaixaCriterioScalarFieldEnum = {
