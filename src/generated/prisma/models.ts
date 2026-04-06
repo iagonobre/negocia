@@ -10,6 +10,6 @@
  */
 export type * from './models/Empresa.js'
 export type * from './models/Endereco.js'
-export type * from './models/Cliente.js'
+export type * from './models/Devedor.js'
 export type * from './models/FaixaCriterio.js'
 export type * from './commonInputTypes.js'
