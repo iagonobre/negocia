@@ -2,8 +2,6 @@
   <img src="./assets/logo.png" width="160" alt="NegocIA Logo" />
 </p>
 
-<h1 align="center">NegocIA</h1>
-
 <p align="center">
   Plataforma de cobrança automatizada e recuperação de vendas via WhatsApp com agente de IA.
 </p>
