@@ -5,11 +5,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { EmpresaModule } from './empresa/empresa.module';
 import { AuthModule } from './auth/auth.module';
 import { DevedorModule } from './devedor/devedor.module';
-import { CriterioNegociacaoModule } from './faixa-criterio/criterio-negociacao.module';
-import { CriterioModule } from './criterio/criterio.module';
 import { FaixaCriterioModule } from './faixa-criterio/faixa-criterio.module';
-import { CriterioNegociacaoModule } from './faixa-criterio/criterio-negociacao.module';
-import { CriterioNegociacaoModule } from './faixa-criterio/criterio-negociacao.module';
 
 @Module({
   imports: [
@@ -21,9 +17,7 @@ import { CriterioNegociacaoModule } from './faixa-criterio/criterio-negociacao.m
     EmpresaModule,
     AuthModule,
     DevedorModule,
-    CriterioNegociacaoModule,
     FaixaCriterioModule,
-    CriterioModule,
   ],
 })
 export class AppModule {}
