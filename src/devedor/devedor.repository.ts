@@ -45,4 +45,32 @@ export class DevedorRepository {
       },
     });
   }
+
+  async upsertMany(devedores: any[], empresaId: string) {
+    return this.prisma.$transaction(
+      devedores.map((d) =>
+        this.prisma.devedor.upsert({
+          where: {
+            email_empresaId: {
+              email: d.email,
+              empresaId: empresaId,
+            },
+          },
+          update: {
+            nome: d.nome,
+            telefone: d.telefone,
+            valorDivida: d.valorDivida,
+            descricaoDivida: d.descricaoDivida,
+            vencimento: new Date(d.vencimento),
+            status: d.status,
+          },
+          create: {
+            ...d,
+            vencimento: new Date(d.vencimento),
+            empresa: { connect: { id: empresaId } },
+          },
+        }),
+      ),
+    );
+  }
 }
