@@ -59,12 +59,18 @@ Entidade central. Representa a empresa-cliente que utiliza a plataforma.
 | createdAt / updatedAt | DateTime | |
 
 ### Endereco
-Vinculado 1:1 à Empresa (opcional).
+Vinculado 1:1 à Empresa. **Obrigatório no cadastro** (validado via DTO na camada da aplicação; o schema Prisma mantém `Endereco?` pois a constraint não pode ser imposta pelo lado sem FK).
 
-| Campo | Tipo |
-|---|---|
-| cep, logradouro, numero, complemento, bairro, cidade, estado | string |
-| empresaId | FK → Empresa (único) |
+| Campo | Tipo | Obs |
+|---|---|---|
+| cep | string | |
+| logradouro | string | |
+| numero | string | |
+| complemento | string | opcional |
+| bairro | string | |
+| cidade | string | |
+| estado | string | |
+| empresaId | FK → Empresa | único |
 
 ### Devedor
 Representa um cliente inadimplente de uma empresa.
@@ -150,6 +156,7 @@ Define regras de negociação para diferentes faixas de valor de dívida. O agen
 - Email e CNPJ são únicos no sistema
 - Senha é hasheada com bcrypt (salt rounds: 10) antes de persistir
 - Senha nunca é retornada nas respostas
+- Endereço é obrigatório no cadastro e pode ser atualizado parcialmente via PATCH
 
 ---
 
@@ -159,9 +166,16 @@ Define regras de negociação para diferentes faixas de valor de dívida. O agen
 
 | Método | Rota | Auth | Descrição |
 |---|---|---|---|
+| GET | `/devedor` | JWT | Listar todos os devedores da empresa |
+| GET | `/devedor/:id` | JWT | Buscar devedor por ID |
 | POST | `/devedor/cadastrar` | JWT | Criar devedor único |
 | PATCH | `/devedor/atualizar/:id` | JWT | Atualizar devedor |
+| DELETE | `/devedor/:id` | JWT | Deletar devedor |
 | POST | `/devedor/importar` | JWT | Importar CSV (multipart, max 100MB) |
+
+**Regras:**
+- `atualizar` e `deletar` verificam existência antes de agir, lançando `NotFoundException` se não encontrado
+- `@UseGuards(AuthGuard)` e `@ApiBearerAuth()` aplicados no nível da classe
 
 **Importação CSV (`/devedor/importar`):**
 - Aceita arquivo `.csv` via multipart/form-data
@@ -179,12 +193,17 @@ Define regras de negociação para diferentes faixas de valor de dívida. O agen
 
 **Responsabilidade:** Configuração das faixas de negociação que o agente de IA utilizará para gerar propostas personalizadas.
 
-| Método | Rota | Descrição |
-|---|---|---|
-| POST | `/faixas-criterio` | Criar faixa |
-| GET | `/faixas-criterio/empresa/:empresaId` | Listar faixas (ordenado por valorMinimo) |
-| PUT | `/faixas-criterio/:id` | Atualizar faixa |
-| DELETE | `/faixas-criterio/:id` | Excluir faixa |
+| Método | Rota | Auth | Descrição |
+|---|---|---|---|
+| POST | `/faixas-criterio` | JWT | Criar faixa |
+| GET | `/faixas-criterio` | JWT | Listar faixas da empresa logada (ordenado por valorMinimo) |
+| GET | `/faixas-criterio/:id` | JWT | Buscar faixa por ID |
+| PATCH | `/faixas-criterio/:id` | JWT | Atualizar faixa parcialmente |
+| DELETE | `/faixas-criterio/:id` | JWT | Excluir faixa |
+
+**Regras:**
+- `@UseGuards(AuthGuard)` e `@ApiBearerAuth()` aplicados no nível da classe
+- `buscar`, `atualizar` e `deletar` lançam `NotFoundException` se a faixa não existir e `ForbiddenException` se pertencer a outra empresa
 
 **Lógica de validação ao criar/atualizar:**
 1. `valorMinimo` deve ser menor que `valorMaximo`
@@ -387,6 +406,18 @@ status: StatusDevedor;
 @Min(0)
 @Max(100)
 descontoMaximo: number;
+```
+
+**DTO aninhado (objeto dentro de objeto)** — usar `@ValidateNested()` + `@Type()` para validação recursiva:
+```typescript
+import { ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer';
+
+@ApiProperty({ type: EnderecoDto })
+@IsNotEmpty()
+@ValidateNested()
+@Type(() => EnderecoDto)
+endereco: EnderecoDto;
 ```
 
 **Para UpdateDto** — todos os campos opcionais, declarar manualmente (não usar `PartialType` por clareza):

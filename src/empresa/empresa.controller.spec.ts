@@ -4,6 +4,18 @@ import { EmpresaService } from './empresa.service';
 import { AuthGuard } from '../auth/auth.guard';
 import type { JwtPayload } from 'src/auth/interfaces/jwt-payload.interface';
 
+const mockEndereco = {
+  id: 'uuid-endereco-123',
+  cep: '59000-000',
+  logradouro: 'Rua das Flores',
+  numero: '100',
+  complemento: null,
+  bairro: 'Centro',
+  cidade: 'Natal',
+  estado: 'RN',
+  empresaId: 'uuid-123',
+};
+
 const mockEmpresa = {
   id: 'uuid-123',
   nome: 'Empresa do João',
@@ -12,7 +24,7 @@ const mockEmpresa = {
   telefone: '84999999999',
   createdAt: new Date(),
   updatedAt: new Date(),
-  endereco: null,
+  endereco: mockEndereco,
 };
 
 const mockEmpresaService = {
@@ -65,6 +77,14 @@ describe('EmpresaController', () => {
         senha: '123456',
         cnpj: '12345678000190',
         telefone: '84999999999',
+        endereco: {
+          cep: '59000-000',
+          logradouro: 'Rua das Flores',
+          numero: '100',
+          bairro: 'Centro',
+          cidade: 'Natal',
+          estado: 'RN',
+        },
       };
 
       mockEmpresaService.cadastrar.mockResolvedValue(mockEmpresa);

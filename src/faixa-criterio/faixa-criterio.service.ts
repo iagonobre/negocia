@@ -17,6 +17,20 @@ export class FaixaCriterioService {
     return this.repository.listarPorEmpresa(empresaId);
   }
 
+  async buscar(id: string, empresaId: string): Promise<FaixaCriterio> {
+    const faixa = await this.repository.buscarPorId(id);
+
+    if (!faixa) {
+      throw new NotFoundException('Faixa de critério não encontrada.');
+    }
+
+    if (faixa.empresaId !== empresaId) {
+      throw new ForbiddenException('Você não tem permissão para acessar essa faixa.');
+    }
+
+    return faixa;
+  }
+
   async atualizar(id: string, empresaId: string, dados: UpdateFaixaCriterioDto): Promise<FaixaCriterio> {
     const faixaExistente = await this.repository.buscarPorId(id);
 

@@ -42,6 +42,7 @@ export class EmpresaService {
       senha: senhaHash,
       cnpj: dto.cnpj,
       telefone: dto.telefone,
+      endereco: { create: dto.endereco },
     });
 
     const { senha, ...resultado } = empresa;
@@ -58,9 +59,12 @@ export class EmpresaService {
       }
     }
 
+    const { endereco, ...camposEmpresa } = dto;
+
     const data: Prisma.EmpresaUpdateInput = {
-      ...dto,
+      ...camposEmpresa,
       ...(dto.senha && { senha: await bcrypt.hash(dto.senha, 10) }),
+      ...(endereco && { endereco: { update: endereco } }),
     };
 
     const empresa = await this.repository.update(id, data);

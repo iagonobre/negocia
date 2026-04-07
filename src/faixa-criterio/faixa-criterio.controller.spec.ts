@@ -24,6 +24,7 @@ const mockFaixa = {
 const mockFaixaCriterioService = {
   create: jest.fn(),
   listarPorEmpresa: jest.fn(),
+  buscar: jest.fn(),
   atualizar: jest.fn(),
   deletar: jest.fn(),
 };
@@ -108,6 +109,25 @@ describe('FaixaCriterioController', () => {
       const resultado = await controller.listar(mockJwtPayload);
 
       expect(resultado).toEqual([]);
+    });
+  });
+
+  describe('buscar', () => {
+    it('deve buscar uma faixa por id com empresaId do token', async () => {
+      mockFaixaCriterioService.buscar.mockResolvedValue(mockFaixa);
+
+      const resultado = await controller.buscar('uuid-faixa-123', mockJwtPayload);
+
+      expect(resultado).toEqual(mockFaixa);
+      expect(mockFaixaCriterioService.buscar).toHaveBeenCalledWith('uuid-faixa-123', 'uuid-empresa-123');
+    });
+
+    it('deve propagar erro do service', async () => {
+      mockFaixaCriterioService.buscar.mockRejectedValue(new Error('Faixa não encontrada.'));
+
+      await expect(
+        controller.buscar('uuid-inexistente', mockJwtPayload),
+      ).rejects.toThrow('Faixa não encontrada.');
     });
   });
 

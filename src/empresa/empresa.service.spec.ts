@@ -3,6 +3,18 @@ import { EmpresaService } from './empresa.service';
 import { EmpresaRepository } from './empresa.repository';
 import { ConflictException, NotFoundException } from '@nestjs/common';
 
+const mockEndereco = {
+  id: 'uuid-endereco-123',
+  cep: '59000-000',
+  logradouro: 'Rua das Flores',
+  numero: '100',
+  complemento: null,
+  bairro: 'Centro',
+  cidade: 'Natal',
+  estado: 'RN',
+  empresaId: 'uuid-123',
+};
+
 const mockEmpresa = {
   id: 'uuid-123',
   nome: 'Empresa do João',
@@ -11,7 +23,7 @@ const mockEmpresa = {
   telefone: '84999999999',
   createdAt: new Date(),
   updatedAt: new Date(),
-  endereco: null,
+  endereco: mockEndereco,
 };
 
 const mockRepository = {
@@ -54,6 +66,14 @@ describe('EmpresaService', () => {
       senha: '123456',
       cnpj: '12345678000190',
       telefone: '84999999999',
+      endereco: {
+        cep: '59000-000',
+        logradouro: 'Rua das Flores',
+        numero: '100',
+        bairro: 'Centro',
+        cidade: 'Natal',
+        estado: 'RN',
+      },
     };
 
     it('deve cadastrar uma empresa com sucesso', async () => {

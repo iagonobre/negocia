@@ -177,6 +177,34 @@ describe('FaixaCriterioService', () => {
     });
   });
 
+  describe('buscar', () => {
+    it('deve retornar a faixa quando encontrada e pertencer à empresa', async () => {
+      mockRepository.buscarPorId.mockResolvedValue(mockFaixa);
+
+      const resultado = await service.buscar('uuid-faixa-123', 'uuid-empresa-123');
+
+      expect(resultado).toEqual(mockFaixa);
+      expect(mockRepository.buscarPorId).toHaveBeenCalledWith('uuid-faixa-123');
+    });
+
+    it('deve lançar NotFoundException se faixa não existir', async () => {
+      mockRepository.buscarPorId.mockResolvedValue(null);
+
+      await expect(
+        service.buscar('uuid-inexistente', 'uuid-empresa-123'),
+      ).rejects.toThrow(NotFoundException);
+    });
+
+    it('deve lançar ForbiddenException se faixa pertencer a outra empresa', async () => {
+      const faixaDeOutraEmpresa = { ...mockFaixa, empresaId: 'uuid-outra-empresa' };
+      mockRepository.buscarPorId.mockResolvedValue(faixaDeOutraEmpresa);
+
+      await expect(
+        service.buscar('uuid-faixa-123', 'uuid-empresa-123'),
+      ).rejects.toThrow(ForbiddenException);
+    });
+  });
+
   describe('atualizar', () => {
     it('deve atualizar uma faixa com sucesso', async () => {
       const dto: UpdateFaixaCriterioDto = { descontoMaximo: 20 };

@@ -1,5 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString, MinLength, ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer';
+import { EnderecoDto } from './endereco.dto';
 
 export class CreateEmpresaDto {
   @ApiProperty()
@@ -26,4 +28,10 @@ export class CreateEmpresaDto {
   @IsNotEmpty()
   @IsString()
   telefone: string;
+
+  @ApiProperty({ type: EnderecoDto })
+  @IsNotEmpty()
+  @ValidateNested()
+  @Type(() => EnderecoDto)
+  endereco: EnderecoDto;
 }

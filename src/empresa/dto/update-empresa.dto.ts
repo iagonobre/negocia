@@ -1,5 +1,7 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsEmail, IsOptional, IsString, MinLength } from 'class-validator';
+import { IsEmail, IsOptional, IsString, MinLength, ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer';
+import { UpdateEnderecoDto } from './endereco.dto';
 
 export class UpdateEmpresaDto {
   @ApiPropertyOptional()
@@ -22,4 +24,10 @@ export class UpdateEmpresaDto {
   @IsOptional()
   @IsString()
   telefone?: string;
+
+  @ApiPropertyOptional({ type: UpdateEnderecoDto })
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => UpdateEnderecoDto)
+  endereco?: UpdateEnderecoDto;
 }

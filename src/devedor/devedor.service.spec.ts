@@ -145,6 +145,7 @@ describe('DevedorService', () => {
       const dto = { valorDivida: 2000.0 };
       const devedorAtualizado = { ...mockDevedor, valorDivida: 2000.0 };
 
+      mockRepository.findOne.mockResolvedValue(mockDevedor);
       mockRepository.update.mockResolvedValue(devedorAtualizado);
 
       const resultado = await service.atualizar(
@@ -158,6 +159,7 @@ describe('DevedorService', () => {
 
     it('deve filtrar o update por id e empresaId para garantir isolamento', async () => {
       const dto = { status: StatusDevedor.ACORDADO };
+      mockRepository.findOne.mockResolvedValue(mockDevedor);
       mockRepository.update.mockResolvedValue({ ...mockDevedor, ...dto });
 
       await service.atualizar('uuid-devedor-123', 'uuid-empresa-123', dto);
@@ -171,12 +173,35 @@ describe('DevedorService', () => {
       });
     });
 
-    it('deve propagar erro do repository', async () => {
-      mockRepository.update.mockRejectedValue(new Error('Devedor não encontrado'));
+    it('deve lançar NotFoundException se devedor não existir', async () => {
+      mockRepository.findOne.mockResolvedValue(null);
 
       await expect(
         service.atualizar('uuid-inexistente', 'uuid-empresa-123', {}),
       ).rejects.toThrow('Devedor não encontrado');
+
+      expect(mockRepository.update).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('deletar', () => {
+    it('deve deletar um devedor com sucesso', async () => {
+      mockRepository.findOne.mockResolvedValue(mockDevedor);
+      mockRepository.delete.mockResolvedValue(undefined);
+
+      await service.deletar('uuid-devedor-123', 'uuid-empresa-123');
+
+      expect(mockRepository.delete).toHaveBeenCalledWith('uuid-devedor-123', 'uuid-empresa-123');
+    });
+
+    it('deve lançar NotFoundException se devedor não existir', async () => {
+      mockRepository.findOne.mockResolvedValue(null);
+
+      await expect(
+        service.deletar('uuid-inexistente', 'uuid-empresa-123'),
+      ).rejects.toThrow('Devedor não encontrado');
+
+      expect(mockRepository.delete).not.toHaveBeenCalled();
     });
   });
 

@@ -31,6 +31,15 @@ export class FaixaCriterioController {
     return this.faixaCriterioService.listarPorEmpresa(empresa.sub);
   }
 
+  @Get(':id')
+  @ApiOperation({ summary: 'Buscar faixa de critério por ID' })
+  async buscar(
+    @Param('id') id: string,
+    @Empresa() empresa: JwtPayload,
+  ) {
+    return this.faixaCriterioService.buscar(id, empresa.sub);
+  }
+
   @Patch(':id')
   @ApiOperation({ summary: 'Atualizar faixa de critério' })
   @ApiBody({ type: UpdateFaixaCriterioDto })

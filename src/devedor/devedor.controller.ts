@@ -1,4 +1,4 @@
-import { Body, Controller, Get, MaxFileSizeValidator, Param, ParseFilePipe, Patch, Post, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, MaxFileSizeValidator, Param, ParseFilePipe, Patch, Post, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { DevedorService } from './devedor.service';
 import { CreateDevedorDto } from './dto/create-devedor.dto';
@@ -49,6 +49,15 @@ export class DevedorController {
       @Body() dto: UpdateDevedorDto
     ) {
       return this.devedorService.atualizar(id, empresa.sub, dto);
+    }
+
+  @Delete(':id')
+    @ApiOperation({ summary: 'Deletar devedor' })
+    async deletar(
+      @Param('id') id: string,
+      @Empresa() empresa: JwtPayload,
+    ) {
+      return this.devedorService.deletar(id, empresa.sub);
     }
 
   @Post('importar')

@@ -33,6 +33,7 @@ const mockDevedorService = {
   buscar: jest.fn(),
   cadastrar: jest.fn(),
   atualizar: jest.fn(),
+  deletar: jest.fn(),
   importarCsv: jest.fn(),
 };
 
@@ -166,6 +167,24 @@ describe('DevedorController', () => {
 
       await expect(
         controller.atualizar('uuid-inexistente', mockJwtPayload, {}),
+      ).rejects.toThrow('Devedor não encontrado');
+    });
+  });
+
+  describe('deletar', () => {
+    it('deve deletar um devedor passando id e empresaId do token', async () => {
+      mockDevedorService.deletar.mockResolvedValue(undefined);
+
+      await controller.deletar('uuid-devedor-123', mockJwtPayload);
+
+      expect(mockDevedorService.deletar).toHaveBeenCalledWith('uuid-devedor-123', 'uuid-empresa-123');
+    });
+
+    it('deve propagar erro do service', async () => {
+      mockDevedorService.deletar.mockRejectedValue(new Error('Devedor não encontrado'));
+
+      await expect(
+        controller.deletar('uuid-inexistente', mockJwtPayload),
       ).rejects.toThrow('Devedor não encontrado');
     });
   });

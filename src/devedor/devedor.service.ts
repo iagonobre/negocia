@@ -32,10 +32,26 @@ export class DevedorService {
   }
 
   async atualizar(id: string, empresaId: string, dto: UpdateDevedorDto): Promise<Devedor> {
+    const devedor = await this.repository.findOne(id, empresaId);
+
+    if (!devedor) {
+      throw new NotFoundException('Devedor não encontrado');
+    }
+
     return await this.repository.update({
       where: { id, empresaId },
       data: dto,
     });
+  }
+
+  async deletar(id: string, empresaId: string): Promise<void> {
+    const devedor = await this.repository.findOne(id, empresaId);
+
+    if (!devedor) {
+      throw new NotFoundException('Devedor não encontrado');
+    }
+
+    await this.repository.delete(id, empresaId);
   }
 
   async importarCsv(file: Express.Multer.File, empresaId: string): Promise<ImportacaoResultado> {
