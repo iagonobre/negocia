@@ -32,12 +32,20 @@ export class EmpresaRepository {
     return this.prisma.empresa.findUnique({ where: { cnpj } });
   }
 
-  async findByEmailExcludingId(email: string, id: string): Promise<Empresa | null> {
+  async findByEmailExcludingId(
+    email: string,
+    id: string,
+  ): Promise<Empresa | null> {
     return this.prisma.empresa.findFirst({ where: { email, NOT: { id } } });
   }
 
   async create(data: Prisma.EmpresaCreateInput): Promise<Empresa> {
-    return this.prisma.empresa.create({ data });
+    return this.prisma.empresa.create({
+      data,
+      include: {
+        endereco: true,
+      },
+    });
   }
 
   async update(id: string, data: Prisma.EmpresaUpdateInput): Promise<Empresa> {
