@@ -76,6 +76,7 @@ export class DevedorService {
             cpf: data.cpf && data.cpf.trim() !== '' ? data.cpf.trim() : null,
             cnpj: data.cnpj && data.cnpj.trim() !== '' ? data.cnpj.trim() : null,
             descricaoDivida: data.descricaoDivida && data.descricaoDivida.trim() !== '' ? data.descricaoDivida.trim() : null,
+            ultimoContato: data.ultimoContato && data.ultimoContato.trim() !== '' ? new Date(data.ultimoContato) : null,
             status,
             origem,
             tipoPessoa,

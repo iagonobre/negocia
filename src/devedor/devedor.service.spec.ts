@@ -283,7 +283,27 @@ describe('DevedorService', () => {
             cnpj: null,
             descricaoDivida: null,
             numeroParcelas: null,
+            ultimoContato: null,
           }),
+        ]),
+        'uuid-empresa-123',
+      );
+    });
+
+    it('deve converter ultimoContato para Date quando preenchido e null quando vazio', async () => {
+      const file = criarCsvBuffer([
+        'João Silva,joao@devedor.com,84911111111,FISICA,11111111100,,100.00,,2024-01-01,,PENDENTE,PLANILHA,0,2024-03-10',
+        'Maria Silva,maria@devedor.com,84922222222,FISICA,22222222200,,200.00,,2024-02-01,,PENDENTE,PLANILHA,0,',
+      ]);
+
+      mockRepository.upsertMany.mockResolvedValue([]);
+
+      await service.importarCsv(file, 'uuid-empresa-123');
+
+      expect(mockRepository.upsertMany).toHaveBeenCalledWith(
+        expect.arrayContaining([
+          expect.objectContaining({ ultimoContato: new Date('2024-03-10') }),
+          expect.objectContaining({ ultimoContato: null }),
         ]),
         'uuid-empresa-123',
       );
