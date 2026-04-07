@@ -58,7 +58,7 @@ model Endereco {
   estado      String
 
   empresaId String  @unique
-  empresa   Empresa @relation(fields: [empresaId], references: [id])
+  empresa   Empresa @relation(fields: [empresaId], references: [id], onDelete: Cascade)
 }
 
 model Devedor {
@@ -81,7 +81,7 @@ model Devedor {
   updatedAt       DateTime      @updatedAt
 
   empresaId String
-  empresa   Empresa @relation(fields: [empresaId], references: [id])
+  empresa   Empresa @relation(fields: [empresaId], references: [id], onDelete: Cascade)
 
   @@unique([email, empresaId])
 }
@@ -100,5 +100,5 @@ model FaixaCriterio {
   updatedAt         DateTime       @updatedAt
 
   empresaId String
-  empresa   Empresa @relation(fields: [empresaId], references: [id])
+  empresa   Empresa @relation(fields: [empresaId], references: [id], onDelete: Cascade)
 }

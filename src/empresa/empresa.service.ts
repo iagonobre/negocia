@@ -1,4 +1,8 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateEmpresaDto } from './dto/create-empresa.dto';
 import { UpdateEmpresaDto } from './dto/update-empresa.dto';
 import { Empresa, Prisma } from '../generated/prisma/client';
@@ -53,7 +57,10 @@ export class EmpresaService {
     await this.buscarPorId(id);
 
     if (dto.email) {
-      const emailExistente = await this.repository.findByEmailExcludingId(dto.email, id);
+      const emailExistente = await this.repository.findByEmailExcludingId(
+        dto.email,
+        id,
+      );
       if (emailExistente) {
         throw new ConflictException('Este email já foi cadastrado');
       }
