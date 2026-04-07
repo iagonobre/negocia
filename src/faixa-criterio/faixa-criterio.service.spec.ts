@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { FaixaCriterioService } from './faixa-criterio.service';
 import { FaixaCriterioRepository } from './faixa-criterio.repository';
-import { BadRequestException, ForbiddenException, NotFoundException } from '@nestjs/common';
+import { NotFoundException, BadRequestException, ForbiddenException } from '@nestjs/common';
 import { CreateFaixaCriterioDto } from './dto/create-faixa-criterio.dto';
 import { UpdateFaixaCriterioDto } from './dto/update-faixa-criterio.dto';
 

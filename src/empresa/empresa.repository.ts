@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { Empresa, Prisma } from '../generated/prisma/client';
 
-type EmpresaSemSenha = Omit<Empresa, 'senha'> & { endereco: any };
+export type EmpresaSemSenha = Omit<Empresa, 'senha'> & { endereco?: unknown };
 
 @Injectable()
 export class EmpresaRepository {
@@ -25,21 +25,15 @@ export class EmpresaRepository {
   }
 
   async findByEmail(email: string): Promise<Empresa | null> {
-    return this.prisma.empresa.findUnique({
-      where: { email },
-    });
+    return this.prisma.empresa.findUnique({ where: { email } });
   }
 
   async findByCnpj(cnpj: string): Promise<Empresa | null> {
-    return this.prisma.empresa.findUnique({
-      where: { cnpj },
-    });
+    return this.prisma.empresa.findUnique({ where: { cnpj } });
   }
 
   async findByEmailExcludingId(email: string, id: string): Promise<Empresa | null> {
-    return this.prisma.empresa.findFirst({
-      where: { email, NOT: { id } },
-    });
+    return this.prisma.empresa.findFirst({ where: { email, NOT: { id } } });
   }
 
   async create(data: Prisma.EmpresaCreateInput): Promise<Empresa> {

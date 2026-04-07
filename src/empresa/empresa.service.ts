@@ -1,17 +1,9 @@
-import {
-  ConflictException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
-
-import { EmpresaRepository } from './empresa.repository';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateEmpresaDto } from './dto/create-empresa.dto';
 import { UpdateEmpresaDto } from './dto/update-empresa.dto';
-import { Empresa } from '../generated/prisma/client';
-
+import { Empresa, Prisma } from '../generated/prisma/client';
+import { EmpresaRepository, EmpresaSemSenha } from './empresa.repository';
 import * as bcrypt from 'bcrypt';
-
-type EmpresaSemSenha = Omit<Empresa, 'senha'>;
 
 @Injectable()
 export class EmpresaService {
@@ -60,20 +52,16 @@ export class EmpresaService {
     await this.buscarPorId(id);
 
     if (dto.email) {
-      const emailExistente = await this.repository.findByEmailExcludingId(
-        dto.email,
-        id,
-      );
+      const emailExistente = await this.repository.findByEmailExcludingId(dto.email, id);
       if (emailExistente) {
         throw new ConflictException('Este email já foi cadastrado');
       }
     }
 
-    const data: any = { ...dto };
-
-    if (dto.senha) {
-      data.senha = await bcrypt.hash(dto.senha, 10);
-    }
+    const data: Prisma.EmpresaUpdateInput = {
+      ...dto,
+      ...(dto.senha && { senha: await bcrypt.hash(dto.senha, 10) }),
+    };
 
     const empresa = await this.repository.update(id, data);
     const { senha, ...resultado } = empresa;

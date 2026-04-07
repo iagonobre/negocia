@@ -1,25 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { FaixaCriterio, Prisma } from '../generated/prisma/client';
-import { UpdateFaixaCriterioDto } from './dto/update-faixa-criterio.dto';
 import { CreateFaixaCriterioDto } from './dto/create-faixa-criterio.dto';
+import { UpdateFaixaCriterioDto } from './dto/update-faixa-criterio.dto';
 
 @Injectable()
 export class FaixaCriterioRepository {
-
   constructor(private readonly prisma: PrismaService) {}
 
   async create(dados: CreateFaixaCriterioDto, empresaId: string): Promise<FaixaCriterio> {
     const data: Prisma.FaixaCriterioCreateInput = {
       ...dados,
-      empresa: {
-        connect: { id: empresaId }
-      }
+      empresa: { connect: { id: empresaId } },
     };
-
     return this.prisma.faixaCriterio.create({ data });
   }
-
 
   async listarPorEmpresa(empresaId: string): Promise<FaixaCriterio[]> {
     return this.prisma.faixaCriterio.findMany({
@@ -53,9 +48,7 @@ export class FaixaCriterioRepository {
   async atualizar(id: string, dados: UpdateFaixaCriterioDto): Promise<FaixaCriterio> {
     return this.prisma.faixaCriterio.update({
       where: { id },
-      data: {
-        ...dados,
-      },
+      data: { ...dados },
     });
   }
 

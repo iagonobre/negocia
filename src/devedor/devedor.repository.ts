@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { Devedor, Prisma } from '../generated/prisma/client';
+import { DevedorCsvRow } from './types/devedor-csv-row.type';
 
 @Injectable()
 export class DevedorRepository {
@@ -19,33 +20,22 @@ export class DevedorRepository {
   }
 
   async findAll(empresaId: string): Promise<Devedor[]> {
-    return this.prisma.devedor.findMany({
-      where: { empresaId },
-    });
+    return this.prisma.devedor.findMany({ where: { empresaId } });
   }
 
   async findOne(id: string, empresaId: string): Promise<Devedor | null> {
-    return this.prisma.devedor.findFirst({
-      where: { id, empresaId },
-    });
+    return this.prisma.devedor.findFirst({ where: { id, empresaId } });
   }
 
   async delete(id: string, empresaId: string): Promise<void> {
-    await this.prisma.devedor.delete({
-      where: { id, empresaId },
-    });
+    await this.prisma.devedor.delete({ where: { id, empresaId } });
   }
 
-  async upsertMany(devedores: any[], empresaId: string): Promise<Devedor[]> {
+  async upsertMany(devedores: DevedorCsvRow[], empresaId: string): Promise<Devedor[]> {
     return this.prisma.$transaction(
       devedores.map((d) =>
         this.prisma.devedor.upsert({
-          where: {
-            email_empresaId: {
-              email: d.email,
-              empresaId: empresaId,
-            },
-          },
+          where: { email_empresaId: { email: d.email, empresaId } },
           update: {
             nome: d.nome,
             telefone: d.telefone,

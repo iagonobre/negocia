@@ -1,26 +1,24 @@
-import { Injectable, NotFoundException, BadRequestException, ForbiddenException} from '@nestjs/common';
-import { FaixaCriterioRepository } from './faixa-criterio.repository';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { FaixaCriterio } from '../generated/prisma/client';
 import { CreateFaixaCriterioDto } from './dto/create-faixa-criterio.dto';
 import { UpdateFaixaCriterioDto } from './dto/update-faixa-criterio.dto';
+import { FaixaCriterioRepository } from './faixa-criterio.repository';
 
 @Injectable()
 export class FaixaCriterioService {
+  constructor(private readonly repository: FaixaCriterioRepository) {}
 
-  constructor(private readonly faixaCriterioRepository: FaixaCriterioRepository) {}
-
-  async create(dados: CreateFaixaCriterioDto, empresaId: string ): Promise<FaixaCriterio> {
+  async create(dados: CreateFaixaCriterioDto, empresaId: string): Promise<FaixaCriterio> {
     await this.validarFaixa(dados, empresaId);
-
-    return this.faixaCriterioRepository.create(dados, empresaId);
+    return this.repository.create(dados, empresaId);
   }
 
   async listarPorEmpresa(empresaId: string): Promise<FaixaCriterio[]> {
-    return this.faixaCriterioRepository.listarPorEmpresa(empresaId);
+    return this.repository.listarPorEmpresa(empresaId);
   }
 
   async atualizar(id: string, empresaId: string, dados: UpdateFaixaCriterioDto): Promise<FaixaCriterio> {
-    const faixaExistente = await this.faixaCriterioRepository.buscarPorId(id);
+    const faixaExistente = await this.repository.buscarPorId(id);
 
     if (!faixaExistente) {
       throw new NotFoundException('Faixa de critério não encontrada.');
@@ -30,7 +28,6 @@ export class FaixaCriterioService {
       throw new ForbiddenException('Você não tem permissão para alterar essa faixa.');
     }
 
-    // Monta um objeto com os valores novos ou os existentes
     const dadosParaValidar: CreateFaixaCriterioDto = {
       descricao: dados.descricao ?? faixaExistente.descricao,
       valorMinimo: dados.valorMinimo ?? faixaExistente.valorMinimo,
@@ -44,11 +41,11 @@ export class FaixaCriterioService {
 
     await this.validarFaixa(dadosParaValidar, empresaId, id);
 
-    return this.faixaCriterioRepository.atualizar(id, dados);
+    return this.repository.atualizar(id, dados);
   }
 
   async deletar(id: string, empresaId: string): Promise<void> {
-    const existe = await this.faixaCriterioRepository.buscarPorId(id);
+    const existe = await this.repository.buscarPorId(id);
 
     if (!existe) {
       throw new NotFoundException('Faixa de critério não encontrada.');
@@ -58,7 +55,7 @@ export class FaixaCriterioService {
       throw new ForbiddenException('Você não tem permissão para deletar esta faixa de crédito.');
     }
 
-    await this.faixaCriterioRepository.deletar(id);
+    await this.repository.deletar(id);
   }
 
   private async validarFaixa(
@@ -66,18 +63,10 @@ export class FaixaCriterioService {
     empresaId: string,
     ignorarId?: string,
   ): Promise<void> {
-    const {
-      valorMinimo,
-      valorMaximo,
-      prazoMaximoDias,
-      parcelasMaximas,
-      descontoMaximo,
-    } = dados;
+    const { valorMinimo, valorMaximo, prazoMaximoDias, parcelasMaximas, descontoMaximo } = dados;
 
-    if (valorMinimo !== undefined && valorMaximo !== undefined) {
-      if (valorMinimo >= valorMaximo) {
-        throw new BadRequestException('O valor mínimo deve ser menor que o valor máximo.');
-      }
+    if (valorMinimo !== undefined && valorMaximo !== undefined && valorMinimo >= valorMaximo) {
+      throw new BadRequestException('O valor mínimo deve ser menor que o valor máximo.');
     }
 
     if (prazoMaximoDias !== undefined && prazoMaximoDias <= 0) {
@@ -93,31 +82,22 @@ export class FaixaCriterioService {
     }
 
     if (valorMinimo !== undefined && valorMaximo !== undefined) {
-      const sobrepostas = await this.faixaCriterioRepository.buscarSobrepostas(
-        empresaId,
-        valorMinimo,
-        valorMaximo,
-        ignorarId,
-      );
+      const sobrepostas = await this.repository.buscarSobrepostas(empresaId, valorMinimo, valorMaximo, ignorarId);
 
       if (sobrepostas.length > 0) {
-        throw new BadRequestException(
-          'Já existe uma faixa cadastrada que se sobrepõe a esse intervalo de valores.',
-        );
+        throw new BadRequestException('Já existe uma faixa cadastrada que se sobrepõe a esse intervalo de valores.');
       }
 
-      const faixasExistentes = await this.faixaCriterioRepository.listarPorEmpresa(empresaId);
-      const outras = faixasExistentes.filter(f => f.id !== ignorarId);
+      const faixasExistentes = await this.repository.listarPorEmpresa(empresaId);
+      const outras = faixasExistentes.filter((f) => f.id !== ignorarId);
 
       if (outras.length > 0) {
-        const temVizinhaAntes = outras.some(f => f.valorMaximo === valorMinimo);
-        const temVizinhaDepois = outras.some(f => f.valorMinimo === valorMaximo);
-        const ficaNaExtremidade = temVizinhaAntes || temVizinhaDepois;
+        const temVizinha =
+          outras.some((f) => f.valorMaximo === valorMinimo) ||
+          outras.some((f) => f.valorMinimo === valorMaximo);
 
-        if (!ficaNaExtremidade) {
-          throw new BadRequestException(
-            'A faixa deve ser contígua às faixas já existentes, sem buracos entre elas.',
-          );
+        if (!temVizinha) {
+          throw new BadRequestException('A faixa deve ser contígua às faixas já existentes, sem buracos entre elas.');
         }
       }
     }
