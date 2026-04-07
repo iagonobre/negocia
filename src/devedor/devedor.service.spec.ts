@@ -102,6 +102,44 @@ describe('DevedorService', () => {
     });
   });
 
+  describe('listar', () => {
+    it('deve retornar todos os devedores da empresa', async () => {
+      mockRepository.findAll.mockResolvedValue([mockDevedor]);
+
+      const resultado = await service.listar('uuid-empresa-123');
+
+      expect(resultado).toEqual([mockDevedor]);
+      expect(mockRepository.findAll).toHaveBeenCalledWith('uuid-empresa-123');
+    });
+
+    it('deve retornar lista vazia quando não há devedores', async () => {
+      mockRepository.findAll.mockResolvedValue([]);
+
+      const resultado = await service.listar('uuid-empresa-123');
+
+      expect(resultado).toEqual([]);
+    });
+  });
+
+  describe('buscar', () => {
+    it('deve retornar o devedor quando encontrado', async () => {
+      mockRepository.findOne.mockResolvedValue(mockDevedor);
+
+      const resultado = await service.buscar('uuid-devedor-123', 'uuid-empresa-123');
+
+      expect(resultado).toEqual(mockDevedor);
+      expect(mockRepository.findOne).toHaveBeenCalledWith('uuid-devedor-123', 'uuid-empresa-123');
+    });
+
+    it('deve lançar NotFoundException quando devedor não existe', async () => {
+      mockRepository.findOne.mockResolvedValue(null);
+
+      await expect(
+        service.buscar('uuid-inexistente', 'uuid-empresa-123'),
+      ).rejects.toThrow('Devedor não encontrado');
+    });
+  });
+
   describe('atualizar', () => {
     it('deve atualizar um devedor com sucesso', async () => {
       const dto = { valorDivida: 2000.0 };

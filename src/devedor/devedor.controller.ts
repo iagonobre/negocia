@@ -1,4 +1,4 @@
-import { Body, Controller, MaxFileSizeValidator, Param, ParseFilePipe, Patch, Post, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, MaxFileSizeValidator, Param, ParseFilePipe, Patch, Post, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { DevedorService } from './devedor.service';
 import { CreateDevedorDto } from './dto/create-devedor.dto';
@@ -10,24 +10,37 @@ import { FileInterceptor } from '@nestjs/platform-express';
 
 @ApiTags('Devedor')
 @Controller('devedor')
+@UseGuards(AuthGuard)
+@ApiBearerAuth()
 export class DevedorController {
     constructor (private readonly devedorService: DevedorService) {}
 
+    @Get()
+    @ApiOperation({ summary: 'Listar todos os devedores da empresa' })
+    async listar(@Empresa() empresa: JwtPayload) {
+      return this.devedorService.listar(empresa.sub);
+    }
+
+    @Get(':id')
+    @ApiOperation({ summary: 'Buscar devedor por ID' })
+    async buscar(
+      @Param('id') id: string,
+      @Empresa() empresa: JwtPayload,
+    ) {
+      return this.devedorService.buscar(id, empresa.sub);
+    }
+
     @Post('cadastrar')
-    @UseGuards(AuthGuard)
-    @ApiBearerAuth()
     @ApiOperation({ summary: 'Cadastro de novo devedor' })
     @ApiBody({ type: CreateDevedorDto })
     async cadastrar(
-      @Empresa() empresa: JwtPayload, 
+      @Empresa() empresa: JwtPayload,
       @Body() dto: CreateDevedorDto
     ) {
       return this.devedorService.cadastrar(dto, empresa.sub);
     }
 
     @Patch('/atualizar/:id')
-    @UseGuards(AuthGuard)
-    @ApiBearerAuth()
     @ApiOperation({ summary: 'Edição de devedor existente' })
     @ApiBody({ type: UpdateDevedorDto })
     async atualizar(
@@ -39,8 +52,6 @@ export class DevedorController {
     }
 
   @Post('importar')
-  @UseGuards(AuthGuard)
-  @ApiBearerAuth()
   @UseInterceptors(FileInterceptor('file'))
   @ApiOperation({ summary: 'Importar devedores via CSV (Upsert)' })
   @ApiConsumes('multipart/form-data')

@@ -1,4 +1,4 @@
-import {Body, Controller, Delete, Get, Post, Put, Param, UseGuards } from '@nestjs/common';
+import {Body, Controller, Delete, Get, Patch, Post, Param, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { FaixaCriterioService } from './faixa-criterio.service';
 import { CreateFaixaCriterioDto } from './dto/create-faixa-criterio.dto';
@@ -31,7 +31,7 @@ export class FaixaCriterioController {
     return this.faixaCriterioService.listarPorEmpresa(empresa.sub);
   }
 
-  @Put(':id')
+  @Patch(':id')
   @ApiOperation({ summary: 'Atualizar faixa de critério' })
   @ApiBody({ type: UpdateFaixaCriterioDto })
   async atualizar(

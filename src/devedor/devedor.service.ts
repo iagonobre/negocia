@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import csv from 'csv-parser';
 import { Readable } from 'stream';
 import { CreateDevedorDto } from './dto/create-devedor.dto';
@@ -19,6 +19,16 @@ export class DevedorService {
       ...dto,
       empresa: { connect: { id: empresaId } },
     });
+  }
+
+  async listar(empresaId: string): Promise<Devedor[]> {
+    return await this.repository.findAll(empresaId);
+  }
+
+  async buscar(id: string, empresaId: string): Promise<Devedor> {
+    const devedor = await this.repository.findOne(id, empresaId);
+    if (!devedor) throw new NotFoundException('Devedor não encontrado');
+    return devedor;
   }
 
   async atualizar(id: string, empresaId: string, dto: UpdateDevedorDto): Promise<Devedor> {

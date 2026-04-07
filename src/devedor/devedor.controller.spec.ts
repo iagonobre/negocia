@@ -29,6 +29,8 @@ const mockDevedor = {
 };
 
 const mockDevedorService = {
+  listar: jest.fn(),
+  buscar: jest.fn(),
   cadastrar: jest.fn(),
   atualizar: jest.fn(),
   importarCsv: jest.fn(),
@@ -66,6 +68,42 @@ describe('DevedorController', () => {
 
   it('should be defined', () => {
     expect(controller).toBeDefined();
+  });
+
+  describe('listar', () => {
+    it('deve listar todos os devedores da empresa', async () => {
+      mockDevedorService.listar.mockResolvedValue([mockDevedor]);
+
+      const resultado = await controller.listar(mockJwtPayload);
+
+      expect(resultado).toEqual([mockDevedor]);
+      expect(mockDevedorService.listar).toHaveBeenCalledWith('uuid-empresa-123');
+    });
+
+    it('deve propagar erro do service', async () => {
+      mockDevedorService.listar.mockRejectedValue(new Error('Erro ao listar'));
+
+      await expect(controller.listar(mockJwtPayload)).rejects.toThrow('Erro ao listar');
+    });
+  });
+
+  describe('buscar', () => {
+    it('deve buscar um devedor por id com empresaId do token', async () => {
+      mockDevedorService.buscar.mockResolvedValue(mockDevedor);
+
+      const resultado = await controller.buscar('uuid-devedor-123', mockJwtPayload);
+
+      expect(resultado).toEqual(mockDevedor);
+      expect(mockDevedorService.buscar).toHaveBeenCalledWith('uuid-devedor-123', 'uuid-empresa-123');
+    });
+
+    it('deve propagar erro do service', async () => {
+      mockDevedorService.buscar.mockRejectedValue(new Error('Devedor não encontrado'));
+
+      await expect(
+        controller.buscar('uuid-inexistente', mockJwtPayload),
+      ).rejects.toThrow('Devedor não encontrado');
+    });
   });
 
   describe('cadastrar', () => {
