@@ -5,7 +5,7 @@ import { CreateFaixaCriterioDto } from './dto/create-faixa-criterio.dto';
 import { UpdateFaixaCriterioDto } from './dto/update-faixa-criterio.dto';
 import { AuthGuard } from '../auth/auth.guard';
 import { Empresa } from '../auth/decorators/empresa.decorator';
-import type { JwtPayload } from '../auth/dto/jwt-payload.dto';
+import type { JwtPayload } from '../auth/interfaces/jwt-payload.interface';
 
 @ApiTags('Faixa de Critério')
 @Controller('faixas-criterio')

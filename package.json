@@ -82,6 +82,7 @@
     "coverageDirectory": "../coverage",
     "testEnvironment": "node",
     "moduleNameMapper": {
+      "^src/(.*)$": "<rootDir>/$1",
       "^generated/prisma/client$": "<rootDir>/../src/generated/prisma/client",
       "^(\\.{1,2}/.*)\\.js$": "$1"
     }

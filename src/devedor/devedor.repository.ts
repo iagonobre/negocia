@@ -1,13 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { Prisma } from '../generated/prisma/browser';
-import { Devedor } from 'src/generated/prisma/client';
+import { Devedor, Prisma } from '../generated/prisma/client';
 
 @Injectable()
 export class DevedorRepository {
   constructor(private prisma: PrismaService) {}
 
-  async create(data: Prisma.DevedorCreateInput) {
+  async create(data: Prisma.DevedorCreateInput): Promise<Devedor> {
     return this.prisma.devedor.create({ data });
   }
 
@@ -16,10 +15,7 @@ export class DevedorRepository {
     data: Prisma.DevedorUpdateInput;
   }): Promise<Devedor> {
     const { where, data } = params;
-    return this.prisma.devedor.update({
-      where,
-      data,
-    });
+    return this.prisma.devedor.update({ where, data });
   }
 
   async findAll(empresaId: string): Promise<Devedor[]> {
@@ -30,23 +26,17 @@ export class DevedorRepository {
 
   async findOne(id: string, empresaId: string): Promise<Devedor | null> {
     return this.prisma.devedor.findFirst({
-      where: { 
-        id, 
-        empresaId 
-      },
+      where: { id, empresaId },
     });
   }
 
-  async delete(id: string, empresaId: string): Promise<Devedor> {
-    return this.prisma.devedor.delete({
-      where: { 
-        id,
-        empresaId 
-      },
+  async delete(id: string, empresaId: string): Promise<void> {
+    await this.prisma.devedor.delete({
+      where: { id, empresaId },
     });
   }
 
-  async upsertMany(devedores: any[], empresaId: string) {
+  async upsertMany(devedores: any[], empresaId: string): Promise<Devedor[]> {
     return this.prisma.$transaction(
       devedores.map((d) =>
         this.prisma.devedor.upsert({

@@ -7,14 +7,17 @@ import {
 import { EmpresaRepository } from './empresa.repository';
 import { CreateEmpresaDto } from './dto/create-empresa.dto';
 import { UpdateEmpresaDto } from './dto/update-empresa.dto';
+import { Empresa } from '../generated/prisma/client';
 
 import * as bcrypt from 'bcrypt';
+
+type EmpresaSemSenha = Omit<Empresa, 'senha'>;
 
 @Injectable()
 export class EmpresaService {
   constructor(private repository: EmpresaRepository) {}
 
-  async buscarPorId(id: string) {
+  async buscarPorId(id: string): Promise<EmpresaSemSenha> {
     const empresa = await this.repository.findById(id);
 
     if (!empresa) {
@@ -24,11 +27,11 @@ export class EmpresaService {
     return empresa;
   }
 
-  async buscarPorEmail(email: string) {
+  async buscarPorEmail(email: string): Promise<Empresa | null> {
     return this.repository.findByEmail(email);
   }
 
-  async cadastrar(dto: CreateEmpresaDto) {
+  async cadastrar(dto: CreateEmpresaDto): Promise<EmpresaSemSenha> {
     const emailExistente = await this.repository.findByEmail(dto.email);
     if (emailExistente) {
       throw new ConflictException('Este email já foi cadastrado.');
@@ -53,7 +56,7 @@ export class EmpresaService {
     return resultado;
   }
 
-  async atualizar(id: string, dto: UpdateEmpresaDto) {
+  async atualizar(id: string, dto: UpdateEmpresaDto): Promise<EmpresaSemSenha> {
     await this.buscarPorId(id);
 
     if (dto.email) {
@@ -77,7 +80,7 @@ export class EmpresaService {
     return resultado;
   }
 
-  async deletar(id: string) {
+  async deletar(id: string): Promise<{ message: string }> {
     await this.buscarPorId(id);
     await this.repository.delete(id);
     return { message: 'Empresa deletada com sucesso' };

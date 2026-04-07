@@ -15,7 +15,7 @@ import { AuthGuard } from '../auth/auth.guard';
 import { CreateEmpresaDto } from './dto/create-empresa.dto';
 import { UpdateEmpresaDto } from './dto/update-empresa.dto';
 
-import type { JwtPayload } from 'src/auth/dto/jwt-payload.dto';
+import type { JwtPayload } from 'src/auth/interfaces/jwt-payload.interface';
 import { Empresa } from 'src/auth/decorators/empresa.decorator';
 
 @ApiTags('Empresa')
@@ -31,10 +31,10 @@ export class EmpresaController {
   }
 
   @Get('perfil')
-  c(AuthGuard)
+  @UseGuards(AuthGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Buscar perfil da empresa logada' })
-  async perfiel(@Empresa() empresa: JwtPayload) {
+  async perfil(@Empresa() empresa: JwtPayload) {
     return this.empresaService.buscarPorId(empresa.sub);
   }
 

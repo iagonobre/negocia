@@ -4,20 +4,22 @@ import csv from 'csv-parser';
 import { Readable } from 'stream';
 import { CreateDevedorDto } from './dto/create-devedor.dto';
 import { UpdateDevedorDto } from './dto/update-devedor.dto';
-import { StatusDevedor, OrigemDevedor, TipoPessoa } from 'src/generated/prisma/enums'; 
+import { Devedor, StatusDevedor, OrigemDevedor, TipoPessoa } from 'src/generated/prisma/client';
+
+type ImportacaoResultado = { mensagem: string; importados: number };
 
 @Injectable()
 export class DevedorService {
   constructor(private repository: DevedorRepository) {}
 
-  async cadastrar(dto: CreateDevedorDto, empresaId: string) {
+  async cadastrar(dto: CreateDevedorDto, empresaId: string): Promise<Devedor> {
     return await this.repository.create({
       ...dto,
       empresa: { connect: { id: empresaId } },
     });
   }
 
-  async atualizar(id: string, empresaId: string, dto: UpdateDevedorDto) {
+  async atualizar(id: string, empresaId: string, dto: UpdateDevedorDto): Promise<Devedor> {
     return await this.repository.update({
       where: {
         id: id,
@@ -27,7 +29,7 @@ export class DevedorService {
     });
   }
 
-  async importarCsv(file: Express.Multer.File, empresaId: string) {
+  async importarCsv(file: Express.Multer.File, empresaId: string): Promise<ImportacaoResultado> {
     const devedores: any[] = [];
     const stream = Readable.from(file.buffer);
 
@@ -53,17 +55,17 @@ export class DevedorService {
             cnpj: data.cnpj && data.cnpj.trim() !== '' ? data.cnpj.trim() : null,
             descricaoDivida: data.descricaoDivida && data.descricaoDivida.trim() !== '' ? data.descricaoDivida.trim() : null,
 
-            status: status,
-            origem: origem,
-            tipoPessoa: tipoPessoa,
+            status,
+            origem,
+            tipoPessoa,
           });
         })
         .on('end', async () => {
           try {
             await this.repository.upsertMany(devedores, empresaId);
-            resolve({ 
+            resolve({
               mensagem: 'Importação concluída com sucesso',
-              importados: devedores.length 
+              importados: devedores.length,
             });
           } catch (error) {
             reject(error);

@@ -1,12 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { Prisma } from '../generated/prisma/browser';
+import { Empresa, Prisma } from '../generated/prisma/client';
+
+type EmpresaSemSenha = Omit<Empresa, 'senha'> & { endereco: any };
 
 @Injectable()
 export class EmpresaRepository {
   constructor(private prisma: PrismaService) {}
 
-  async findById(id: string) {
+  async findById(id: string): Promise<EmpresaSemSenha | null> {
     return this.prisma.empresa.findUnique({
       where: { id },
       select: {
@@ -22,33 +24,33 @@ export class EmpresaRepository {
     });
   }
 
-  async findByEmail(email: string) {
+  async findByEmail(email: string): Promise<Empresa | null> {
     return this.prisma.empresa.findUnique({
       where: { email },
     });
   }
 
-  async findByCnpj(cnpj: string) {
+  async findByCnpj(cnpj: string): Promise<Empresa | null> {
     return this.prisma.empresa.findUnique({
       where: { cnpj },
     });
   }
 
-  async findByEmailExcludingId(email: string, id: string) {
+  async findByEmailExcludingId(email: string, id: string): Promise<Empresa | null> {
     return this.prisma.empresa.findFirst({
       where: { email, NOT: { id } },
     });
   }
 
-  async create(data: Prisma.EmpresaCreateInput) {
+  async create(data: Prisma.EmpresaCreateInput): Promise<Empresa> {
     return this.prisma.empresa.create({ data });
   }
 
-  async update(id: string, data: Prisma.EmpresaUpdateInput) {
+  async update(id: string, data: Prisma.EmpresaUpdateInput): Promise<Empresa> {
     return this.prisma.empresa.update({ where: { id }, data });
   }
 
-  async delete(id: string) {
-    return this.prisma.empresa.delete({ where: { id } });
+  async delete(id: string): Promise<void> {
+    await this.prisma.empresa.delete({ where: { id } });
   }
 }

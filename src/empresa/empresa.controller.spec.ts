@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { EmpresaController } from './empresa.controller';
 import { EmpresaService } from './empresa.service';
 import { AuthGuard } from '../auth/auth.guard';
+import type { JwtPayload } from 'src/auth/interfaces/jwt-payload.interface';
 
 const mockEmpresa = {
   id: 'uuid-123',
@@ -26,8 +27,9 @@ const mockAuthGuard = {
 };
 
 const mockRequest = {
-  user: { sub: 'uuid-123' },
-};
+  sub: 'uuid-123',
+  email: 'contato@joao.com',
+} as JwtPayload;
 
 describe('EmpresaController', () => {
   let controller: EmpresaController;

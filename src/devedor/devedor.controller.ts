@@ -5,7 +5,7 @@ import { CreateDevedorDto } from './dto/create-devedor.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { UpdateDevedorDto } from './dto/update-devedor.dto';
 import { Empresa } from 'src/auth/decorators/empresa.decorator';
-import type { JwtPayload } from 'src/auth/dto/jwt-payload.dto';
+import type { JwtPayload } from 'src/auth/interfaces/jwt-payload.interface';
 import { FileInterceptor } from '@nestjs/platform-express';
 
 @ApiTags('Devedor')
