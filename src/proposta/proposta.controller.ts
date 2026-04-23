@@ -4,14 +4,10 @@ import { PropostaService } from './proposta.service';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { Empresa } from 'src/auth/decorators/empresa.decorator';
 import type { JwtPayload } from '../auth/interfaces/jwt-payload.interface';
-import { IsEnum } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
 
-class AtualizarStatusDto {
-  @ApiProperty({ enum: ['PENDENTE', 'ACEITA', 'RECUSADA'] })
-  @IsEnum(['PENDENTE', 'ACEITA', 'RECUSADA'])
-  status: 'PENDENTE' | 'ACEITA' | 'RECUSADA';
-}
+// Importando os DTOs refatorados
+import { ChatMessageDto } from './dto/chat-message.dto';
+import { AtualizarStatusDto } from './dto/atualiza-status.dto';
 
 @ApiTags('Proposta')
 @UseGuards(AuthGuard)
@@ -27,6 +23,17 @@ export class PropostaController {
     @Empresa() empresa: JwtPayload,
   ) {
     return this.propostaService.gerarProposta(devedorId, empresa.sub);
+  }
+
+  @Post(':id/chat')
+  @ApiOperation({ summary: 'Envia a resposta do devedor para o agente de IA continuar a negociação' })
+  @ApiBody({ type: ChatMessageDto })
+  async conversarComAgente(
+    @Param('id') id: string,
+    @Body() body: ChatMessageDto,
+    @Empresa() empresa: JwtPayload,
+  ) {
+    return this.propostaService.conversar(id, empresa.sub, body.mensagem);
   }
 
   @Get()

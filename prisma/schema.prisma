@@ -114,8 +114,10 @@ enum StatusProposta {
 
 model Proposta {
   id               String         @id @default(uuid())
-  opcoes           Json
-  mensagemGerada   String
+
+  limites          Json           @default("[]")
+  historico        Json           @default("[]")
+  
   status           StatusProposta @default(PENDENTE)
   createdAt        DateTime       @default(now())
   updatedAt        DateTime       @updatedAt
