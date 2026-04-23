@@ -7,6 +7,8 @@ import { AuthModule } from './auth/auth.module';
 import { DevedorModule } from './devedor/devedor.module';
 import { FaixaCriterioModule } from './faixa-criterio/faixa-criterio.module';
 import { PropostaModule } from './proposta/proposta.module';
+import { LlmModule } from './llm/llm.module';
+import { WhatsAppModule } from './whatsapp/whatsapp.module';
 
 @Module({
   imports: [
@@ -15,11 +17,13 @@ import { PropostaModule } from './proposta/proposta.module';
       load: [configuration],
     }),
     PrismaModule,
+    LlmModule,
     EmpresaModule,
     AuthModule,
     DevedorModule,
     FaixaCriterioModule,
     PropostaModule,
+    WhatsAppModule,
   ],
 })
 export class AppModule {}
