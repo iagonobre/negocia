@@ -147,8 +147,8 @@ export type FaixaCriterioScalarFieldEnum = (typeof FaixaCriterioScalarFieldEnum)
 
 export const PropostaScalarFieldEnum = {
   id: 'id',
-  opcoes: 'opcoes',
-  mensagemGerada: 'mensagemGerada',
+  limites: 'limites',
+  historico: 'historico',
   status: 'status',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',

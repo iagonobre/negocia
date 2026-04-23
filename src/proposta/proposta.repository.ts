@@ -24,8 +24,24 @@ export class PropostaRepository {
     return { devedor, faixa };
   }
 
-  async create(data: Prisma.PropostaCreateInput) {
-    return this.prisma.proposta.create({ data });
+  async create(devedorId: string, empresaId: string, limites: any, historicoInicial: any[]) {
+    return this.prisma.proposta.create({
+      data: {
+        devedorId,
+        empresaId,
+        limites,
+        historico: historicoInicial,
+        status: 'PENDENTE',
+      },
+      include: { devedor: true } // Já retornamos o devedor junto para facilitar
+    });
+  }
+
+  async atualizarHistorico(id: string, novoHistorico: any[]) {
+    return this.prisma.proposta.update({
+      where: { id },
+      data: { historico: novoHistorico },
+    });
   }
 
   async findAllByEmpresa(empresaId: string) {

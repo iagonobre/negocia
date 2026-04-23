@@ -1,13 +1,12 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { PropostaRepository } from './proposta.repository';
-import { OpcaoPagamentoDto } from './dto/proposta-response.dto';
 
 @Injectable()
 export class PropostaService {
   constructor(private readonly propostaRepository: PropostaRepository) {}
 
+  // Inicia a negociação e gera a primeira mensagem
   async gerarProposta(devedorId: string, empresaId: string) {
-    // 1. Busca devedor e faixa correspondente
     const resultado = await this.propostaRepository.findDevedorComFaixa(devedorId, empresaId);
 
     if (!resultado) {
@@ -22,23 +21,180 @@ export class PropostaService {
       );
     }
 
-    // 2. Calcula as opções de pagamento
-    const opcoes = this.calcularOpcoes(devedor.valorDivida, faixa);
+    const limites = {
+      valorOriginal: devedor.valorDivida,
+      descontoMaximo: faixa.descontoMaximo,
+      parcelasMaximas: faixa.parcelasMaximas,
+      prazoMaximoDias: faixa.prazoMaximoDias,
+    };
 
-    // 3. Gera o texto personalizado via Groq
-    const mensagemGerada = await this.gerarMensagemComIA(devedor, faixa, opcoes);
+    const systemPrompt = `
+Você é um assistente virtual especialista em negociação e recuperação de crédito.
+Você está falando com ${devedor.nome} via WhatsApp.
+O valor original da dívida é de R$ ${devedor.valorDivida.toFixed(2)}.
 
-    // 4. Persiste a proposta no banco
-    const proposta = await this.propostaRepository.create({
-      opcoes: opcoes as any,
-      mensagemGerada,
-      devedor: { connect: { id: devedorId } },
-      empresa: { connect: { id: empresaId } },
-    });
+SEU OBJETIVO:
+Chegar a um acordo de pagamento vantajoso para a empresa, mas viável para o cliente.
+Comece oferecendo o pagamento à vista com um pequeno desconto (guarde o desconto máximo para usar só se ele reclamar).
+Não ofereça parcelamento logo na primeira mensagem. Deixe o cliente pedir.
 
-    return { ...proposta, opcoes };
+TOM DE COMUNICAÇÃO: ${faixa.tomComunicacao}
+
+REGRAS RÍGIDAS:
+- Nunca invente descontos ou parcelamentos sem validar.
+- Seja empático, conciso e use formato de texto simples (sem markdown pesado).
+- Se o cliente propor um valor, você DEVE usar a ferramenta "validar_contraproposta" para verificar se o sistema aprova.
+`.trim();
+
+    const mensagemInicialUser = `Inicie a conversa com o cliente. Use a seguinte mensagem de abertura se houver: "${faixa.mensagemInicial || 'Olá, tudo bem?'}" Informe sobre a pendência e pergunte como ele gostaria de resolver hoje.`;
+
+    const historicoInicial = [
+      { role: 'system', content: systemPrompt },
+      { role: 'user', content: mensagemInicialUser }
+    ];
+
+    const respostaAgente = await this.chamarLLM(historicoInicial);
+    historicoInicial.push(respostaAgente);
+
+    const proposta = await this.propostaRepository.create(
+      devedorId, 
+      empresaId, 
+      limites, 
+      historicoInicial
+    );
+
+    return {
+      id: proposta.id,
+      status: proposta.status,
+      ultimaMensagemAgente: respostaAgente.content
+    };
   }
 
+  // --- Motor do Chat Iterativo (Onde a negociação acontece) ---
+  async conversar(propostaId: string, empresaId: string, mensagemUsuario: string) {
+    const proposta = await this.propostaRepository.findById(propostaId, empresaId);
+    
+    if (!proposta) throw new NotFoundException('Proposta não encontrada.');
+    if (proposta.status !== 'PENDENTE') {
+      throw new BadRequestException(`Esta negociação já foi finalizada com status ${proposta.status}.`);
+    }
+
+    const historico = proposta.historico as any[];
+    const limites = proposta.limites as any;
+
+    // 1. Adiciona a fala do cliente ao histórico
+    historico.push({ role: 'user', content: mensagemUsuario });
+
+    // 2. Define a "Ferramenta" que a IA pode usar para calcular
+    const tools = [
+      {
+        type: 'function',
+        function: {
+          name: 'validar_contraproposta',
+          description: 'Calcula se a proposta do cliente é permitida pelas regras financeiras. Use sempre que o cliente sugerir um valor ou parcelamento.',
+          parameters: {
+            type: 'object',
+            properties: {
+              parcelas: { type: 'number', description: 'Número de parcelas desejadas (1 para à vista)' },
+              valorTotalOferecido: { type: 'number', description: 'Valor total que o cliente quer pagar.' }
+            },
+            required: ['parcelas', 'valorTotalOferecido']
+          }
+        }
+      }
+    ];
+
+    // 3. Primeira chamada à IA: Ela analisa a mensagem e decide se usa a ferramenta
+    let respostaAgente = await this.chamarLLM(historico, tools);
+    
+    // 4. Se a IA chamou a ferramenta matemática
+    if (respostaAgente.tool_calls && respostaAgente.tool_calls.length > 0) {
+      const toolCall = respostaAgente.tool_calls[0];
+      
+      if (toolCall.function.name === 'validar_contraproposta') {
+        const args = JSON.parse(toolCall.function.arguments);
+        
+        // Executa a lógica matemática segura (fora da IA)
+        const resultadoMatematico = this.validarContraproposta(limites, args.parcelas, args.valorTotalOferecido);
+        
+        // Adiciona a chamada da ferramenta e o resultado ao histórico
+        historico.push(respostaAgente);
+        historico.push({
+          role: 'tool',
+          tool_call_id: toolCall.id,
+          name: toolCall.function.name,
+          content: JSON.stringify(resultadoMatematico)
+        });
+
+        // Chama a IA novamente para ela ler o resultado matemático e responder ao cliente
+        respostaAgente = await this.chamarLLM(historico);
+      }
+    }
+
+    // Se não usou ferramenta, apenas adiciona a resposta direta ao histórico
+    if (!historico.includes(respostaAgente)) {
+        historico.push(respostaAgente);
+    }
+
+    // 5. Salva o histórico atualizado
+    await this.propostaRepository.atualizarHistorico(propostaId, historico);
+
+    return {
+      id: propostaId,
+      mensagemAgente: respostaAgente.content
+    };
+  }
+
+  // --- Validação Matemática (Vigilante da IA) ---
+  private validarContraproposta(limites: any, parcelas: number, valorTotalOferecido: number) {
+    if (parcelas > limites.parcelasMaximas) {
+      return { 
+        aprovado: false, 
+        motivo: `O limite é de ${limites.parcelasMaximas} parcelas. Informe isso ao cliente.`
+      };
+    }
+
+    const valorMinimoAceitavel = limites.valorOriginal * (1 - (limites.descontoMaximo / 100));
+
+    if (valorTotalOferecido < valorMinimoAceitavel) {
+      return {
+        aprovado: false,
+        motivo: `Valor muito baixo. O mínimo que aceitamos é R$ ${valorMinimoAceitavel.toFixed(2)}. Não aceite menos que isso.`
+      };
+    }
+
+    return {
+      aprovado: true,
+      motivo: `Aprovado! O acordo de ${parcelas}x de R$ ${(valorTotalOferecido/parcelas).toFixed(2)} pode ser fechado.`
+    };
+  }
+
+  private async chamarLLM(mensagens: any[], tools?: any[]) {
+    const payload: any = {
+      model: 'llama-3.3-70b-versatile',
+      messages: mensagens,
+      temperature: 0.7,
+    };
+
+    if (tools) {
+      payload.tools = tools;
+      payload.tool_choice = 'auto';
+    }
+
+    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${process.env.GROQ_API_KEY}`,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await response.json();
+    return data.choices?.[0]?.message;
+  }
+
+  // Métodos CRUD
   async listarPropostas(empresaId: string) {
     return this.propostaRepository.findAllByEmpresa(empresaId);
   }
@@ -52,98 +208,5 @@ export class PropostaService {
   async atualizarStatus(id: string, empresaId: string, status: 'PENDENTE' | 'ACEITA' | 'RECUSADA') {
     await this.buscarProposta(id, empresaId);
     return this.propostaRepository.updateStatus(id, status);
-  }
-
-  // --- Cálculo determinístico ---
-
-  private calcularOpcoes(valorDivida: number, faixa: any): OpcaoPagamentoDto[] {
-    const opcoes: OpcaoPagamentoDto[] = [];
-
-    // À vista com desconto máximo
-    const valorAVista = this.aplicarDesconto(valorDivida, faixa.descontoMaximo);
-    opcoes.push({
-      parcelas: 1,
-      valorTotal: valorAVista,
-      valorParcela: valorAVista,
-      descontoAplicado: faixa.descontoMaximo,
-      prazoDias: 1,
-    });
-
-    // Parcelado: de 2 até parcelasMaximas
-    // Desconto diminui proporcionalmente conforme aumentam as parcelas
-    for (let p = 2; p <= faixa.parcelasMaximas; p++) {
-      const proporcao = 1 - (p - 1) / faixa.parcelasMaximas;
-      const desconto = parseFloat((faixa.descontoMaximo * proporcao).toFixed(2));
-      const valorTotal = this.aplicarDesconto(valorDivida, desconto);
-      const valorParcela = parseFloat((valorTotal / p).toFixed(2));
-      const prazoDias = Math.round((faixa.prazoMaximoDias / faixa.parcelasMaximas) * p);
-
-      opcoes.push({
-        parcelas: p,
-        valorTotal,
-        valorParcela,
-        descontoAplicado: desconto,
-        prazoDias,
-      });
-    }
-
-    return opcoes;
-  }
-
-  private aplicarDesconto(valor: number, desconto: number): number {
-    return parseFloat((valor * (1 - desconto / 100)).toFixed(2));
-  }
-
-  // --- Geração de texto via Groq ---
-
-  private async gerarMensagemComIA(devedor: any, faixa: any, opcoes: OpcaoPagamentoDto[]): Promise<string> {
-    const opcoesTexto = opcoes
-      .map((o) =>
-        o.parcelas === 1
-          ? `• À vista: R$ ${o.valorTotal.toFixed(2)} (${o.descontoAplicado}% de desconto)`
-          : `• ${o.parcelas}x de R$ ${o.valorParcela.toFixed(2)} (total R$ ${o.valorTotal.toFixed(2)}, ${o.descontoAplicado}% de desconto, prazo ${o.prazoDias} dias)`,
-      )
-      .join('\n');
-
-    const prompt = `
-Você é um assistente de cobrança de uma empresa. Sua tarefa é redigir uma mensagem de WhatsApp para um devedor com uma proposta de pagamento personalizada.
-
-Informações do devedor:
-- Nome: ${devedor.nome}
-- Valor da dívida: R$ ${devedor.valorDivida.toFixed(2)}
-- Vencimento original: ${new Date(devedor.vencimento).toLocaleDateString('pt-BR')}
-${devedor.descricaoDivida ? `- Descrição: ${devedor.descricaoDivida}` : ''}
-
-Tom de comunicação: ${faixa.tomComunicacao}
-${faixa.mensagemInicial ? `Mensagem de abertura sugerida: ${faixa.mensagemInicial}` : ''}
-
-Opções de pagamento disponíveis:
-${opcoesTexto}
-
-Regras:
-- Use o tom de comunicação indicado (${faixa.tomComunicacao})
-- Seja empático e profissional
-- Apresente todas as opções de pagamento de forma clara
-- Não use markdown, apenas texto simples (é uma mensagem de WhatsApp)
-- Finalize incentivando o devedor a responder para confirmar uma das opções
-- Máximo de 300 palavras
-`.trim();
-
-    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${process.env.GROQ_API_KEY}`,
-      },
-      body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
-        messages: [{ role: 'user', content: prompt }],
-        temperature: 0.7,
-        max_tokens: 500,
-      }),
-    });
-
-    const data = await response.json();
-    return data.choices?.[0]?.message?.content ?? 'Não foi possível gerar a mensagem.';
   }
 }
