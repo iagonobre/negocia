@@ -59,3 +59,8 @@ export type Devedor = Prisma.DevedorModel
  * 
  */
 export type FaixaCriterio = Prisma.FaixaCriterioModel
+/**
+ * Model Proposta
+ * 
+ */
+export type Proposta = Prisma.PropostaModel

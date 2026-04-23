@@ -387,7 +387,8 @@ export const ModelName = {
   Empresa: 'Empresa',
   Endereco: 'Endereco',
   Devedor: 'Devedor',
-  FaixaCriterio: 'FaixaCriterio'
+  FaixaCriterio: 'FaixaCriterio',
+  Proposta: 'Proposta'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -403,7 +404,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "empresa" | "endereco" | "devedor" | "faixaCriterio"
+    modelProps: "empresa" | "endereco" | "devedor" | "faixaCriterio" | "proposta"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -703,6 +704,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Proposta: {
+      payload: Prisma.$PropostaPayload<ExtArgs>
+      fields: Prisma.PropostaFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PropostaFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PropostaPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PropostaFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PropostaPayload>
+        }
+        findFirst: {
+          args: Prisma.PropostaFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PropostaPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PropostaFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PropostaPayload>
+        }
+        findMany: {
+          args: Prisma.PropostaFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PropostaPayload>[]
+        }
+        create: {
+          args: Prisma.PropostaCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PropostaPayload>
+        }
+        createMany: {
+          args: Prisma.PropostaCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PropostaCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PropostaPayload>[]
+        }
+        delete: {
+          args: Prisma.PropostaDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PropostaPayload>
+        }
+        update: {
+          args: Prisma.PropostaUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PropostaPayload>
+        }
+        deleteMany: {
+          args: Prisma.PropostaDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PropostaUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PropostaUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PropostaPayload>[]
+        }
+        upsert: {
+          args: Prisma.PropostaUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PropostaPayload>
+        }
+        aggregate: {
+          args: Prisma.PropostaAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateProposta>
+        }
+        groupBy: {
+          args: Prisma.PropostaGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PropostaGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PropostaCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PropostaCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -813,12 +888,33 @@ export const FaixaCriterioScalarFieldEnum = {
 export type FaixaCriterioScalarFieldEnum = (typeof FaixaCriterioScalarFieldEnum)[keyof typeof FaixaCriterioScalarFieldEnum]
 
 
+export const PropostaScalarFieldEnum = {
+  id: 'id',
+  opcoes: 'opcoes',
+  mensagemGerada: 'mensagemGerada',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  devedorId: 'devedorId',
+  empresaId: 'empresaId'
+} as const
+
+export type PropostaScalarFieldEnum = (typeof PropostaScalarFieldEnum)[keyof typeof PropostaScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const QueryMode = {
@@ -835,6 +931,15 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
 
@@ -940,6 +1045,34 @@ export type EnumOrigemDevedorFieldRefInput<$PrismaModel> = FieldRefInputType<$Pr
 export type ListEnumOrigemDevedorFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OrigemDevedor[]'>
     
 
+
+/**
+ * Reference to a field of type 'Json'
+ */
+export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+/**
+ * Reference to a field of type 'QueryMode'
+ */
+export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+/**
+ * Reference to a field of type 'StatusProposta'
+ */
+export type EnumStatusPropostaFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'StatusProposta'>
+    
+
+
+/**
+ * Reference to a field of type 'StatusProposta[]'
+ */
+export type ListEnumStatusPropostaFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'StatusProposta[]'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -1039,6 +1172,7 @@ export type GlobalOmitConfig = {
   endereco?: Prisma.EnderecoOmit
   devedor?: Prisma.DevedorOmit
   faixaCriterio?: Prisma.FaixaCriterioOmit
+  proposta?: Prisma.PropostaOmit
 }
 
 /* Types for Logging */
