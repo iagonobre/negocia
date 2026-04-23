@@ -12,9 +12,11 @@ Um agente de IA conduz negociações com clientes inadimplentes, gera propostas 
 - **ORM:** Prisma 7 com adaptador `@prisma/adapter-pg`
 - **Banco de dados:** PostgreSQL 16
 - **Autenticação:** JWT (7 dias de validade) + bcrypt
+- **LLM:** Groq API (modelo `llama-3.3-70b-versatile`)
+- **WhatsApp:** Evolution API (self-hosted via Docker)
 - **Documentação da API:** Swagger em `/api`
 - **Package manager:** pnpm 9
-- **Infra local:** Docker Compose (container `negocia_db`)
+- **Infra local:** Docker Compose (PostgreSQL + Evolution API)
 
 ---
 
@@ -30,7 +32,10 @@ src/
 ├── auth/                    # Autenticação JWT
 ├── empresa/                 # Cadastro e perfil da empresa
 ├── devedor/                 # Gestão de devedores + importação CSV
-└── faixa-criterio/          # Critérios de negociação por faixa de valor
+├── faixa-criterio/          # Critérios de negociação por faixa de valor
+├── llm/                     # Serviço global de chamada à LLM (Groq)
+├── proposta/                # Motor de negociação com IA + histórico de chat
+└── whatsapp/                # Webhook + disparo de mensagens (Evolution API)
 ```
 
 ---
@@ -40,7 +45,7 @@ src/
 ```
 Empresa (1) ──── (1) Endereco
     │
-    ├──────────── (N) Devedor
+    ├──────────── (N) Devedor ──── (N) Proposta
     │
     └──────────── (N) FaixaCriterio
 ```
@@ -118,6 +123,19 @@ Define regras de negociação para diferentes faixas de valor de dívida. O agen
 - Faixas de uma empresa não podem se sobrepor
 - Faixas devem ser contíguas (sem lacunas de valor)
 
+### Proposta
+Representa uma sessão de negociação entre o agente de IA e um devedor.
+
+| Campo | Tipo | Obs |
+|---|---|---|
+| id | UUID | PK |
+| limites | JSON | valorOriginal, descontoMaximo, parcelasMaximas, prazoMaximoDias |
+| historico | JSON | array de mensagens (system, user, assistant, tool) |
+| status | enum | PENDENTE \| ACEITA \| RECUSADA |
+| createdAt / updatedAt | DateTime | |
+| devedorId | FK → Devedor | onDelete: Cascade |
+| empresaId | FK → Empresa | onDelete: Cascade |
+
 ---
 
 ## Módulos
@@ -182,7 +200,7 @@ Define regras de negociação para diferentes faixas de valor de dívida. O agen
 - Executa **upsert** com base no par `(email, empresaId)`
   - Se o devedor já existe: atualiza nome, telefone, valorDivida, descricaoDivida, vencimento, status
   - Se não existe: cria novo registro
-- Conversões automáticas: datas, floats, inteiros, enums, nulos para campos vazios
+- Conversões automáticas: datas, floats, inteiros, enums, nulos para campos vazios (incluindo `ultimoContato`)
 - Toda a operação roda em uma transação no banco
 
 **Isolamento:** Todas as queries são escopadas pelo `empresaId` do token JWT — uma empresa nunca acessa devedores de outra.
@@ -214,6 +232,71 @@ Define regras de negociação para diferentes faixas de valor de dívida. O agen
 
 ---
 
+### `llm/` — LLM Service
+
+**Responsabilidade:** Centralizar as chamadas à API do Groq. Módulo global (`@Global`) — disponível em qualquer módulo sem importação explícita.
+
+- Modelo e API key lidos via `ConfigService` (nunca `process.env` direto)
+- Suporta `tools` (function calling) para o agente de IA usar ferramentas durante a negociação
+
+---
+
+### `proposta/` — Proposta
+
+**Responsabilidade:** Motor de negociação com IA. Gerencia o ciclo de vida de uma proposta desde a geração até o fechamento.
+
+| Método | Rota | Auth | Descrição |
+|---|---|---|---|
+| POST | `/proposta/gerar/:devedorId` | JWT | Gera proposta e primeira mensagem do agente |
+| POST | `/proposta/:id/chat` | JWT | Envia mensagem do devedor e obtém resposta da IA |
+| GET | `/proposta` | JWT | Lista todas as propostas da empresa |
+| GET | `/proposta/:id` | JWT | Busca proposta por ID |
+| PATCH | `/proposta/:id/status` | JWT | Atualiza status (ACEITA ou RECUSADA) |
+
+**Fluxo de negociação:**
+1. `gerarProposta` — busca o devedor e a faixa de critério correspondente ao valor da dívida, monta o `systemPrompt` com os limites e obtém a primeira mensagem do agente via LLM
+2. `conversar` — a cada mensagem do devedor, a IA decide se usa a ferramenta `validar_contraproposta` para checar se a oferta está dentro dos limites; a validação matemática roda no servidor (não na IA)
+3. Todo o histórico de mensagens é persistido em JSON no banco
+
+**Ferramenta `validar_contraproposta`:**
+- Chamada pela IA via function calling quando o devedor propõe um valor
+- Valida parcelas máximas e desconto máximo com base nos limites da `FaixaCriterio`
+- Retorna `{ aprovado: boolean, motivo: string }` — a IA usa o resultado para responder ao devedor
+
+---
+
+### `whatsapp/` — WhatsApp
+
+**Responsabilidade:** Integração bidirecional com WhatsApp via Evolution API.
+
+| Método | Rota | Auth | Descrição |
+|---|---|---|---|
+| POST | `/whatsapp/iniciar/:devedorId` | JWT | Disparo ativo: cria proposta e envia primeira mensagem ao devedor |
+| POST | `/whatsapp/webhook` | — | Webhook da Evolution API: recebe mensagens e responde via IA |
+
+**Fluxo ativo (empresa dispara):**
+```
+POST /whatsapp/iniciar/:devedorId
+    └─► gerarProposta() → envia primeira mensagem ao devedor via WhatsApp
+```
+
+**Fluxo reativo (devedor responde):**
+```
+Devedor envia mensagem no WhatsApp
+    └─► Evolution API → POST /whatsapp/webhook
+            ├─► Identifica devedor pelo número de telefone
+            ├─► Busca proposta PENDENTE ou cria nova
+            ├─► conversar() → IA processa e responde
+            └─► Envia resposta ao devedor via WhatsApp
+```
+
+**Regras:**
+- Webhook ignora mensagens enviadas pelo próprio número (`fromMe: true`)
+- Webhook ignora eventos que não sejam `messages.upsert`
+- Se não houver devedor cadastrado com o número recebido, a mensagem é ignorada
+
+---
+
 ### `prisma/` — Prisma Service
 
 Serviço global que encapsula a conexão com o PostgreSQL via Prisma Client. Injetado em todos os repositórios.
@@ -222,18 +305,15 @@ Serviço global que encapsula a conexão com o PostgreSQL via Prisma Client. Inj
 
 ### `config/` — Configuração
 
-Centraliza as variáveis de ambiente:
+Centraliza as variáveis de ambiente via `ConfigService`. Nunca usar `process.env` diretamente fora deste arquivo.
 
 ```typescript
 {
   port: process.env.PORT || 3000,
-  JWT: {
-    secret: process.env.JWT_SECRET,
-    expiresIn: '7d'
-  },
-  database: {
-    url: process.env.DATABASE_URL
-  }
+  JWT: { secret, expiresIn: '7d' },
+  database: { url },
+  groq: { apiKey, model },
+  evolution: { apiUrl, apiKey, instance },
 }
 ```
 
@@ -241,38 +321,69 @@ Variáveis necessárias (`.env`):
 ```
 DATABASE_URL=postgresql://negocia:negocia@localhost:5432/negocia
 JWT_SECRET=seu_secret_aqui
+GROQ_API_KEY=gsk_...
+GROQ_MODEL=llama-3.3-70b-versatile   # opcional, este é o padrão
+EVOLUTION_API_URL=http://localhost:8080
+EVOLUTION_API_KEY=negocia_evolution_key
+EVOLUTION_INSTANCE=negocia
 ```
+
+---
+
+## Infra local — Docker Compose
+
+```bash
+docker-compose up -d   # sobe PostgreSQL + Evolution API
+```
+
+| Container | Porta | Descrição |
+|---|---|---|
+| `negocia_db` | 5432 | PostgreSQL 16 |
+| `negocia_evolution` | 8080 | Evolution API (WhatsApp) |
+
+**Setup inicial da Evolution API:**
+```bash
+# 1. Criar instância
+curl -X POST http://localhost:8080/instance/create \
+  -H "Content-Type: application/json" \
+  -H "apikey: negocia_evolution_key" \
+  -d '{"instanceName": "negocia", "qrcode": true}'
+
+# 2. Escanear QR Code (abrir no browser)
+http://localhost:8080/instance/qrcode/negocia?image=true
+```
+
+O webhook já está configurado no `docker-compose.yml` para apontar para `http://host.docker.internal:3000/whatsapp/webhook`.
 
 ---
 
 ## Fluxo principal (visão geral)
 
 ```
-Empresa se cadastra
-    │
-    ├─► Define FaixasCriterio (ex: R$0–500 / R$500–5000 / R$5000+)
-    │       com parcelamento máximo, desconto máximo, tom de comunicação
+Empresa se cadastra + define FaixasCriterio
     │
     ├─► Importa base de Devedores (CSV ou API)
     │
-    └─► [futuro] Agente de IA inicia contato via WhatsApp
+    └─► Dispara negociação: POST /whatsapp/iniciar/:devedorId
             │
-            ├─► Identifica faixa da dívida → aplica critério correto
-            ├─► Negocia dentro dos limites configurados
-            ├─► Gera proposta de parcelamento
-            └─► Emite Pix ou boleto para pagamento
+            ├─► Agente identifica FaixaCriterio pelo valor da dívida
+            ├─► Gera systemPrompt com limites e tom de comunicação
+            ├─► Envia primeira mensagem ao devedor via WhatsApp
+            │
+            └─► Devedor responde → Evolution API → webhook
+                    ├─► IA analisa resposta
+                    ├─► Se devedor propõe valor → valida_contraproposta (server-side)
+                    ├─► IA responde dentro dos limites aprovados
+                    └─► Negociação finalizada → status ACEITA ou RECUSADA
 ```
 
 ---
 
 ## Funcionalidades planejadas (não implementadas)
 
-- **WhatsApp Integration** — canal de comunicação do agente de IA com devedores
-- **Agente de IA** — condução autônoma da negociação, geração de respostas e propostas
-- **Motor de propostas** — gera parcelamentos personalizados com base nas FaixasCriterio
-- **Integração Pix** — geração e rastreamento de cobranças Pix
+- **Integração Pix** — geração e rastreamento de cobranças Pix após acordo fechado
 - **Integração Boleto** — geração de boletos bancários
-- **Histórico de conversas** — log detalhado das interações (hoje apenas `ultimoContato` e `tentativas`)
+- **Atualização automática de status do Devedor** — ao fechar proposta, atualizar `StatusDevedor` para `ACORDADO`
 
 ---
 
@@ -307,6 +418,20 @@ Cada módulo segue a mesma divisão de camadas, sem exceções:
 | **Repository** | Acesso ao banco exclusivamente via PrismaService |
 
 O Controller nunca acessa o Prisma diretamente. O Repository nunca lança regras de negócio.
+
+**Exceção:** O `WhatsAppController` acessa o `PrismaService` diretamente para lookups simples de roteamento (identificar devedor pelo telefone), evitando criar um service intermediário só para isso.
+
+---
+
+### Variáveis de ambiente — sempre via ConfigService
+
+Nunca usar `process.env` fora de `src/config/configuration.ts`. Em services e modules, injetar `ConfigService`:
+
+```typescript
+constructor(private readonly configService: ConfigService) {}
+
+const apiKey = this.configService.get<string>('groq.apiKey');
+```
 
 ---
 
@@ -453,15 +578,6 @@ nome?: string;
 status: StatusDevedor;
 ```
 
-**Campos com múltiplos validadores numéricos:**
-```typescript
-@ApiProperty({ description: 'Desconto em %', example: 15 })
-@IsNumber()
-@Min(0)
-@Max(100)
-descontoMaximo: number;
-```
-
 **UUID de relacionamento (FK):**
 ```typescript
 @ApiProperty({ description: 'ID da Empresa dona deste recurso' })
@@ -494,7 +610,7 @@ import { AuthGuard } from 'src/auth/auth.guard';
 async minhaRota() { ... }
 ```
 
-Rotas públicas (ex: cadastro, login) **não** recebem `@UseGuards`.
+Rotas públicas (ex: cadastro, login, webhook) **não** recebem `@UseGuards`.
 
 ---
 
@@ -503,7 +619,6 @@ Rotas públicas (ex: cadastro, login) **não** recebem `@UseGuards`.
 **`@Empresa()`** (`src/auth/decorators/empresa.decorator.ts`) extrai o payload JWT injetado pelo `AuthGuard`. Retorna um objeto `JwtPayload`:
 
 ```typescript
-// src/auth/dto/jwt-payload.dto.ts
 interface JwtPayload {
   sub: string;   // empresaId (UUID)
   email: string;
@@ -513,7 +628,7 @@ interface JwtPayload {
 Uso no controller:
 ```typescript
 import { Empresa } from 'src/auth/decorators/empresa.decorator';
-import type { JwtPayload } from 'src/auth/dto/jwt-payload.dto';
+import type { JwtPayload } from 'src/auth/interfaces/jwt-payload.interface';
 
 async minhaRota(@Empresa() empresa: JwtPayload) {
   const empresaId = empresa.sub;  // sempre usar .sub como empresaId
@@ -591,25 +706,21 @@ async upsertMany(itens: any[], empresaId: string) {
 where: { id, empresaId }   // nunca buscar só por id sem validar o dono
 ```
 
+**Cascade delete:** todas as entidades filhas (`Endereco`, `Devedor`, `FaixaCriterio`, `Proposta`) têm `onDelete: Cascade` na relação com `Empresa` — deletar a empresa remove tudo automaticamente.
+
 ---
 
 ### Exceções HTTP — padrão do Service
 
-Usar sempre as exceções do `@nestjs/common`. Nunca retornar erros como objetos na resposta:
+Usar sempre as exceções do `@nestjs/common`. O NestJS possui uma camada global de exceções embutida que captura automaticamente qualquer `HttpException` e retorna a resposta HTTP padronizada — sem necessidade de `ExceptionFilter` customizado.
 
 ```typescript
-import { NotFoundException, ConflictException, BadRequestException, UnauthorizedException } from '@nestjs/common';
+import { NotFoundException, ConflictException, BadRequestException, ForbiddenException, UnauthorizedException } from '@nestjs/common';
 
-// Recurso não encontrado
 throw new NotFoundException('Empresa não encontrada');
-
-// Conflito de unicidade
 throw new ConflictException('Este email já foi cadastrado.');
-
-// Validação de regra de negócio
 throw new BadRequestException('O valor mínimo deve ser menor que o valor máximo.');
-
-// Autenticação inválida
+throw new ForbiddenException('Você não tem permissão para acessar este recurso.');
 throw new UnauthorizedException('Token inválido ou expirado');
 ```
 

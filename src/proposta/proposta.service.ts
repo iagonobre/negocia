@@ -1,9 +1,13 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { PropostaRepository } from './proposta.repository';
+import { LlmService } from '../llm/llm.service';
 
 @Injectable()
 export class PropostaService {
-  constructor(private readonly propostaRepository: PropostaRepository) {}
+  constructor(
+    private readonly propostaRepository: PropostaRepository,
+    private readonly llmService: LlmService,
+  ) {}
 
   // Inicia a negociação e gera a primeira mensagem
   async gerarProposta(devedorId: string, empresaId: string) {
@@ -53,7 +57,7 @@ REGRAS RÍGIDAS:
       { role: 'user', content: mensagemInicialUser }
     ];
 
-    const respostaAgente = await this.chamarLLM(historicoInicial);
+    const respostaAgente = await this.llmService.chamarLLM(historicoInicial);
     historicoInicial.push(respostaAgente);
 
     const proposta = await this.propostaRepository.create(
@@ -105,35 +109,39 @@ REGRAS RÍGIDAS:
     ];
 
     // 3. Primeira chamada à IA: Ela analisa a mensagem e decide se usa a ferramenta
-    let respostaAgente = await this.chamarLLM(historico, tools);
-    
+    let respostaAgente = await this.llmService.chamarLLM(historico, tools);
+
+    if (!respostaAgente) {
+      throw new BadRequestException('O agente de IA não retornou uma resposta. Tente novamente.');
+    }
+
     // 4. Se a IA chamou a ferramenta matemática
     if (respostaAgente.tool_calls && respostaAgente.tool_calls.length > 0) {
       const toolCall = respostaAgente.tool_calls[0];
-      
+
       if (toolCall.function.name === 'validar_contraproposta') {
         const args = JSON.parse(toolCall.function.arguments);
-        
-        // Executa a lógica matemática segura (fora da IA)
+
         const resultadoMatematico = this.validarContraproposta(limites, args.parcelas, args.valorTotalOferecido);
-        
-        // Adiciona a chamada da ferramenta e o resultado ao histórico
+
         historico.push(respostaAgente);
         historico.push({
           role: 'tool',
           tool_call_id: toolCall.id,
           name: toolCall.function.name,
-          content: JSON.stringify(resultadoMatematico)
+          content: JSON.stringify(resultadoMatematico),
         });
 
-        // Chama a IA novamente para ela ler o resultado matemático e responder ao cliente
-        respostaAgente = await this.chamarLLM(historico);
+        respostaAgente = await this.llmService.chamarLLM(historico);
+
+        if (!respostaAgente) {
+          throw new BadRequestException('O agente de IA não retornou uma resposta. Tente novamente.');
+        }
       }
     }
 
-    // Se não usou ferramenta, apenas adiciona a resposta direta ao histórico
     if (!historico.includes(respostaAgente)) {
-        historico.push(respostaAgente);
+      historico.push(respostaAgente);
     }
 
     // 5. Salva o histórico atualizado
@@ -169,30 +177,6 @@ REGRAS RÍGIDAS:
     };
   }
 
-  private async chamarLLM(mensagens: any[], tools?: any[]) {
-    const payload: any = {
-      model: 'llama-3.3-70b-versatile',
-      messages: mensagens,
-      temperature: 0.7,
-    };
-
-    if (tools) {
-      payload.tools = tools;
-      payload.tool_choice = 'auto';
-    }
-
-    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${process.env.GROQ_API_KEY}`,
-      },
-      body: JSON.stringify(payload),
-    });
-
-    const data = await response.json();
-    return data.choices?.[0]?.message;
-  }
 
   // Métodos CRUD
   async listarPropostas(empresaId: string) {

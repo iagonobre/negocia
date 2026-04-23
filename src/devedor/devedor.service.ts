@@ -17,6 +17,7 @@ export class DevedorService {
   async cadastrar(dto: CreateDevedorDto, empresaId: string): Promise<Devedor> {
     return await this.repository.create({
       ...dto,
+      vencimento: new Date(dto.vencimento),
       empresa: { connect: { id: empresaId } },
     });
   }
@@ -40,7 +41,10 @@ export class DevedorService {
 
     return await this.repository.update({
       where: { id, empresaId },
-      data: dto,
+      data: {
+        ...dto,
+        ...(dto.vencimento && { vencimento: new Date(dto.vencimento) }),
+      },
     });
   }
 
