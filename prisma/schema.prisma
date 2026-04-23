@@ -45,6 +45,7 @@ model Empresa {
   endereco        Endereco?
   devedores       Devedor[]
   faixasCriterio  FaixaCriterio[]
+  propostas       Proposta[]
 }
 
 model Endereco {
@@ -84,6 +85,8 @@ model Devedor {
   empresa   Empresa @relation(fields: [empresaId], references: [id], onDelete: Cascade)
 
   @@unique([email, empresaId])
+  
+  propostas       Proposta[]
 }
 
 model FaixaCriterio {
@@ -101,4 +104,27 @@ model FaixaCriterio {
 
   empresaId String
   empresa   Empresa @relation(fields: [empresaId], references: [id], onDelete: Cascade)
+}
+
+enum StatusProposta {
+  PENDENTE
+  ACEITA
+  RECUSADA
+}
+
+model Proposta {
+  id               String         @id @default(uuid())
+
+  limites          Json           @default("[]")
+  historico        Json           @default("[]")
+  
+  status           StatusProposta @default(PENDENTE)
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  devedorId  String
+  devedor    Devedor  @relation(fields: [devedorId], references: [id], onDelete: Cascade)
+
+  empresaId  String
+  empresa    Empresa  @relation(fields: [empresaId], references: [id], onDelete: Cascade)
 }

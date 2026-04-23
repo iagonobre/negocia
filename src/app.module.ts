@@ -6,6 +6,7 @@ import { EmpresaModule } from './empresa/empresa.module';
 import { AuthModule } from './auth/auth.module';
 import { DevedorModule } from './devedor/devedor.module';
 import { FaixaCriterioModule } from './faixa-criterio/faixa-criterio.module';
+import { PropostaModule } from './proposta/proposta.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { FaixaCriterioModule } from './faixa-criterio/faixa-criterio.module';
     AuthModule,
     DevedorModule,
     FaixaCriterioModule,
+    PropostaModule,
   ],
 })
 export class AppModule {}

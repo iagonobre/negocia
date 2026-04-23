@@ -35,3 +35,12 @@ export const TipoPessoa = {
 } as const
 
 export type TipoPessoa = (typeof TipoPessoa)[keyof typeof TipoPessoa]
+
+
+export const StatusProposta = {
+  PENDENTE: 'PENDENTE',
+  ACEITA: 'ACEITA',
+  RECUSADA: 'RECUSADA'
+} as const
+
+export type StatusProposta = (typeof StatusProposta)[keyof typeof StatusProposta]
