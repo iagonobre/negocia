@@ -2,7 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { EmpresaService } from '../empresa/empresa.service';
 import { LoginEmpresaDto } from './dto/login-empresa.dto';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 
 type LoginResultado = {
   access_token: string;

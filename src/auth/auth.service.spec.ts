@@ -9,7 +9,7 @@ jest.mock('bcrypt', () => ({
   hash: jest.fn(),
 }));
 
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 
 const mockEmpresa = {
   id: 'uuid-123',

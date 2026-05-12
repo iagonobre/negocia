@@ -7,7 +7,7 @@ import { CreateEmpresaDto } from './dto/create-empresa.dto';
 import { UpdateEmpresaDto } from './dto/update-empresa.dto';
 import { Empresa, Prisma } from '../generated/prisma/client';
 import { EmpresaRepository, EmpresaSemSenha } from './empresa.repository';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class EmpresaService {
