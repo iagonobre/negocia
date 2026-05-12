@@ -15,8 +15,9 @@ export class DevedorService {
   constructor(private repository: DevedorRepository) {}
 
   async cadastrar(dto: CreateDevedorDto, empresaId: string): Promise<Devedor> {
+    const { empresaId: _ignored, ...rest } = dto;
     return await this.repository.create({
-      ...dto,
+      ...rest,
       vencimento: new Date(dto.vencimento),
       empresa: { connect: { id: empresaId } },
     });
@@ -45,10 +46,11 @@ export class DevedorService {
       throw new NotFoundException('Devedor não encontrado');
     }
 
+    const { empresaId: _ignored, ...rest } = dto;
     return await this.repository.update({
       where: { id, empresaId },
       data: {
-        ...dto,
+        ...rest,
         ...(dto.vencimento && { vencimento: new Date(dto.vencimento) }),
       },
     });
