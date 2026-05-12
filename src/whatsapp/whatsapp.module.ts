@@ -7,5 +7,6 @@ import { PropostaModule } from '../proposta/proposta.module';
   imports: [PropostaModule],
   controllers: [WhatsAppController],
   providers: [WhatsAppService],
+  exports: [WhatsAppService],
 })
 export class WhatsAppModule {}

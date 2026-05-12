@@ -17,7 +17,8 @@ export class WhatsAppService {
   }
 
   async enviarMensagem(telefone: string, mensagem: string): Promise<void> {
-    const to = telefone.startsWith('whatsapp:') ? telefone : `whatsapp:${telefone}`;
+    const numero = telefone.startsWith('+') ? telefone : `+${telefone}`;
+    const to = telefone.startsWith('whatsapp:') ? telefone : `whatsapp:${numero}`;
 
     try {
       await this.client.messages.create({ from: this.from, to, body: mensagem });
