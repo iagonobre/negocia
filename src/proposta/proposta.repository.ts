@@ -57,10 +57,23 @@ export class PropostaRepository {
     });
   }
 
-  async updateStatus(id: string, status: 'PENDENTE' | 'ACEITA' | 'RECUSADA') {
+  async findPendentePorDevedor(devedorId: string) {
+    return this.prisma.proposta.findFirst({
+      where: { devedorId, status: 'PENDENTE' },
+    });
+  }
+
+  async updateStatus(id: string, status: 'PENDENTE' | 'ACEITA' | 'RECUSADA', valorAcordado?: number, parcelasAcordadas?: number) {
     return this.prisma.proposta.update({
       where: { id },
-      data: { status },
+      data: { status, valorAcordado, parcelasAcordadas },
+    });
+  }
+
+  async atualizarStatusDevedor(devedorId: string, status: string) {
+    return this.prisma.devedor.update({
+      where: { id: devedorId },
+      data: { status: status as any },
     });
   }
 }

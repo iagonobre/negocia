@@ -11,6 +11,11 @@ export class PropostaService {
 
   // Inicia a negociação e gera a primeira mensagem
   async gerarProposta(devedorId: string, empresaId: string) {
+    const propostaPendente = await this.propostaRepository.findPendentePorDevedor(devedorId);
+    if (propostaPendente) {
+      throw new BadRequestException('Este devedor já possui uma negociação em andamento.');
+    }
+
     const resultado = await this.propostaRepository.findDevedorComFaixa(devedorId, empresaId);
 
     if (!resultado) {
@@ -32,25 +37,34 @@ export class PropostaService {
       prazoMaximoDias: faixa.prazoMaximoDias,
     };
 
+    const valorMinimo = (devedor.valorDivida * (1 - faixa.descontoMaximo / 100)).toFixed(2);
+
     const systemPrompt = `
-Você é um assistente virtual especialista em negociação e recuperação de crédito.
-Você está falando com ${devedor.nome} via WhatsApp.
-O valor original da dívida é de R$ ${devedor.valorDivida.toFixed(2)}.
+Você é um negociador humano especialista em recuperação de crédito. Seu nome é Sofia.
+Você está em uma conversa de WhatsApp com ${devedor.nome}.
+Dívida original: R$ ${devedor.valorDivida.toFixed(2)}.
+Tom de comunicação: ${faixa.tomComunicacao}.
 
-SEU OBJETIVO:
-Chegar a um acordo de pagamento vantajoso para a empresa, mas viável para o cliente.
-Comece oferecendo o pagamento à vista com um pequeno desconto (guarde o desconto máximo para usar só se ele reclamar).
-Não ofereça parcelamento logo na primeira mensagem. Deixe o cliente pedir.
+ESTRATÉGIA DE NEGOCIAÇÃO (siga essa ordem, não pule etapas):
+1. Primeira oferta: proponha o pagamento à vista pelo valor CHEIO (sem desconto). Seja cordial mas direto.
+2. Se o cliente reclamar do valor: ofereça um desconto pequeno (metade do seu limite máximo).
+3. Se o cliente insistir ou oferecer um valor baixo: use a ferramenta para validar e, se aprovado, aceite. Se recusado, contra-proponha o valor mínimo aceitável de R$ ${valorMinimo}.
+4. Se o cliente aceitar qualquer proposta válida: confirme o acordo de forma calorosa e encerre a negociação.
+5. Se o cliente pedir parcelamento: ofereça, mas sempre tente fechar à vista primeiro com um desconto ligeiramente maior.
 
-TOM DE COMUNICAÇÃO: ${faixa.tomComunicacao}
-
-REGRAS RÍGIDAS:
-- Nunca invente descontos ou parcelamentos sem validar.
-- Seja empático, conciso e use formato de texto simples (sem markdown pesado).
-- Se o cliente propor um valor, você DEVE usar a ferramenta "validar_contraproposta" para verificar se o sistema aprova.
+COMPORTAMENTO:
+- Seja humano, empático e use linguagem natural. Nunca pareça um robô.
+- Mensagens curtas — máximo 3 linhas por resposta.
+- Nunca reinicie a conversa nem se apresente novamente.
+- Nunca mencione percentuais de desconto — fale apenas em valores em reais.
+- Nunca invente valores — use sempre a ferramenta "validar_contraproposta" antes de aceitar qualquer proposta do cliente.
+- Quando o cliente aceitar um acordo, celebre brevemente e pergunte se ele prefere Pix ou boleto.
+- Máximo de parcelas: ${faixa.parcelasMaximas}x. Prazo máximo: ${faixa.prazoMaximoDias} dias.
 `.trim();
 
-    const mensagemInicialUser = `Inicie a conversa com o cliente. Use a seguinte mensagem de abertura se houver: "${faixa.mensagemInicial || 'Olá, tudo bem?'}" Informe sobre a pendência e pergunte como ele gostaria de resolver hoje.`;
+    const mensagemInicialUser = faixa.mensagemInicial
+      ? `Inicie a conversa usando exatamente esta mensagem de abertura: "${faixa.mensagemInicial}"`
+      : `Inicie a conversa de forma natural e amigável. Mencione a dívida de R$ ${devedor.valorDivida.toFixed(2)} e proponha o pagamento à vista pelo valor cheio. Seja breve.`;
 
     const historicoInicial = [
       { role: 'system', content: systemPrompt },
@@ -122,7 +136,7 @@ REGRAS RÍGIDAS:
       if (toolCall.function.name === 'validar_contraproposta') {
         const args = JSON.parse(toolCall.function.arguments);
 
-        const resultadoMatematico = this.validarContraproposta(limites, args.parcelas, args.valorTotalOferecido);
+        const resultadoMatematico = this.validarContraproposta(limites, Number(args.parcelas), Number(args.valorTotalOferecido));
 
         historico.push(respostaAgente);
         historico.push({
@@ -189,8 +203,17 @@ REGRAS RÍGIDAS:
     return proposta;
   }
 
-  async atualizarStatus(id: string, empresaId: string, status: 'PENDENTE' | 'ACEITA' | 'RECUSADA') {
-    await this.buscarProposta(id, empresaId);
-    return this.propostaRepository.updateStatus(id, status);
+  async atualizarStatus(id: string, empresaId: string, status: 'PENDENTE' | 'ACEITA' | 'RECUSADA', valorAcordado?: number, parcelasAcordadas?: number) {
+    const proposta = await this.buscarProposta(id, empresaId);
+
+    await this.propostaRepository.updateStatus(id, status, valorAcordado, parcelasAcordadas);
+
+    if (status === 'ACEITA') {
+      await this.propostaRepository.atualizarStatusDevedor(proposta.devedorId, 'ACORDADO');
+    } else if (status === 'RECUSADA') {
+      await this.propostaRepository.atualizarStatusDevedor(proposta.devedorId, 'RECUSADO');
+    }
+
+    return this.propostaRepository.findById(id, empresaId);
   }
 }

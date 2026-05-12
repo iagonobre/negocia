@@ -30,6 +30,15 @@ export class DevedorController {
       return this.devedorService.buscar(id, empresa.sub);
     }
 
+    @Get(':id/historico')
+    @ApiOperation({ summary: 'Histórico completo de negociações do devedor' })
+    async historico(
+      @Param('id') id: string,
+      @Empresa() empresa: JwtPayload,
+    ) {
+      return this.devedorService.historico(id, empresa.sub);
+    }
+
     @Post('cadastrar')
     @ApiOperation({ summary: 'Cadastro de novo devedor' })
     @ApiBody({ type: CreateDevedorDto })

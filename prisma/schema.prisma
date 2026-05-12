@@ -117,7 +117,9 @@ model Proposta {
 
   limites          Json           @default("[]")
   historico        Json           @default("[]")
-  
+  valorAcordado    Float?
+  parcelasAcordadas Int?
+
   status           StatusProposta @default(PENDENTE)
   createdAt        DateTime       @default(now())
   updatedAt        DateTime       @updatedAt

@@ -149,6 +149,8 @@ export const PropostaScalarFieldEnum = {
   id: 'id',
   limites: 'limites',
   historico: 'historico',
+  valorAcordado: 'valorAcordado',
+  parcelasAcordadas: 'parcelasAcordadas',
   status: 'status',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',

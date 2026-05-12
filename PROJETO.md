@@ -30,12 +30,13 @@ src/
 ├── prisma/                  # PrismaService (global)
 ├── generated/               # Client Prisma auto-gerado
 ├── auth/                    # Autenticação JWT
-├── empresa/                 # Cadastro e perfil da empresa
-├── devedor/                 # Gestão de devedores + importação CSV
+├── empresa/                 # Cadastro, perfil e painel da empresa
+├── devedor/                 # Gestão de devedores + importação CSV + histórico
 ├── faixa-criterio/          # Critérios de negociação por faixa de valor
 ├── llm/                     # Serviço global de chamada à LLM (Groq)
 ├── proposta/                # Motor de negociação com IA + histórico de chat
-└── whatsapp/                # Webhook + disparo de mensagens (Evolution API)
+├── whatsapp/                # Webhook + disparo de mensagens (Twilio)
+└── cobranca/                # Lembretes automáticos de parcelas (cron)
 ```
 
 ---
@@ -167,6 +168,7 @@ Representa uma sessão de negociação entre o agente de IA e um devedor.
 |---|---|---|---|
 | POST | `/empresa/cadastrar` | — | Registro de nova empresa |
 | GET | `/empresa/perfil` | JWT | Perfil da empresa logada |
+| GET | `/empresa/painel` | JWT | Painel com indicadores de inadimplência e recuperação |
 | PATCH | `/empresa/perfil` | JWT | Atualizar dados do perfil |
 | DELETE | `/empresa/perfil` | JWT | Excluir conta |
 
@@ -186,6 +188,7 @@ Representa uma sessão de negociação entre o agente de IA e um devedor.
 |---|---|---|---|
 | GET | `/devedor` | JWT | Listar todos os devedores da empresa |
 | GET | `/devedor/:id` | JWT | Buscar devedor por ID |
+| GET | `/devedor/:id/historico` | JWT | Histórico completo de negociações do devedor |
 | POST | `/devedor/cadastrar` | JWT | Criar devedor único |
 | PATCH | `/devedor/atualizar/:id` | JWT | Atualizar devedor |
 | DELETE | `/devedor/:id` | JWT | Deletar devedor |
@@ -251,7 +254,7 @@ Representa uma sessão de negociação entre o agente de IA e um devedor.
 | POST | `/proposta/:id/chat` | JWT | Envia mensagem do devedor e obtém resposta da IA |
 | GET | `/proposta` | JWT | Lista todas as propostas da empresa |
 | GET | `/proposta/:id` | JWT | Busca proposta por ID |
-| PATCH | `/proposta/:id/status` | JWT | Atualiza status (ACEITA ou RECUSADA) |
+| PATCH | `/proposta/:id/status` | JWT | Atualiza status (ACEITA ou RECUSADA) — aceita `valorAcordado` e `parcelasAcordadas` |
 
 **Fluxo de negociação:**
 1. `gerarProposta` — busca o devedor e a faixa de critério correspondente ao valor da dívida, monta o `systemPrompt` com os limites e obtém a primeira mensagem do agente via LLM
@@ -265,14 +268,26 @@ Representa uma sessão de negociação entre o agente de IA e um devedor.
 
 ---
 
+### `cobranca/` — Cobrança (UC07)
+
+**Responsabilidade:** Lembretes automáticos de pagamento para acordos parcelados.
+
+| Método | Rota | Auth | Descrição |
+|---|---|---|---|
+| POST | `/cobranca/lembretes` | JWT | Dispara lembretes manuais para acordos parcelados ativos |
+
+**Cron automático:** todo dia 1 às 9h, envia mensagem WhatsApp para todos os devedores com propostas `ACEITA` e `parcelasAcordadas > 1`, lembrando o valor da parcela.
+
+---
+
 ### `whatsapp/` — WhatsApp
 
-**Responsabilidade:** Integração bidirecional com WhatsApp via Evolution API.
+**Responsabilidade:** Integração bidirecional com WhatsApp via Twilio.
 
 | Método | Rota | Auth | Descrição |
 |---|---|---|---|
 | POST | `/whatsapp/iniciar/:devedorId` | JWT | Disparo ativo: cria proposta e envia primeira mensagem ao devedor |
-| POST | `/whatsapp/webhook` | — | Webhook da Evolution API: recebe mensagens e responde via IA |
+| POST | `/whatsapp/webhook` | — | Webhook do Twilio: recebe mensagens e responde via IA |
 
 **Fluxo ativo (empresa dispara):**
 ```
@@ -383,7 +398,6 @@ Empresa se cadastra + define FaixasCriterio
 
 - **Integração Pix** — geração e rastreamento de cobranças Pix após acordo fechado
 - **Integração Boleto** — geração de boletos bancários
-- **Atualização automática de status do Devedor** — ao fechar proposta, atualizar `StatusDevedor` para `ACORDADO`
 
 ---
 

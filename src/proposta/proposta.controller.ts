@@ -59,6 +59,6 @@ export class PropostaController {
     @Body() body: AtualizarStatusDto,
     @Empresa() empresa: JwtPayload,
   ) {
-    return this.propostaService.atualizarStatus(id, empresa.sub, body.status);
+    return this.propostaService.atualizarStatus(id, empresa.sub, body.status, body.valorAcordado, body.parcelasAcordadas);
   }
 }

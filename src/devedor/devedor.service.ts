@@ -32,6 +32,12 @@ export class DevedorService {
     return devedor;
   }
 
+  async historico(id: string, empresaId: string) {
+    const resultado = await this.repository.findHistorico(id, empresaId);
+    if (!resultado) throw new NotFoundException('Devedor não encontrado');
+    return resultado;
+  }
+
   async atualizar(id: string, empresaId: string, dto: UpdateDevedorDto): Promise<Devedor> {
     const devedor = await this.repository.findOne(id, empresaId);
 

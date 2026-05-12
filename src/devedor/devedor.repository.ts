@@ -31,6 +31,33 @@ export class DevedorRepository {
     await this.prisma.devedor.delete({ where: { id, empresaId } });
   }
 
+  async findHistorico(id: string, empresaId: string) {
+    return this.prisma.devedor.findFirst({
+      where: { id, empresaId },
+      select: {
+        id: true,
+        nome: true,
+        email: true,
+        telefone: true,
+        valorDivida: true,
+        status: true,
+        propostas: {
+          orderBy: { createdAt: 'desc' },
+          select: {
+            id: true,
+            status: true,
+            valorAcordado: true,
+            parcelasAcordadas: true,
+            limites: true,
+            historico: true,
+            createdAt: true,
+            updatedAt: true,
+          },
+        },
+      },
+    });
+  }
+
   async upsertMany(devedores: DevedorCsvRow[], empresaId: string): Promise<Devedor[]> {
     return this.prisma.$transaction(
       devedores.map((d) =>
