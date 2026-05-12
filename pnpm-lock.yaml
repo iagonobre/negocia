@@ -50,6 +50,9 @@ importers:
       csv-parser:
         specifier: ^3.2.0
         version: 3.2.0
+      express:
+        specifier: ^5.2.1
+        version: 5.2.1
       pg:
         specifier: ^8.20.0
         version: 8.20.0
