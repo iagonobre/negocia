@@ -8,7 +8,9 @@ COPY pnpm-workspace.yaml pnpm-lock.yaml package.json ./
 RUN pnpm install --frozen-lockfile
 
 COPY . .
-RUN pnpm exec prisma generate && pnpm run build
+RUN pnpm exec prisma generate
+RUN pnpm run build
+RUN ls -la dist/ && test -f dist/main.js
 
 EXPOSE 3000
 CMD ["pnpm", "run", "start:prod"]
