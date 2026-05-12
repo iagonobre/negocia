@@ -2,7 +2,7 @@
 nixPkgs = ["nodejs_22", "pnpm"]
 
 [phases.build]
-cmds = ["pnpm run build", "npx prisma generate"]
+cmds = ["npx prisma generate", "pnpm run build"]
 
 [start]
 cmd = "pnpm run start:prod"
