@@ -6,6 +6,6 @@ import { PropostaRepository } from './proposta.repository';
 @Module({
   controllers: [PropostaController],
   providers: [PropostaService, PropostaRepository],
-  exports: [PropostaService],
+  exports: [PropostaService, PropostaRepository],
 })
 export class PropostaModule {}

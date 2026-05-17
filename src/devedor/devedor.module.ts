@@ -6,6 +6,6 @@ import { DevedorRepository } from './devedor.repository';
 @Module({
   controllers: [DevedorController],
   providers: [DevedorService, DevedorRepository],
-  exports: [DevedorService],
+  exports: [DevedorService, DevedorRepository],
 })
 export class DevedorModule {}

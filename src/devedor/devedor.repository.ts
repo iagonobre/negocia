@@ -27,6 +27,10 @@ export class DevedorRepository {
     return this.prisma.devedor.findFirst({ where: { id, empresaId } });
   }
 
+  async findByTelefone(telefone: string): Promise<Devedor | null> {
+    return this.prisma.devedor.findFirst({ where: { telefone } });
+  }
+
   async delete(id: string, empresaId: string): Promise<void> {
     await this.prisma.devedor.delete({ where: { id, empresaId } });
   }

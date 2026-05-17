@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { Prisma } from '../generated/prisma/browser';
 
 @Injectable()
 export class PropostaRepository {
@@ -24,7 +23,12 @@ export class PropostaRepository {
     return { devedor, faixa };
   }
 
-  async create(devedorId: string, empresaId: string, limites: any, historicoInicial: any[]) {
+  async create(
+    devedorId: string,
+    empresaId: string,
+    limites: any,
+    historicoInicial: any[],
+  ) {
     return this.prisma.proposta.create({
       data: {
         devedorId,
@@ -33,7 +37,7 @@ export class PropostaRepository {
         historico: historicoInicial,
         status: 'PENDENTE',
       },
-      include: { devedor: true } // Já retornamos o devedor junto para facilitar
+      include: { devedor: true }, // Já retornamos o devedor junto para facilitar
     });
   }
 
@@ -63,7 +67,23 @@ export class PropostaRepository {
     });
   }
 
-  async updateStatus(id: string, status: 'PENDENTE' | 'ACEITA' | 'RECUSADA', valorAcordado?: number, parcelasAcordadas?: number) {
+  async findAceitasParceladas(empresaId?: string) {
+    return this.prisma.proposta.findMany({
+      where: {
+        status: 'ACEITA',
+        ...(empresaId && { empresaId }),
+        parcelasAcordadas: { gt: 1 },
+      },
+      include: { devedor: true },
+    });
+  }
+
+  async updateStatus(
+    id: string,
+    status: 'PENDENTE' | 'ACEITA' | 'RECUSADA',
+    valorAcordado?: number,
+    parcelasAcordadas?: number,
+  ) {
     return this.prisma.proposta.update({
       where: { id },
       data: { status, valorAcordado, parcelasAcordadas },

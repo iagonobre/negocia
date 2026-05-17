@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
 import csv from 'csv-parser';
 import { Readable } from 'stream';
 import { CreateDevedorDto } from './dto/create-devedor.dto';
@@ -67,6 +67,10 @@ export class DevedorService {
   }
 
   async importarCsv(file: Express.Multer.File, empresaId: string): Promise<ImportacaoResultado> {
+    if (!file.buffer || file.buffer.length === 0) {
+      throw new BadRequestException('Arquivo CSV vazio ou inválido.');
+    }
+
     const devedores: DevedorCsvRow[] = [];
     const stream = Readable.from(file.buffer);
 
