@@ -79,10 +79,6 @@ export class EmpresaService {
     return resultado;
   }
 
-  async painel(empresaId: string) {
-    return this.repository.painel(empresaId);
-  }
-
   async deletar(id: string): Promise<{ message: string }> {
     await this.buscarPorId(id);
     await this.repository.delete(id);

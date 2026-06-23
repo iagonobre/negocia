@@ -50,14 +50,6 @@ export class EmpresaController {
     return this.empresaService.atualizar(empresa.sub, dto);
   }
 
-  @Get('painel')
-  @UseGuards(AuthGuard)
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Painel com indicadores de inadimplência e recuperação financeira' })
-  async painel(@Empresa() empresa: JwtPayload) {
-    return this.empresaService.painel(empresa.sub);
-  }
-
   @Delete('perfil')
   @UseGuards(AuthGuard)
   @ApiBearerAuth()

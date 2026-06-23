@@ -376,3 +376,115 @@ Testes manuais via Swagger (`http://localhost:3000/api`):
 | 4 — CoreModule + AppModule | `[x] Concluído` | commit `ff4b79b` |
 | 5 — Documentação | `[x] Concluído` | commit `17b7d69` |
 | 6 — Validação | `[x] Concluído` | `tsc --noEmit` ✓ + `pnpm build` ✓ |
+| 7 — Desacoplar painel do core | `[ ] Pendente` | |
+| 8 — Organizar schema Prisma | `[ ] Pendente` | |
+
+---
+
+## FASE 2 — Evolução do framework para multi-instância real
+
+### Contexto da fase 2
+
+Após a Fase 1 (etapas 1–6), o framework tem a estrutura de pastas correta, mas o `EmpresaModule` (core) ainda carrega dois acoplamentos com a instância negocia:
+
+1. **`EmpresaRepository.painel()`** — consulta diretamente `Devedor` e `Proposta` (modelos da instância) e calcula métricas de cobrança (`taxaRecuperacao`, `valorDivida`, `valorAcordado`). Está no core mas não pertence a ele.
+2. **`prisma/schema.prisma`** — `Devedor`, `FaixaCriterio`, `Proposta` e seus enums estão no mesmo arquivo que `Empresa` e `Endereco`, sem distinção visual entre o que é core e o que é instância.
+
+Enquanto esses pontos existirem, uma segunda instância (ex: saúde) herdará um endpoint `/empresa/painel` com dados de dívidas que não existem nela.
+
+---
+
+### ETAPA 7 — Mover painel para a instância negocia
+**Status:** `[ ] Pendente`
+
+**Objetivo:** O core `EmpresaModule` fica responsável apenas por autenticação e CRUD de perfil. O painel de métricas da instância negocia vai para a própria instância.
+
+#### Arquivos a modificar no core
+
+**`src/core/empresa/empresa.repository.ts`**
+- Remover o método `painel()` inteiro
+
+**`src/core/empresa/empresa.service.ts`**
+- Remover o método `painel(empresaId)`
+
+**`src/core/empresa/empresa.controller.ts`**
+- Remover o endpoint `@Get('painel')` e seu método
+- Remover a descrição swagger "indicadores de inadimplência e recuperação financeira"
+
+#### Arquivos a criar na instância negocia
+
+**`src/instances/negocia/painel/painel.repository.ts`** — CRIAR
+Move a lógica de `EmpresaRepository.painel()` sem alterações: queries a `devedor` e `proposta`, cálculo de `taxaRecuperacao`, `valorTotalEmAberto`, `valorTotalRecuperado`.
+
+**`src/instances/negocia/painel/painel.service.ts`** — CRIAR
+Delega ao repository.
+
+**`src/instances/negocia/painel/painel.controller.ts`** — CRIAR
+Mantém `GET /empresa/painel` para não quebrar clientes existentes:
+```typescript
+@ApiTags('Empresa')
+@Controller('empresa')
+@UseGuards(AuthGuard)
+export class PainelController {
+  @Get('painel')
+  async painel(@Empresa() empresa: JwtPayload) {
+    return this.painelService.painel(empresa.sub);
+  }
+}
+```
+
+**`src/instances/negocia/painel/painel.module.ts`** — CRIAR
+
+**`src/instances/negocia/negocia.module.ts`** — MODIFICAR — adicionar `PainelModule`
+
+**Commit:**
+```
+refactor(core): remover painel do EmpresaModule e mover para instância negocia
+```
+
+---
+
+### ETAPA 8 — Organizar schema Prisma com seções por instância
+**Status:** `[ ] Pendente`
+
+**Objetivo:** O `prisma/schema.prisma` é um arquivo único (limitação do Prisma), mas deve deixar claro visualmente quais modelos são do core e quais são de cada instância. Sem migrations geradas — apenas organização de comentários e ordem.
+
+**`prisma/schema.prisma`** — REORGANIZAR:
+```
+// ============================================================
+// CORE — modelos compartilhados por todas as instâncias
+// ============================================================
+model Empresa { ... }
+model Endereco { ... }
+
+// ============================================================
+// INSTANCE: NEGOCIA — cobrança de dívidas via WhatsApp
+// ============================================================
+enum StatusDevedor / OrigemDevedor / TipoPessoa / StatusProposta
+model Devedor / FaixaCriterio / Proposta
+
+// ============================================================
+// INSTANCE: <NOME> — nova instância futura
+// ============================================================
+// Adicionar aqui os modelos da próxima instância
+```
+
+**`docs/framework.md`** — ATUALIZAR com seção "Adicionando modelos de uma nova instância ao schema".
+
+**Commit:**
+```
+docs: organizar schema Prisma com seções core/instância e atualizar framework.md
+```
+
+---
+
+### Resultado esperado após Fase 2
+
+| Módulo | Situação após Fase 2 |
+|--------|---------------------|
+| `EmpresaModule` (core) | Puro: cadastro, perfil, update, delete — zero acesso a modelos de instância |
+| `AuthModule` (core) | Inalterado — já genérico |
+| `NegotiationEngine` (core) | Inalterado — já genérico |
+| `WhatsAppModule` (core) | Inalterado — já genérico |
+| `PainelModule` (negocia) | Novo — painel com métricas de Devedor/Proposta |
+| `prisma/schema.prisma` | Visualmente separado: core vs instâncias |
