@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { FaixaCriterioController } from './faixa-criterio.controller';
 import { FaixaCriterioService } from './faixa-criterio.service';
-import { AuthGuard } from '../auth/auth.guard';
-import type { JwtPayload } from '../auth/interfaces/jwt-payload.interface';
+import { AuthGuard } from '../../../core/auth/auth.guard';
+import type { JwtPayload } from '../../../core/auth/interfaces/jwt-payload.interface';
 import { CreateFaixaCriterioDto } from './dto/create-faixa-criterio.dto';
 import { UpdateFaixaCriterioDto } from './dto/update-faixa-criterio.dto';
 

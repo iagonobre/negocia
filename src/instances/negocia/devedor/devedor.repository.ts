@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
-import { Devedor, Prisma } from '../generated/prisma/client';
+import { PrismaService } from '../../../core/prisma/prisma.service';
+import { Devedor, Prisma } from '../../../generated/prisma/client';
 import { DevedorCsvRow } from './types/devedor-csv-row.type';
 
 @Injectable()

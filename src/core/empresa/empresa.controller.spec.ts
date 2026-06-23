@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { EmpresaController } from './empresa.controller';
 import { EmpresaService } from './empresa.service';
 import { AuthGuard } from '../auth/auth.guard';
-import type { JwtPayload } from 'src/auth/interfaces/jwt-payload.interface';
+import type { JwtPayload } from 'src/core/auth/interfaces/jwt-payload.interface';
 
 const mockEndereco = {
   id: 'uuid-endereco-123',

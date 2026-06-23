@@ -1,5 +1,5 @@
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
-import { FaixaCriterio } from '../generated/prisma/client';
+import { FaixaCriterio } from '../../../generated/prisma/client';
 import { CreateFaixaCriterioDto } from './dto/create-faixa-criterio.dto';
 import { UpdateFaixaCriterioDto } from './dto/update-faixa-criterio.dto';
 import { FaixaCriterioRepository } from './faixa-criterio.repository';

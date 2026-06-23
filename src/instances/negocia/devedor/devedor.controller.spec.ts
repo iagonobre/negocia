@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { DevedorController } from './devedor.controller';
 import { DevedorService } from './devedor.service';
-import { AuthGuard } from 'src/auth/auth.guard';
-import type { JwtPayload } from 'src/auth/interfaces/jwt-payload.interface';
+import { AuthGuard } from 'src/core/auth/auth.guard';
+import type { JwtPayload } from 'src/core/auth/interfaces/jwt-payload.interface';
 import { StatusDevedor, OrigemDevedor, TipoPessoa } from 'src/generated/prisma/enums';
 import { CreateDevedorDto } from './dto/create-devedor.dto';
 import { UpdateDevedorDto } from './dto/update-devedor.dto';

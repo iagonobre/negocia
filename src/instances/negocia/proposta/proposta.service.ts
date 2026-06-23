@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { PropostaRepository } from './proposta.repository';
-import { LlmService } from '../llm/llm.service';
+import { LlmService } from '../../../core/llm/llm.service';
 import { gerarSystemPrompt, gerarMensagemInicial } from './proposta.prompts';
 import { VALIDAR_CONTRAPROPOSTA_TOOL } from './proposta.tools';
 import { NegociacaoEmAndamentoException } from '../exceptions/negociacao-em-andamento.exception';

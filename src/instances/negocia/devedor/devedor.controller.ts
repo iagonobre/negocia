@@ -2,10 +2,10 @@ import { Body, Controller, Delete, Get, MaxFileSizeValidator, Param, ParseFilePi
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { DevedorService } from './devedor.service';
 import { CreateDevedorDto } from './dto/create-devedor.dto';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { AuthGuard } from 'src/core/auth/auth.guard';
 import { UpdateDevedorDto } from './dto/update-devedor.dto';
-import { Empresa } from 'src/auth/decorators/empresa.decorator';
-import type { JwtPayload } from 'src/auth/interfaces/jwt-payload.interface';
+import { Empresa } from 'src/core/auth/decorators/empresa.decorator';
+import type { JwtPayload } from 'src/core/auth/interfaces/jwt-payload.interface';
 import { FileInterceptor } from '@nestjs/platform-express';
 
 @ApiTags('Devedor')

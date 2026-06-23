@@ -3,9 +3,9 @@ import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { FaixaCriterioService } from './faixa-criterio.service';
 import { CreateFaixaCriterioDto } from './dto/create-faixa-criterio.dto';
 import { UpdateFaixaCriterioDto } from './dto/update-faixa-criterio.dto';
-import { AuthGuard } from '../auth/auth.guard';
-import { Empresa } from '../auth/decorators/empresa.decorator';
-import type { JwtPayload } from '../auth/interfaces/jwt-payload.interface';
+import { AuthGuard } from '../../../core/auth/auth.guard';
+import { Empresa } from '../../../core/auth/decorators/empresa.decorator';
+import type { JwtPayload } from '../../../core/auth/interfaces/jwt-payload.interface';
 
 @ApiTags('Faixa de Critério')
 @Controller('faixas-criterio')

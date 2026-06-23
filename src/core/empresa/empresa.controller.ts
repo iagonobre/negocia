@@ -15,8 +15,8 @@ import { AuthGuard } from '../auth/auth.guard';
 import { CreateEmpresaDto } from './dto/create-empresa.dto';
 import { UpdateEmpresaDto } from './dto/update-empresa.dto';
 
-import type { JwtPayload } from 'src/auth/interfaces/jwt-payload.interface';
-import { Empresa } from 'src/auth/decorators/empresa.decorator';
+import type { JwtPayload } from 'src/core/auth/interfaces/jwt-payload.interface';
+import { Empresa } from 'src/core/auth/decorators/empresa.decorator';
 
 @ApiTags('Empresa')
 @Controller('empresa')

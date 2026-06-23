@@ -1,9 +1,9 @@
 import { Controller, Post, Get, Patch, Param, Body, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth, ApiBody } from '@nestjs/swagger';
 import { PropostaService } from './proposta.service';
-import { AuthGuard } from 'src/auth/auth.guard';
-import { Empresa } from 'src/auth/decorators/empresa.decorator';
-import type { JwtPayload } from '../auth/interfaces/jwt-payload.interface';
+import { AuthGuard } from 'src/core/auth/auth.guard';
+import { Empresa } from 'src/core/auth/decorators/empresa.decorator';
+import type { JwtPayload } from '../../../core/auth/interfaces/jwt-payload.interface';
 
 // Importando os DTOs refatorados
 import { ChatMessageDto } from './dto/chat-message.dto';

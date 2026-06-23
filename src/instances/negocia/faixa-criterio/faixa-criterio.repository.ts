@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
-import { FaixaCriterio, Prisma } from '../generated/prisma/client';
+import { PrismaService } from '../../../core/prisma/prisma.service';
+import { FaixaCriterio, Prisma } from '../../../generated/prisma/client';
 import { CreateFaixaCriterioDto } from './dto/create-faixa-criterio.dto';
 import { UpdateFaixaCriterioDto } from './dto/update-faixa-criterio.dto';
 

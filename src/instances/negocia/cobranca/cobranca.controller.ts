@@ -1,9 +1,9 @@
 import { Controller, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CobrancaService } from './cobranca.service';
-import { AuthGuard } from '../auth/auth.guard';
-import { Empresa } from '../auth/decorators/empresa.decorator';
-import type { JwtPayload } from '../auth/interfaces/jwt-payload.interface';
+import { AuthGuard } from '../../../core/auth/auth.guard';
+import { Empresa } from '../../../core/auth/decorators/empresa.decorator';
+import type { JwtPayload } from '../../../core/auth/interfaces/jwt-payload.interface';
 
 @ApiTags('Cobrança')
 @Controller('cobranca')

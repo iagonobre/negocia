@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import { PropostaRepository } from '../proposta/proposta.repository';
-import { WhatsAppService } from '../whatsapp/whatsapp.service';
+import { WhatsAppService } from '../../../core/whatsapp/whatsapp.service';
 
 @Injectable()
 export class CobrancaService {

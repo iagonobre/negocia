@@ -3,10 +3,10 @@ import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { PropostaService } from '../proposta/proposta.service';
 import { PropostaRepository } from '../proposta/proposta.repository';
 import { DevedorRepository } from '../devedor/devedor.repository';
-import { WhatsAppService } from './whatsapp.service';
-import { AuthGuard } from '../auth/auth.guard';
-import { Empresa } from '../auth/decorators/empresa.decorator';
-import type { JwtPayload } from '../auth/interfaces/jwt-payload.interface';
+import { WhatsAppService } from '../../../core/whatsapp/whatsapp.service';
+import { AuthGuard } from '../../../core/auth/auth.guard';
+import { Empresa } from '../../../core/auth/decorators/empresa.decorator';
+import type { JwtPayload } from '../../../core/auth/interfaces/jwt-payload.interface';
 
 @ApiTags('WhatsApp')
 @Controller('whatsapp')

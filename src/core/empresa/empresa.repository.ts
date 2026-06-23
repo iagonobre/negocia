@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { Empresa, Prisma } from '../generated/prisma/client';
+import { Empresa, Prisma } from '../../generated/prisma/client';
 
 export type EmpresaSemSenha = Omit<Empresa, 'senha'> & { endereco?: unknown };
 
