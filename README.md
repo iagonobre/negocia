@@ -152,6 +152,18 @@ pnpm run test:cov
 
 ---
 
+## Documentação
+
+| Documento | Descrição |
+| --------- | --------- |
+| [docs/projeto.md](docs/projeto.md) | Arquitetura, entidades e decisões técnicas |
+| [docs/frontend.md](docs/frontend.md) | Guia de integração para o frontend |
+| [docs/setup.md](docs/setup.md) | Configuração completa do ambiente |
+| [docs/plano.md](docs/plano.md) | Plano de ajustes de qualidade de código |
+| [docs/plano-framework.md](docs/plano-framework.md) | Plano de adaptação para framework multi-instância |
+
+---
+
 <p align="center">
   Desenvolvido com ☕ por Iago Nobre, Liriel Felix e Natham Fernandes.
 </p>
