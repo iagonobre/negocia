@@ -1,8 +1,7 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { PropostaRepository } from './proposta.repository';
-import { LlmService } from '../../../core/llm/llm.service';
-import { gerarSystemPrompt, gerarMensagemInicial } from './proposta.prompts';
-import { VALIDAR_CONTRAPROPOSTA_TOOL } from './proposta.tools';
+import { NegotiationEngine } from '../../../core/negotiation/negotiation.engine';
+import { NegociaContextProvider } from '../negocia-context.provider';
 import { NegociacaoEmAndamentoException } from '../exceptions/negociacao-em-andamento.exception';
 import { FaixaCriterioNaoEncontradaException } from '../exceptions/faixa-criterio-nao-encontrada.exception';
 import { PropostaJaFinalizadaException } from '../exceptions/proposta-ja-finalizada.exception';
@@ -11,7 +10,8 @@ import { PropostaJaFinalizadaException } from '../exceptions/proposta-ja-finaliz
 export class PropostaService {
   constructor(
     private readonly propostaRepository: PropostaRepository,
-    private readonly llmService: LlmService,
+    private readonly negotiationEngine: NegotiationEngine,
+    private readonly negociaContextProvider: NegociaContextProvider,
   ) {}
 
   async gerarProposta(devedorId: string, empresaId: string) {
@@ -37,31 +37,15 @@ export class PropostaService {
       prazoMaximoDias: faixa.prazoMaximoDias,
     };
 
-    const valorMinimo = (devedor.valorDivida * (1 - faixa.descontoMaximo / 100)).toFixed(2);
-    const systemPrompt = gerarSystemPrompt(
-      devedor.nome,
-      devedor.valorDivida,
-      faixa.tomComunicacao,
-      valorMinimo,
-      faixa.parcelasMaximas,
-      faixa.prazoMaximoDias,
-    );
-    const mensagemInicial = gerarMensagemInicial(faixa.mensagemInicial, devedor.valorDivida);
+    const context = this.negociaContextProvider.buildContext(devedor, faixa);
+    const { historico, mensagemAgente } = await this.negotiationEngine.iniciar(context);
 
-    const historicoInicial = [
-      { role: 'system', content: systemPrompt },
-      { role: 'user', content: mensagemInicial },
-    ];
-
-    const respostaAgente = await this.llmService.chamarLLM(historicoInicial);
-    historicoInicial.push(respostaAgente);
-
-    const proposta = await this.propostaRepository.create(devedorId, empresaId, limites, historicoInicial);
+    const proposta = await this.propostaRepository.create(devedorId, empresaId, limites, historico);
 
     return {
       id: proposta.id,
       status: proposta.status,
-      ultimaMensagemAgente: respostaAgente.content,
+      ultimaMensagemAgente: mensagemAgente,
     };
   }
 
@@ -76,68 +60,19 @@ export class PropostaService {
     const historico = proposta.historico as any[];
     const limites = proposta.limites as any;
 
-    historico.push({ role: 'user', content: mensagemUsuario });
+    const validator = (toolName: string, args: Record<string, any>) =>
+      this.negociaContextProvider.validateTool(toolName, args, limites);
 
-    let respostaAgente = await this.llmService.chamarLLM(historico, [VALIDAR_CONTRAPROPOSTA_TOOL]);
+    const { historico: historicoAtualizado, mensagemAgente } = await this.negotiationEngine.conversar(
+      mensagemUsuario,
+      historico,
+      this.negociaContextProvider.getTools(),
+      validator,
+    );
 
-    if (!respostaAgente) {
-      throw new BadRequestException('O agente de IA não retornou uma resposta. Tente novamente.');
-    }
+    await this.propostaRepository.atualizarHistorico(propostaId, historicoAtualizado);
 
-    if (respostaAgente.tool_calls && respostaAgente.tool_calls.length > 0) {
-      respostaAgente = await this.processarToolCall(respostaAgente, historico, limites);
-
-      if (!respostaAgente) {
-        throw new BadRequestException('O agente de IA não retornou uma resposta. Tente novamente.');
-      }
-    }
-
-    if (!historico.includes(respostaAgente)) {
-      historico.push(respostaAgente);
-    }
-
-    await this.propostaRepository.atualizarHistorico(propostaId, historico);
-
-    return { id: propostaId, mensagemAgente: respostaAgente.content };
-  }
-
-  private async processarToolCall(respostaAgente: any, historico: any[], limites: any): Promise<any> {
-    const toolCall = respostaAgente.tool_calls[0];
-    const args = JSON.parse(toolCall.function.arguments);
-    const resultado = this.validarContraproposta(limites, Number(args.parcelas), Number(args.valorTotalOferecido));
-
-    historico.push(respostaAgente);
-    historico.push({
-      role: 'tool',
-      tool_call_id: toolCall.id,
-      name: toolCall.function.name,
-      content: JSON.stringify(resultado),
-    });
-
-    return this.llmService.chamarLLM(historico);
-  }
-
-  private validarContraproposta(limites: any, parcelas: number, valorTotalOferecido: number) {
-    if (parcelas > limites.parcelasMaximas) {
-      return {
-        aprovado: false,
-        motivo: `O limite é de ${limites.parcelasMaximas} parcelas. Informe isso ao cliente.`,
-      };
-    }
-
-    const valorMinimoAceitavel = limites.valorOriginal * (1 - limites.descontoMaximo / 100);
-
-    if (valorTotalOferecido < valorMinimoAceitavel) {
-      return {
-        aprovado: false,
-        motivo: `Valor muito baixo. O mínimo que aceitamos é R$ ${valorMinimoAceitavel.toFixed(2)}. Não aceite menos que isso.`,
-      };
-    }
-
-    return {
-      aprovado: true,
-      motivo: `Aprovado! O acordo de ${parcelas}x de R$ ${(valorTotalOferecido / parcelas).toFixed(2)} pode ser fechado.`,
-    };
+    return { id: propostaId, mensagemAgente };
   }
 
   async listarPropostas(empresaId: string) {
