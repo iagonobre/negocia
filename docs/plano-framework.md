@@ -370,9 +370,9 @@ Testes manuais via Swagger (`http://localhost:3000/api`):
 
 | Etapa | Status | Observações |
 |-------|--------|-------------|
-| 1 — Reorganização estrutural | `[ ] Pendente` | |
-| 2 — Motor genérico de negociação | `[ ] Pendente` | |
-| 3 — Instância demo (negocia) | `[ ] Pendente` | |
-| 4 — CoreModule + AppModule | `[ ] Pendente` | |
-| 5 — Documentação | `[ ] Pendente` | |
-| 6 — Validação | `[ ] Pendente` | |
+| 1 — Reorganização estrutural | `[x] Concluído` | commit `003c87b` |
+| 2 — Motor genérico de negociação | `[x] Concluído` | commit `e6ccd95` |
+| 3 — Instância demo (negocia) | `[x] Concluído` | commit `9688801` |
+| 4 — CoreModule + AppModule | `[x] Concluído` | commit `ff4b79b` |
+| 5 — Documentação | `[x] Concluído` | commit `17b7d69` |
+| 6 — Validação | `[x] Concluído` | `tsc --noEmit` ✓ + `pnpm build` ✓ |
