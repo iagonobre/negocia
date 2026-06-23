@@ -376,8 +376,8 @@ Testes manuais via Swagger (`http://localhost:3000/api`):
 | 4 — CoreModule + AppModule | `[x] Concluído` | commit `ff4b79b` |
 | 5 — Documentação | `[x] Concluído` | commit `17b7d69` |
 | 6 — Validação | `[x] Concluído` | `tsc --noEmit` ✓ + `pnpm build` ✓ |
-| 7 — Desacoplar painel do core | `[ ] Pendente` | |
-| 8 — Organizar schema Prisma | `[ ] Pendente` | |
+| 7 — Desacoplar painel do core | `[x] Concluído` | commit `8bdfeeb` |
+| 8 — Organizar schema Prisma | `[x] Concluído` | commit `2e2b755` |
 
 ---
 
