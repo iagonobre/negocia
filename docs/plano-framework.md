@@ -232,6 +232,11 @@ Após os moves: atualizar **todos os imports** afetados em todos os arquivos mov
 
 **Verificação:** `npx tsc --noEmit` sem erros.
 
+**Commit:**
+```
+refactor: reorganizar src/ em core/ e instances/negocia/ para estrutura de framework
+```
+
 ---
 
 ### ETAPA 2 — Motor genérico de negociação (Framework Core)
@@ -246,6 +251,11 @@ Criar `src/core/negotiation/` com três arquivos:
    - `conversar(msg, historico, tools, validator)` — loop de conversa + processamento de tool calls
 
 3. **`negotiation.module.ts`** — marca `NegotiationEngine` como `@Injectable()`, importa `LlmModule`, exporta `NegotiationEngine`
+
+**Commit:**
+```
+feat(core): criar NegotiationEngine e interface NegotiationContextProvider
+```
 
 ---
 
@@ -262,6 +272,11 @@ Remove a lógica do loop de conversa e do tool call. Passa a injetar `Negotiatio
 
 **`src/instances/negocia/negocia.module.ts`**
 Agrega: `DevedorModule`, `FaixaCriterioModule`, `PropostaModule`, `CobrancaModule`, `WhatsAppModule` (controller). Fornece `NegociaContextProvider` como provider.
+
+**Commit:**
+```
+feat(negocia): implementar NegociaContextProvider e simplificar PropostaService
+```
 
 ---
 
@@ -286,6 +301,11 @@ export class CoreModule {}
 export class AppModule {}
 ```
 
+**Commit:**
+```
+feat(core): criar CoreModule e atualizar AppModule para carregar instâncias
+```
+
 ---
 
 ### ETAPA 5 — Documentação do framework
@@ -300,6 +320,11 @@ Criar **`docs/framework.md`** com:
   3. Criar o `MinhInstanciaContextProvider` implementando `NegotiationContextProvider`
   4. Criar módulo agregador e registrar no `AppModule`
 - Aplicações exemplo: dívidas (demo), consultas médicas, oficina mecânica
+
+**Commit:**
+```
+docs: adicionar framework.md com guia de arquitetura e criação de instâncias
+```
 
 ---
 
@@ -317,6 +342,8 @@ Testes manuais via Swagger (`http://localhost:3000/api`):
 - Confirmar que a primeira mensagem chega via WhatsApp
 - Responder via webhook e verificar que a conversa continua corretamente
 - `POST /cobranca/lembretes` → verificar envio de lembretes
+
+> Etapa de verificação — sem commit dedicado.
 
 ---
 
