@@ -84,6 +84,7 @@ src/
 │       ├── devedor/
 │       ├── exceptions/
 │       ├── faixa-criterio/
+│       ├── painel/
 │       ├── proposta/
 │       ├── whatsapp/
 │       ├── negocia-context.provider.ts
@@ -91,6 +92,39 @@ src/
 │
 ├── app.module.ts                  # Importa CoreModule + instâncias ativas
 └── main.ts
+```
+
+---
+
+## Schema Prisma — convenção de seções
+
+O Prisma exige um único arquivo `prisma/schema.prisma`. Para manter clareza entre o que é core e o que pertence a cada instância, o arquivo usa seções comentadas:
+
+```prisma
+// ============================================================
+// CORE — modelos compartilhados por todas as instâncias
+// ============================================================
+model Empresa { ... }
+model Endereco { ... }
+
+// ============================================================
+// INSTANCE: NEGOCIA — cobrança de dívidas via WhatsApp
+// ============================================================
+enum StatusDevedor / OrigemDevedor / TipoPessoa / StatusProposta
+model Devedor / FaixaCriterio / Proposta
+
+// ============================================================
+// INSTANCE: <NOME> — nova instância futura
+// Adicionar aqui os modelos da próxima instância,
+// sempre com FK empresaId → Empresa.id
+// ============================================================
+```
+
+**Regra:** todo modelo de instância deve ter `empresaId String` + relação `empresa Empresa @relation(...)`. Isso garante o isolamento multi-tenant (cada empresa só acessa seus próprios dados).
+
+Ao criar uma nova instância, adicione seus modelos na seção correspondente e rode:
+```bash
+npx prisma migrate dev --name add_<nome-instancia>_models
 ```
 
 ---

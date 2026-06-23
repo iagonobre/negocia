@@ -13,24 +13,9 @@ datasource db {
   provider = "postgresql"
 }
 
-enum StatusDevedor {
-  PENDENTE
-  EM_NEGOCIACAO
-  ACORDADO
-  PAGO
-  SEM_RESPOSTA
-  RECUSADO
-}
-
-enum OrigemDevedor {
-  PLANILHA
-  API
-}
-
-enum TipoPessoa {
-  FISICA
-  JURIDICA
-}
+// ============================================================
+// CORE — modelos compartilhados por todas as instâncias
+// ============================================================
 
 model Empresa {
   id         String   @id @default(uuid())
@@ -62,6 +47,29 @@ model Endereco {
   empresa   Empresa @relation(fields: [empresaId], references: [id], onDelete: Cascade)
 }
 
+// ============================================================
+// INSTANCE: NEGOCIA — cobrança de dívidas via WhatsApp
+// ============================================================
+
+enum StatusDevedor {
+  PENDENTE
+  EM_NEGOCIACAO
+  ACORDADO
+  PAGO
+  SEM_RESPOSTA
+  RECUSADO
+}
+
+enum OrigemDevedor {
+  PLANILHA
+  API
+}
+
+enum TipoPessoa {
+  FISICA
+  JURIDICA
+}
+
 model Devedor {
   id              String        @id @default(uuid())
   nome            String
@@ -85,7 +93,7 @@ model Devedor {
   empresa   Empresa @relation(fields: [empresaId], references: [id], onDelete: Cascade)
 
   @@unique([email, empresaId])
-  
+
   propostas       Proposta[]
 }
 
@@ -130,3 +138,9 @@ model Proposta {
   empresaId  String
   empresa    Empresa  @relation(fields: [empresaId], references: [id], onDelete: Cascade)
 }
+
+// ============================================================
+// INSTANCE: <NOME> — nova instância futura
+// Adicionar aqui os modelos da próxima instância,
+// sempre com FK empresaId → Empresa.id
+// ============================================================
