@@ -485,4 +485,304 @@
       </root>
     </mxGraphModel>
   </diagram>
+
+  <!-- ============================================================
+       PAGE 2: ESTRUTURA DO FRAMEWORK — Frozen Spots × Hot Spots
+       ============================================================ -->
+  <diagram name="Estrutura do Framework" id="framework-hotspots">
+    <mxGraphModel dx="1500" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="p2-0" />
+        <mxCell id="p2-1" parent="p2-0" />
+
+        <!-- Title -->
+        <mxCell id="p2-title" value="Framework NegocIA — Pontos Fixos (Frozen Spots) × Pontos Flexíveis (Hot Spots)" style="text;html=1;fontSize=15;fontStyle=1;align=center;fillColor=none;strokeColor=none;" vertex="1" parent="p2-1">
+          <mxGeometry x="0" y="10" width="1360" height="36" as="geometry" />
+        </mxCell>
+
+        <!-- ===== ZONE BACKGROUNDS ===== -->
+
+        <mxCell id="p2-iface-zone" value="HOT SPOTS — Interfaces (pontos 1, 2, 3)" style="text;html=1;strokeColor=#d6b656;fillColor=#fff2cc;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;fontStyle=1;spacingTop=5;spacingLeft=8;" vertex="1" parent="p2-1">
+          <mxGeometry x="10" y="58" width="1000" height="170" as="geometry" />
+        </mxCell>
+
+        <mxCell id="p2-abs-zone" value="HOT SPOTS — Classes Abstratas (pontos 4, 5)" style="text;html=1;strokeColor=#d79b00;fillColor=#ffe6cc;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;fontStyle=1;spacingTop=5;spacingLeft=8;" vertex="1" parent="p2-1">
+          <mxGeometry x="10" y="248" width="1340" height="190" as="geometry" />
+        </mxCell>
+
+        <mxCell id="p2-frozen-zone" value="FROZEN SPOTS — Motores do Framework (reutilizados por todas as instâncias)" style="text;html=1;strokeColor=#6c8ebf;fillColor=#dae8fc;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;fontStyle=1;spacingTop=5;spacingLeft=8;" vertex="1" parent="p2-1">
+          <mxGeometry x="10" y="460" width="1340" height="170" as="geometry" />
+        </mxCell>
+
+        <mxCell id="p2-negocia-zone" value="INSTÂNCIA: NEGOCIA — cobrança de dívidas" style="text;html=1;strokeColor=#82b366;fillColor=#d5e8d4;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;fontStyle=1;spacingTop=5;spacingLeft=8;" vertex="1" parent="p2-1">
+          <mxGeometry x="10" y="652" width="1340" height="150" as="geometry" />
+        </mxCell>
+
+        <mxCell id="p2-saude-zone" value="INSTÂNCIA: SAÚDE — retorno clínico" style="text;html=1;strokeColor=#006EAF;fillColor=#dae8fc;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;fontStyle=1;spacingTop=5;spacingLeft=8;" vertex="1" parent="p2-1">
+          <mxGeometry x="10" y="824" width="1340" height="150" as="geometry" />
+        </mxCell>
+
+        <mxCell id="p2-oficina-zone" value="INSTÂNCIA: OFICINA — revisão veicular" style="text;html=1;strokeColor=#9673a6;fillColor=#e1d5e7;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;fontStyle=1;spacingTop=5;spacingLeft=8;" vertex="1" parent="p2-1">
+          <mxGeometry x="10" y="996" width="1340" height="150" as="geometry" />
+        </mxCell>
+
+        <!-- ===== ROW 1: INTERFACES ===== -->
+
+        <!-- HS1: ConversationOrchestrator -->
+        <mxCell id="p2-hs1" value="«interface»&#xa;ConversationOrchestrator&#xa;― Hot Spot 1 ―" style="swimlane;fontStyle=3;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=50;collapsible=0;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="p2-1">
+          <mxGeometry x="20" y="86" width="300" height="130" as="geometry" />
+        </mxCell>
+        <mxCell style="line;strokeWidth=1;fillColor=none;align=left;rotatable=0;points=[];portConstraint=eastwest;strokeColor=inherit;" value="" vertex="1" parent="p2-hs1">
+          <mxGeometry height="8" width="300" y="50" as="geometry" />
+        </mxCell>
+        <mxCell style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=11;" value="&lt;div&gt;findClienteByTelefone(tel): Cliente?&lt;/div&gt;&lt;div&gt;findOuCriarSessao(clienteId, empId)&lt;/div&gt;&lt;div&gt;responder(sessaoId, msg, empId): string&lt;/div&gt;" vertex="1" parent="p2-hs1">
+          <mxGeometry height="72" width="300" y="58" as="geometry" />
+        </mxCell>
+
+        <!-- HS2: NegotiationContextProvider -->
+        <mxCell id="p2-hs2" value="«interface»&#xa;NegotiationContextProvider&#xa;― Hot Spot 2 ―" style="swimlane;fontStyle=3;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=50;collapsible=0;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="p2-1">
+          <mxGeometry x="350" y="86" width="300" height="130" as="geometry" />
+        </mxCell>
+        <mxCell style="line;strokeWidth=1;fillColor=none;align=left;rotatable=0;points=[];portConstraint=eastwest;strokeColor=inherit;" value="" vertex="1" parent="p2-hs2">
+          <mxGeometry height="8" width="300" y="50" as="geometry" />
+        </mxCell>
+        <mxCell style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=11;" value="&lt;div&gt;buildContext(client, criteria): Context&lt;/div&gt;&lt;div&gt;getTools(): any[]&lt;/div&gt;&lt;div&gt;validateTool(name, args): {aprovado, motivo}&lt;/div&gt;" vertex="1" parent="p2-hs2">
+          <mxGeometry height="72" width="300" y="58" as="geometry" />
+        </mxCell>
+
+        <!-- HS3: NotificationSchedulerProvider -->
+        <mxCell id="p2-hs3" value="«interface»&#xa;NotificationSchedulerProvider&#xa;― Hot Spot 3 ―" style="swimlane;fontStyle=3;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=50;collapsible=0;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="p2-1">
+          <mxGeometry x="680" y="86" width="300" height="130" as="geometry" />
+        </mxCell>
+        <mxCell style="line;strokeWidth=1;fillColor=none;align=left;rotatable=0;points=[];portConstraint=eastwest;strokeColor=inherit;" value="" vertex="1" parent="p2-hs3">
+          <mxGeometry height="8" width="300" y="50" as="geometry" />
+        </mxCell>
+        <mxCell style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=11;" value="&lt;div&gt;getEmpresasAtivas(): string[]&lt;/div&gt;&lt;div&gt;getClientesPendentes(empId): Cliente[]&lt;/div&gt;&lt;div&gt;buildMessage(cliente): string&lt;/div&gt;" vertex="1" parent="p2-hs3">
+          <mxGeometry height="72" width="300" y="58" as="geometry" />
+        </mxCell>
+
+        <!-- ===== ROW 2: ABSTRACT CLASSES ===== -->
+
+        <!-- HS5: NotificationCronService -->
+        <mxCell id="p2-hs5" value="«abstract»&#xa;NotificationCronService&#xa;― Hot Spot 5 ―" style="swimlane;fontStyle=3;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=50;collapsible=0;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" vertex="1" parent="p2-1">
+          <mxGeometry x="680" y="278" width="300" height="150" as="geometry" />
+        </mxCell>
+        <mxCell style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=11;" value="&lt;i&gt;implements NotificationSchedulerProvider&lt;/i&gt;" vertex="1" parent="p2-hs5">
+          <mxGeometry height="24" width="300" y="50" as="geometry" />
+        </mxCell>
+        <mxCell style="line;strokeWidth=1;fillColor=none;align=left;rotatable=0;points=[];portConstraint=eastwest;strokeColor=inherit;" value="" vertex="1" parent="p2-hs5">
+          <mxGeometry height="8" width="300" y="74" as="geometry" />
+        </mxCell>
+        <mxCell style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=11;" value="&lt;div&gt;+ dispararLembretesManual(empId)  ← fixo&lt;/div&gt;&lt;div&gt;# getEmpresasAtivas()  ← abstrato&lt;/div&gt;&lt;div&gt;# getClientesPendentes(empId)  ← abstrato&lt;/div&gt;&lt;div&gt;# buildMessage(cliente)  ← abstrato&lt;/div&gt;" vertex="1" parent="p2-hs5">
+          <mxGeometry height="68" width="300" y="82" as="geometry" />
+        </mxCell>
+
+        <!-- ===== ROW 3: FROZEN SPOTS ===== -->
+
+        <!-- WhatsAppWebhookService -->
+        <mxCell id="p2-wpp-wh" value="«Service»&#xa;WhatsAppWebhookService" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;collapsible=0;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="p2-1">
+          <mxGeometry x="20" y="488" width="300" height="122" as="geometry" />
+        </mxCell>
+        <mxCell style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=11;" value="&lt;i&gt;usa ConversationOrchestrator&lt;/i&gt;" vertex="1" parent="p2-wpp-wh">
+          <mxGeometry height="24" width="300" y="40" as="geometry" />
+        </mxCell>
+        <mxCell style="line;strokeWidth=1;fillColor=none;align=left;rotatable=0;points=[];portConstraint=eastwest;strokeColor=inherit;" value="" vertex="1" parent="p2-wpp-wh">
+          <mxGeometry height="8" width="300" y="64" as="geometry" />
+        </mxCell>
+        <mxCell style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=11;" value="&lt;div&gt;+ handle(tel, msg, orchestrator: ConversationOrchestrator)&lt;/div&gt;" vertex="1" parent="p2-wpp-wh">
+          <mxGeometry height="50" width="300" y="72" as="geometry" />
+        </mxCell>
+
+        <!-- NegotiationEngine -->
+        <mxCell id="p2-neg-eng" value="«Service»&#xa;NegotiationEngine" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;collapsible=0;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="p2-1">
+          <mxGeometry x="350" y="488" width="300" height="122" as="geometry" />
+        </mxCell>
+        <mxCell style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=11;" value="&lt;i&gt;usa NegotiationContextProvider&lt;/i&gt;" vertex="1" parent="p2-neg-eng">
+          <mxGeometry height="24" width="300" y="40" as="geometry" />
+        </mxCell>
+        <mxCell style="line;strokeWidth=1;fillColor=none;align=left;rotatable=0;points=[];portConstraint=eastwest;strokeColor=inherit;" value="" vertex="1" parent="p2-neg-eng">
+          <mxGeometry height="8" width="300" y="64" as="geometry" />
+        </mxCell>
+        <mxCell style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=11;" value="&lt;div&gt;+ iniciar(context: NegotiationContext)&lt;/div&gt;&lt;div&gt;+ conversar(msg, hist, tools, validator)&lt;/div&gt;" vertex="1" parent="p2-neg-eng">
+          <mxGeometry height="50" width="300" y="72" as="geometry" />
+        </mxCell>
+
+        <!-- NotificationEngine -->
+        <mxCell id="p2-notif-eng" value="«Service»&#xa;NotificationEngine" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;collapsible=0;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="p2-1">
+          <mxGeometry x="680" y="488" width="300" height="122" as="geometry" />
+        </mxCell>
+        <mxCell style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=11;" value="&lt;i&gt;usa NotificationSchedulerProvider&lt;/i&gt;" vertex="1" parent="p2-notif-eng">
+          <mxGeometry height="24" width="300" y="40" as="geometry" />
+        </mxCell>
+        <mxCell style="line;strokeWidth=1;fillColor=none;align=left;rotatable=0;points=[];portConstraint=eastwest;strokeColor=inherit;" value="" vertex="1" parent="p2-notif-eng">
+          <mxGeometry height="8" width="300" y="64" as="geometry" />
+        </mxCell>
+        <mxCell style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=11;" value="&lt;div&gt;+ enviarNotificacoes(provider: NotificationSchedulerProvider)&lt;/div&gt;&lt;div&gt;+ enviarNotificacoesParaEmpresa(id, provider)&lt;/div&gt;" vertex="1" parent="p2-notif-eng">
+          <mxGeometry height="50" width="300" y="72" as="geometry" />
+        </mxCell>
+
+        <!-- CrudController mixin -->
+        <mxCell id="p2-crud-ctrl" value="«mixin()»&#xa;CrudController&lt;T&gt;()" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;collapsible=0;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="p2-1">
+          <mxGeometry x="1010" y="488" width="300" height="122" as="geometry" />
+        </mxCell>
+        <mxCell style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=11;" value="&lt;i&gt;usa CrudService&lt;T&gt;&lt;/i&gt;" vertex="1" parent="p2-crud-ctrl">
+          <mxGeometry height="24" width="300" y="40" as="geometry" />
+        </mxCell>
+        <mxCell style="line;strokeWidth=1;fillColor=none;align=left;rotatable=0;points=[];portConstraint=eastwest;strokeColor=inherit;" value="" vertex="1" parent="p2-crud-ctrl">
+          <mxGeometry height="8" width="300" y="64" as="geometry" />
+        </mxCell>
+        <mxCell style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=11;" value="&lt;div&gt;+ findAll() + findOne() + create()&lt;/div&gt;&lt;div&gt;+ update() + remove()  ← gerados pelo mixin&lt;/div&gt;" vertex="1" parent="p2-crud-ctrl">
+          <mxGeometry height="50" width="300" y="72" as="geometry" />
+        </mxCell>
+
+        <!-- HS4 also shown in col4 zone -->
+        <mxCell id="p2-hs4-col4" value="«abstract»&#xa;CrudService&lt;T&gt;&#xa;― Hot Spot 4 ―" style="swimlane;fontStyle=3;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=50;collapsible=0;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" vertex="1" parent="p2-1">
+          <mxGeometry x="1010" y="278" width="300" height="150" as="geometry" />
+        </mxCell>
+        <mxCell style="line;strokeWidth=1;fillColor=none;align=left;rotatable=0;points=[];portConstraint=eastwest;strokeColor=inherit;" value="" vertex="1" parent="p2-hs4-col4">
+          <mxGeometry height="8" width="300" y="50" as="geometry" />
+        </mxCell>
+        <mxCell style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=11;" value="&lt;div&gt;# findAll(empresaId): T[]  ← abstrato&lt;/div&gt;&lt;div&gt;# findById(id, empId): T  ← abstrato&lt;/div&gt;&lt;div&gt;# create(dto, empId): T  ← abstrato&lt;/div&gt;&lt;div&gt;# update(id, empId, dto): T  ← abstrato&lt;/div&gt;&lt;div&gt;# remove(id, empId): void  ← abstrato&lt;/div&gt;" vertex="1" parent="p2-hs4-col4">
+          <mxGeometry height="92" width="300" y="58" as="geometry" />
+        </mxCell>
+
+        <!-- ===== ROW 4: NEGOCIA ===== -->
+
+        <mxCell id="p2-n-proposta" value="PropostaService&#xa;implements ConversationOrchestrator" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="p2-1">
+          <mxGeometry x="20" y="682" width="300" height="100" as="geometry" />
+        </mxCell>
+
+        <mxCell id="p2-n-ctx" value="NegociaContextProvider&#xa;implements NegotiationContextProvider" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="p2-1">
+          <mxGeometry x="350" y="682" width="300" height="100" as="geometry" />
+        </mxCell>
+
+        <mxCell id="p2-n-cob" value="CobrancaService&#xa;extends NotificationCronService" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="p2-1">
+          <mxGeometry x="680" y="682" width="300" height="100" as="geometry" />
+        </mxCell>
+
+        <mxCell id="p2-n-faixa" value="FaixaCriterioService&#xa;extends CrudService&lt;FaixaCriterio&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="p2-1">
+          <mxGeometry x="1010" y="682" width="300" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- ===== ROW 5: SAÚDE ===== -->
+
+        <mxCell id="p2-s-consulta" value="ConsultaService&#xa;implements ConversationOrchestrator" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#006EAF;fontSize=11;" vertex="1" parent="p2-1">
+          <mxGeometry x="20" y="854" width="300" height="100" as="geometry" />
+        </mxCell>
+
+        <mxCell id="p2-s-ctx" value="SaudeContextProvider&#xa;implements NegotiationContextProvider" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#006EAF;fontSize=11;" vertex="1" parent="p2-1">
+          <mxGeometry x="350" y="854" width="300" height="100" as="geometry" />
+        </mxCell>
+
+        <mxCell id="p2-s-notif" value="NotificacaoSaudeService&#xa;extends NotificationCronService" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#006EAF;fontSize=11;" vertex="1" parent="p2-1">
+          <mxGeometry x="680" y="854" width="300" height="100" as="geometry" />
+        </mxCell>
+
+        <mxCell id="p2-s-paciente" value="PacienteService&#xa;extends CrudService&lt;Paciente&gt;&#xa;ConfigRetornoService&#xa;extends CrudService&lt;ConfigRetorno&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#006EAF;fontSize=11;" vertex="1" parent="p2-1">
+          <mxGeometry x="1010" y="854" width="300" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- ===== ROW 6: OFICINA ===== -->
+
+        <mxCell id="p2-o-agend" value="AgendamentoService&#xa;implements ConversationOrchestrator" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="p2-1">
+          <mxGeometry x="20" y="1026" width="300" height="100" as="geometry" />
+        </mxCell>
+
+        <mxCell id="p2-o-ctx" value="OficinaContextProvider&#xa;implements NegotiationContextProvider" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="p2-1">
+          <mxGeometry x="350" y="1026" width="300" height="100" as="geometry" />
+        </mxCell>
+
+        <mxCell id="p2-o-notif" value="NotificacaoOficinaService&#xa;extends NotificationCronService" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="p2-1">
+          <mxGeometry x="680" y="1026" width="300" height="100" as="geometry" />
+        </mxCell>
+
+        <mxCell id="p2-o-cliente" value="ClienteOficinaService&#xa;extends CrudService&lt;ClienteOficina&gt;&#xa;ServicoConfigService&#xa;extends CrudService&lt;ServicoConfig&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="p2-1">
+          <mxGeometry x="1010" y="1026" width="300" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- ===== EDGES: Engine → Interface (dependency) ===== -->
+
+        <mxCell id="p2-e-wpp-hs1" edge="1" parent="p2-1" source="p2-wpp-wh" target="p2-hs1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;dashed=1;strokeColor=#d6b656;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="p2-e-neg-hs2" edge="1" parent="p2-1" source="p2-neg-eng" target="p2-hs2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;dashed=1;strokeColor=#d6b656;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="p2-e-notif-hs3" edge="1" parent="p2-1" source="p2-notif-eng" target="p2-hs3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;dashed=1;strokeColor=#d6b656;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="p2-e-crud-hs4" edge="1" parent="p2-1" source="p2-crud-ctrl" target="p2-hs4-col4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;dashed=1;strokeColor=#d79b00;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- HS5 implements HS3 -->
+        <mxCell id="p2-e-hs5-hs3" edge="1" parent="p2-1" source="p2-hs5" target="p2-hs3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;dashed=1;strokeColor=#d79b00;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ===== EDGES: NEGOCIA → Hot Spots (realization / generalization) ===== -->
+
+        <mxCell id="p2-e-n-prop-hs1" edge="1" parent="p2-1" source="p2-n-proposta" target="p2-hs1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;dashed=1;strokeColor=#82b366;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="p2-e-n-ctx-hs2" edge="1" parent="p2-1" source="p2-n-ctx" target="p2-hs2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;dashed=1;strokeColor=#82b366;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="p2-e-n-cob-hs5" edge="1" parent="p2-1" source="p2-n-cob" target="p2-hs5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;strokeColor=#82b366;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="p2-e-n-faixa-hs4" edge="1" parent="p2-1" source="p2-n-faixa" target="p2-hs4-col4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;strokeColor=#82b366;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ===== EDGES: SAÚDE → Hot Spots ===== -->
+
+        <mxCell id="p2-e-s-cons-hs1" edge="1" parent="p2-1" source="p2-s-consulta" target="p2-hs1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;dashed=1;strokeColor=#006EAF;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="p2-e-s-ctx-hs2" edge="1" parent="p2-1" source="p2-s-ctx" target="p2-hs2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;dashed=1;strokeColor=#006EAF;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="p2-e-s-notif-hs5" edge="1" parent="p2-1" source="p2-s-notif" target="p2-hs5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;strokeColor=#006EAF;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="p2-e-s-paciente-hs4" edge="1" parent="p2-1" source="p2-s-paciente" target="p2-hs4-col4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;strokeColor=#006EAF;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ===== EDGES: OFICINA → Hot Spots ===== -->
+
+        <mxCell id="p2-e-o-agend-hs1" edge="1" parent="p2-1" source="p2-o-agend" target="p2-hs1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;dashed=1;strokeColor=#9673a6;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="p2-e-o-ctx-hs2" edge="1" parent="p2-1" source="p2-o-ctx" target="p2-hs2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;dashed=1;strokeColor=#9673a6;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="p2-e-o-notif-hs5" edge="1" parent="p2-1" source="p2-o-notif" target="p2-hs5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;strokeColor=#9673a6;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="p2-e-o-cliente-hs4" edge="1" parent="p2-1" source="p2-o-cliente" target="p2-hs4-col4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;strokeColor=#9673a6;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ===== LEGEND ===== -->
+        <mxCell id="p2-legend" value="Legenda: → → → dependência (usa) &amp;nbsp;&amp;nbsp; ▷ - - - realização (implements) &amp;nbsp;&amp;nbsp; ▷ ——— generalização (extends)" style="text;html=1;fontSize=10;align=center;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="p2-1">
+          <mxGeometry x="10" y="1158" width="1340" height="30" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
 </mxfile>
