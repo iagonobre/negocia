@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" agent="Claude Sonnet 4.6">
+  <diagram name="Chamadas e Implementações" id="calls-impl-diagram">
+    <mxGraphModel dx="1500" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- ========== TITLE ========== -->
+        <mxCell id="title" value="Framework NegocIA — Fluxo de Chamadas e Implementações" style="text;html=1;fontSize=16;fontStyle=1;align=center;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="0" y="8" width="1580" height="32" as="geometry" />
+        </mxCell>
+
+        <!-- ========== LEGEND ========== -->
+        <mxCell id="leg-bg" value="" style="rounded=0;fillColor=#f5f5f5;strokeColor=#999999;" vertex="1" parent="1">
+          <mxGeometry x="10" y="48" width="1560" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-frozen" value="Ponto Fixo (Frozen Spot)" style="rounded=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="20" y="56" width="210" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-iface" value="«interface» Hot Spot" style="rounded=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;fontStyle=3;" vertex="1" parent="1">
+          <mxGeometry x="240" y="56" width="180" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-abs" value="«abstract» Hot Spot" style="rounded=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;fontStyle=3;" vertex="1" parent="1">
+          <mxGeometry x="430" y="56" width="180" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-neg" value="NEGOCIA" style="rounded=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="620" y="56" width="100" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-sau" value="SAÚDE" style="rounded=1;fillColor=#dae8fc;strokeColor=#006EAF;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="730" y="56" width="100" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-ofi" value="OFICINA" style="rounded=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="840" y="56" width="100" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-dep" value="- - -▷  usa (dependency)" style="text;html=1;fontSize=11;align=left;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="960" y="56" width="210" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-rea" value="———▷  implementa / estende" style="text;html=1;fontSize=11;align=left;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="1180" y="56" width="230" height="28" as="geometry" />
+        </mxCell>
+
+        <!-- ======================================================== -->
+        <!-- CHAIN 1 — ConversationOrchestrator                        -->
+        <!-- ======================================================== -->
+
+        <mxCell id="c1-bg" value="" style="rounded=1;fillColor=#fafafa;strokeColor=#bbbbbb;" vertex="1" parent="1">
+          <mxGeometry x="10" y="102" width="370" height="550" as="geometry" />
+        </mxCell>
+        <mxCell id="c1-header" value="Hot Spot 1 — Sessão de Conversa WhatsApp" style="text;html=1;fontSize=12;fontStyle=1;align=center;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="10" y="106" width="370" height="24" as="geometry" />
+        </mxCell>
+
+        <!-- Engine -->
+        <mxCell id="c1-eng" value="&lt;b&gt;WhatsAppWebhookService&lt;/b&gt;&lt;br&gt;&lt;i&gt;usa ConversationOrchestrator&lt;/i&gt;&lt;br&gt;&lt;font size='10'&gt;handle(tel, msg, orchestrator)&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;align=center;" vertex="1" parent="1">
+          <mxGeometry x="30" y="138" width="330" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- Hot Spot Interface -->
+        <mxCell id="c1-hs1" value="&lt;i&gt;«interface»&lt;/i&gt;&lt;br&gt;&lt;b&gt;ConversationOrchestrator&lt;/b&gt;&lt;br&gt;&lt;font size='10'&gt;findClienteByTelefone(tel)&lt;br&gt;findOuCriarSessao(clienteId, empId)&lt;br&gt;responder(sessaoId, msg, empId)&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;align=center;" vertex="1" parent="1">
+          <mxGeometry x="30" y="260" width="330" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- Implementations -->
+        <mxCell id="c1-n" value="&lt;b&gt;PropostaService&lt;/b&gt;&lt;br&gt;&lt;i&gt;implements ConversationOrchestrator&lt;/i&gt;&lt;br&gt;instância: negocia | cliente: Devedor" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;align=center;" vertex="1" parent="1">
+          <mxGeometry x="30" y="406" width="330" height="64" as="geometry" />
+        </mxCell>
+        <mxCell id="c1-s" value="&lt;b&gt;ConsultaService&lt;/b&gt;&lt;br&gt;&lt;i&gt;implements ConversationOrchestrator&lt;/i&gt;&lt;br&gt;instância: saúde | cliente: Paciente" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#006EAF;fontSize=11;align=center;" vertex="1" parent="1">
+          <mxGeometry x="30" y="480" width="330" height="64" as="geometry" />
+        </mxCell>
+        <mxCell id="c1-o" value="&lt;b&gt;AgendamentoService&lt;/b&gt;&lt;br&gt;&lt;i&gt;implements ConversationOrchestrator&lt;/i&gt;&lt;br&gt;instância: oficina | cliente: ClienteOficina" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;align=center;" vertex="1" parent="1">
+          <mxGeometry x="30" y="554" width="330" height="64" as="geometry" />
+        </mxCell>
+
+        <!-- ======================================================== -->
+        <!-- CHAIN 2 — NegotiationContextProvider                      -->
+        <!-- ======================================================== -->
+
+        <mxCell id="c2-bg" value="" style="rounded=1;fillColor=#fafafa;strokeColor=#bbbbbb;" vertex="1" parent="1">
+          <mxGeometry x="400" y="102" width="370" height="550" as="geometry" />
+        </mxCell>
+        <mxCell id="c2-header" value="Hot Spot 2 — Contexto e Persona do Agente de IA" style="text;html=1;fontSize=12;fontStyle=1;align=center;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="400" y="106" width="370" height="24" as="geometry" />
+        </mxCell>
+
+        <mxCell id="c2-eng" value="&lt;b&gt;NegotiationEngine&lt;/b&gt;&lt;br&gt;&lt;i&gt;usa NegotiationContextProvider&lt;/i&gt;&lt;br&gt;&lt;font size='10'&gt;iniciar(context) | conversar(msg, hist, tools, validator)&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;align=center;" vertex="1" parent="1">
+          <mxGeometry x="420" y="138" width="330" height="70" as="geometry" />
+        </mxCell>
+
+        <mxCell id="c2-hs2" value="&lt;i&gt;«interface»&lt;/i&gt;&lt;br&gt;&lt;b&gt;NegotiationContextProvider&lt;/b&gt;&lt;br&gt;&lt;font size='10'&gt;buildContext(client, criteria): NegotiationContext&lt;br&gt;getTools(): any[]&lt;br&gt;validateTool(name, args): {aprovado, motivo}&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;align=center;" vertex="1" parent="1">
+          <mxGeometry x="420" y="260" width="330" height="100" as="geometry" />
+        </mxCell>
+
+        <mxCell id="c2-n" value="&lt;b&gt;NegociaContextProvider&lt;/b&gt;&lt;br&gt;&lt;i&gt;implements NegotiationContextProvider&lt;/i&gt;&lt;br&gt;agente Marcos | tool: validar_contraproposta" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;align=center;" vertex="1" parent="1">
+          <mxGeometry x="420" y="406" width="330" height="64" as="geometry" />
+        </mxCell>
+        <mxCell id="c2-s" value="&lt;b&gt;SaudeContextProvider&lt;/b&gt;&lt;br&gt;&lt;i&gt;implements NegotiationContextProvider&lt;/i&gt;&lt;br&gt;agente Ana | tool: confirmar_retorno" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#006EAF;fontSize=11;align=center;" vertex="1" parent="1">
+          <mxGeometry x="420" y="480" width="330" height="64" as="geometry" />
+        </mxCell>
+        <mxCell id="c2-o" value="&lt;b&gt;OficinaContextProvider&lt;/b&gt;&lt;br&gt;&lt;i&gt;implements NegotiationContextProvider&lt;/i&gt;&lt;br&gt;agente Carlos | tool: confirmar_agendamento" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;align=center;" vertex="1" parent="1">
+          <mxGeometry x="420" y="554" width="330" height="64" as="geometry" />
+        </mxCell>
+
+        <!-- ======================================================== -->
+        <!-- CHAIN 3 — Notification (2 hot-spot levels)               -->
+        <!-- ======================================================== -->
+
+        <mxCell id="c3-bg" value="" style="rounded=1;fillColor=#fafafa;strokeColor=#bbbbbb;" vertex="1" parent="1">
+          <mxGeometry x="790" y="102" width="370" height="640" as="geometry" />
+        </mxCell>
+        <mxCell id="c3-header" value="Hot Spots 3 + 5 — Notificações Agendadas (2 níveis)" style="text;html=1;fontSize=12;fontStyle=1;align=center;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="790" y="106" width="370" height="24" as="geometry" />
+        </mxCell>
+
+        <mxCell id="c3-eng" value="&lt;b&gt;NotificationEngine&lt;/b&gt;&lt;br&gt;&lt;i&gt;usa NotificationSchedulerProvider&lt;/i&gt;&lt;br&gt;&lt;font size='10'&gt;enviarNotificacoes(provider: NotificationSchedulerProvider)&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;align=center;" vertex="1" parent="1">
+          <mxGeometry x="810" y="138" width="330" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- HS3: Interface -->
+        <mxCell id="c3-hs3" value="&lt;i&gt;«interface» Hot Spot 3&lt;/i&gt;&lt;br&gt;&lt;b&gt;NotificationSchedulerProvider&lt;/b&gt;&lt;br&gt;&lt;font size='10'&gt;getEmpresasAtivas(): string[]&lt;br&gt;getClientesPendentes(empId): Cliente[]&lt;br&gt;buildMessage(cliente): string&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;align=center;" vertex="1" parent="1">
+          <mxGeometry x="810" y="260" width="330" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- HS5: Abstract (implements HS3) -->
+        <mxCell id="c3-hs5" value="&lt;i&gt;«abstract» Hot Spot 5 — implementa HS3&lt;/i&gt;&lt;br&gt;&lt;b&gt;NotificationCronService&lt;/b&gt;&lt;br&gt;&lt;font size='10'&gt;+ dispararLembretesManual() ← fixo (Template Method)&lt;br&gt;# getEmpresasAtivas / getClientesPendentes / buildMessage ← abstratos&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;align=center;" vertex="1" parent="1">
+          <mxGeometry x="810" y="400" width="330" height="90" as="geometry" />
+        </mxCell>
+
+        <!-- Implementations -->
+        <mxCell id="c3-n" value="&lt;b&gt;CobrancaService&lt;/b&gt;&lt;br&gt;&lt;i&gt;extends NotificationCronService&lt;/i&gt;&lt;br&gt;@Cron seg/qua/sex 9h | critério: proposta em aberto" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;align=center;" vertex="1" parent="1">
+          <mxGeometry x="810" y="536" width="330" height="64" as="geometry" />
+        </mxCell>
+        <mxCell id="c3-s" value="&lt;b&gt;NotificacaoSaudeService&lt;/b&gt;&lt;br&gt;&lt;i&gt;extends NotificationCronService&lt;/i&gt;&lt;br&gt;@Cron seg/qua 8h | critério: retorno pendente" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#006EAF;fontSize=11;align=center;" vertex="1" parent="1">
+          <mxGeometry x="810" y="610" width="330" height="64" as="geometry" />
+        </mxCell>
+        <mxCell id="c3-o" value="&lt;b&gt;NotificacaoOficinaService&lt;/b&gt;&lt;br&gt;&lt;i&gt;extends NotificationCronService&lt;/i&gt;&lt;br&gt;@Cron ter/qui 10h | critério: revisão pendente" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;align=center;" vertex="1" parent="1">
+          <mxGeometry x="810" y="684" width="330" height="64" as="geometry" />
+        </mxCell>
+
+        <!-- ======================================================== -->
+        <!-- CHAIN 4 — CrudService<T>                                  -->
+        <!-- ======================================================== -->
+
+        <mxCell id="c4-bg" value="" style="rounded=1;fillColor=#fafafa;strokeColor=#bbbbbb;" vertex="1" parent="1">
+          <mxGeometry x="1180" y="102" width="370" height="640" as="geometry" />
+        </mxCell>
+        <mxCell id="c4-header" value="Hot Spot 4 — CRUD Genérico por Entidade" style="text;html=1;fontSize=12;fontStyle=1;align=center;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="1180" y="106" width="370" height="24" as="geometry" />
+        </mxCell>
+
+        <mxCell id="c4-eng" value="&lt;b&gt;CrudController&lt;T&gt;() — mixin&lt;/b&gt;&lt;br&gt;&lt;i&gt;usa CrudService&lt;T&gt;&lt;/i&gt;&lt;br&gt;&lt;font size='10'&gt;findAll | findOne | create | update | remove ← gerados pelo mixin&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;align=center;" vertex="1" parent="1">
+          <mxGeometry x="1200" y="138" width="330" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- HS4: Abstract (no interface above it) -->
+        <mxCell id="c4-hs4" value="&lt;i&gt;«abstract» Hot Spot 4&lt;/i&gt;&lt;br&gt;&lt;b&gt;CrudService&lt;T&gt;&lt;/b&gt;&lt;br&gt;&lt;font size='10'&gt;# findAll | findById | create | update | remove&lt;br&gt;todos abstratos — instância implementa todos&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;align=center;" vertex="1" parent="1">
+          <mxGeometry x="1200" y="260" width="330" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- Implementations -->
+        <mxCell id="c4-n" value="&lt;b&gt;FaixaCriterioService&lt;FaixaCriterio&gt;&lt;/b&gt;&lt;br&gt;&lt;i&gt;extends CrudService&lt;T&gt;&lt;/i&gt;&lt;br&gt;instância: negocia" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;align=center;" vertex="1" parent="1">
+          <mxGeometry x="1200" y="406" width="330" height="64" as="geometry" />
+        </mxCell>
+        <mxCell id="c4-s" value="&lt;b&gt;PacienteService&lt;Paciente&gt;&lt;/b&gt; + &lt;b&gt;ConfigRetornoService&lt;ConfigRetorno&gt;&lt;/b&gt;&lt;br&gt;&lt;i&gt;extends CrudService&lt;T&gt;&lt;/i&gt;&lt;br&gt;instância: saúde" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#006EAF;fontSize=11;align=center;" vertex="1" parent="1">
+          <mxGeometry x="1200" y="480" width="330" height="64" as="geometry" />
+        </mxCell>
+        <mxCell id="c4-o" value="&lt;b&gt;ClienteOficinaService&lt;ClienteOficina&gt;&lt;/b&gt; + &lt;b&gt;ServicoConfigService&lt;ServicoConfig&gt;&lt;/b&gt;&lt;br&gt;&lt;i&gt;extends CrudService&lt;T&gt;&lt;/i&gt;&lt;br&gt;instância: oficina" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;align=center;" vertex="1" parent="1">
+          <mxGeometry x="1200" y="554" width="330" height="64" as="geometry" />
+        </mxCell>
+
+        <!-- ======================================================== -->
+        <!-- EDGES                                                      -->
+        <!-- ======================================================== -->
+
+        <!-- Chain 1: engine -usa-> hs1 -->
+        <mxCell id="e1-a" edge="1" parent="1" source="c1-eng" target="c1-hs1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;dashed=1;strokeColor=#6c8ebf;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e1-a-lbl" value="usa" style="edgeLabel;html=1;fontSize=10;fontStyle=2;" vertex="1" connectable="0" parent="e1-a">
+          <mxGeometry relative="0.5" as="geometry" />
+        </mxCell>
+        <!-- Chain 1: impls -implementa-> hs1 -->
+        <mxCell id="e1-n" edge="1" parent="1" source="c1-n" target="c1-hs1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;dashed=1;strokeColor=#82b366;strokeWidth=2;" >
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e1-s" edge="1" parent="1" source="c1-s" target="c1-hs1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;dashed=1;strokeColor=#006EAF;strokeWidth=2;" >
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e1-o" edge="1" parent="1" source="c1-o" target="c1-hs1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;dashed=1;strokeColor=#9673a6;strokeWidth=2;" >
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Chain 2: engine -usa-> hs2 -->
+        <mxCell id="e2-a" edge="1" parent="1" source="c2-eng" target="c2-hs2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;dashed=1;strokeColor=#6c8ebf;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2-a-lbl" value="usa" style="edgeLabel;html=1;fontSize=10;fontStyle=2;" vertex="1" connectable="0" parent="e2-a">
+          <mxGeometry relative="0.5" as="geometry" />
+        </mxCell>
+        <mxCell id="e2-n" edge="1" parent="1" source="c2-n" target="c2-hs2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;dashed=1;strokeColor=#82b366;strokeWidth=2;" >
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2-s" edge="1" parent="1" source="c2-s" target="c2-hs2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;dashed=1;strokeColor=#006EAF;strokeWidth=2;" >
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2-o" edge="1" parent="1" source="c2-o" target="c2-hs2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;dashed=1;strokeColor=#9673a6;strokeWidth=2;" >
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Chain 3: engine -usa-> hs3 -->
+        <mxCell id="e3-a" edge="1" parent="1" source="c3-eng" target="c3-hs3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;dashed=1;strokeColor=#6c8ebf;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3-a-lbl" value="usa" style="edgeLabel;html=1;fontSize=10;fontStyle=2;" vertex="1" connectable="0" parent="e3-a">
+          <mxGeometry relative="0.5" as="geometry" />
+        </mxCell>
+        <!-- Chain 3: hs5 -implementa-> hs3 (dashed realization, going UP) -->
+        <mxCell id="e3-hs5-hs3" edge="1" parent="1" source="c3-hs5" target="c3-hs3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;dashed=1;strokeColor=#d79b00;strokeWidth=2;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3-hs5-hs3-lbl" value="implementa" style="edgeLabel;html=1;fontSize=10;fontStyle=2;" vertex="1" connectable="0" parent="e3-hs5-hs3">
+          <mxGeometry relative="0.5" as="geometry" />
+        </mxCell>
+        <!-- Chain 3: impls -estende-> hs5 -->
+        <mxCell id="e3-n" edge="1" parent="1" source="c3-n" target="c3-hs5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;strokeColor=#82b366;strokeWidth=2;" >
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3-s" edge="1" parent="1" source="c3-s" target="c3-hs5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;strokeColor=#006EAF;strokeWidth=2;" >
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3-o" edge="1" parent="1" source="c3-o" target="c3-hs5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;strokeColor=#9673a6;strokeWidth=2;" >
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Chain 4: engine -usa-> hs4 -->
+        <mxCell id="e4-a" edge="1" parent="1" source="c4-eng" target="c4-hs4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;dashed=1;strokeColor=#6c8ebf;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4-a-lbl" value="usa" style="edgeLabel;html=1;fontSize=10;fontStyle=2;" vertex="1" connectable="0" parent="e4-a">
+          <mxGeometry relative="0.5" as="geometry" />
+        </mxCell>
+        <!-- Chain 4: impls -estende-> hs4 -->
+        <mxCell id="e4-n" edge="1" parent="1" source="c4-n" target="c4-hs4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;strokeColor=#82b366;strokeWidth=2;" >
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4-s" edge="1" parent="1" source="c4-s" target="c4-hs4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;strokeColor=#006EAF;strokeWidth=2;" >
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4-o" edge="1" parent="1" source="c4-o" target="c4-hs4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;strokeColor=#9673a6;strokeWidth=2;" >
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
