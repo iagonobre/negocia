@@ -44,3 +44,43 @@ export const StatusProposta = {
 } as const
 
 export type StatusProposta = (typeof StatusProposta)[keyof typeof StatusProposta]
+
+
+export const StatusPaciente = {
+  ATIVO: 'ATIVO',
+  RETORNO_PENDENTE: 'RETORNO_PENDENTE',
+  RETORNO_AGENDADO: 'RETORNO_AGENDADO',
+  ABANDONOU: 'ABANDONOU'
+} as const
+
+export type StatusPaciente = (typeof StatusPaciente)[keyof typeof StatusPaciente]
+
+
+export const StatusConsulta = {
+  PENDENTE: 'PENDENTE',
+  CONFIRMADA: 'CONFIRMADA',
+  REALIZADA: 'REALIZADA',
+  CANCELADA: 'CANCELADA'
+} as const
+
+export type StatusConsulta = (typeof StatusConsulta)[keyof typeof StatusConsulta]
+
+
+export const StatusClienteOficina = {
+  ATIVO: 'ATIVO',
+  REVISAO_PENDENTE: 'REVISAO_PENDENTE',
+  AGENDADO: 'AGENDADO',
+  INATIVO: 'INATIVO'
+} as const
+
+export type StatusClienteOficina = (typeof StatusClienteOficina)[keyof typeof StatusClienteOficina]
+
+
+export const StatusAgendamento = {
+  PENDENTE: 'PENDENTE',
+  CONFIRMADO: 'CONFIRMADO',
+  REALIZADO: 'REALIZADO',
+  CANCELADO: 'CANCELADO'
+} as const
+
+export type StatusAgendamento = (typeof StatusAgendamento)[keyof typeof StatusAgendamento]

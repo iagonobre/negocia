@@ -3,10 +3,33 @@ import { FaixaCriterio } from '../../../generated/prisma/client';
 import { CreateFaixaCriterioDto } from './dto/create-faixa-criterio.dto';
 import { UpdateFaixaCriterioDto } from './dto/update-faixa-criterio.dto';
 import { FaixaCriterioRepository } from './faixa-criterio.repository';
+import { CrudService } from '../../../core/crud/crud.service';
 
 @Injectable()
-export class FaixaCriterioService {
-  constructor(private readonly repository: FaixaCriterioRepository) {}
+export class FaixaCriterioService extends CrudService<FaixaCriterio> {
+  constructor(private readonly repository: FaixaCriterioRepository) {
+    super();
+  }
+
+  // ── CrudService<FaixaCriterio> ───────────────────────────────────────────
+
+  async findAll(empresaId: string): Promise<FaixaCriterio[]> {
+    return this.listarPorEmpresa(empresaId);
+  }
+
+  async findById(id: string, empresaId: string): Promise<FaixaCriterio | null> {
+    return this.buscar(id, empresaId);
+  }
+
+  async update(id: string, dto: any, empresaId: string): Promise<FaixaCriterio> {
+    return this.atualizar(id, empresaId, dto);
+  }
+
+  async remove(id: string, empresaId: string): Promise<void> {
+    return this.deletar(id, empresaId);
+  }
+
+  // ── Domínio faixa-criterio ───────────────────────────────────────────────
 
   async create(dados: CreateFaixaCriterioDto, empresaId: string): Promise<FaixaCriterio> {
     await this.validarFaixa(dados, empresaId);

@@ -1,18 +1,46 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { PropostaRepository } from './proposta.repository';
+import { DevedorRepository } from '../devedor/devedor.repository';
 import { NegotiationEngine } from '../../../core/negotiation/negotiation.engine';
 import { NegociaContextProvider } from '../negocia-context.provider';
+import { ConversationOrchestrator } from '../../../core/whatsapp/conversation-orchestrator.interface';
 import { NegociacaoEmAndamentoException } from '../exceptions/negociacao-em-andamento.exception';
 import { FaixaCriterioNaoEncontradaException } from '../exceptions/faixa-criterio-nao-encontrada.exception';
 import { PropostaJaFinalizadaException } from '../exceptions/proposta-ja-finalizada.exception';
 
 @Injectable()
-export class PropostaService {
+export class PropostaService implements ConversationOrchestrator {
   constructor(
     private readonly propostaRepository: PropostaRepository,
+    private readonly devedorRepository: DevedorRepository,
     private readonly negotiationEngine: NegotiationEngine,
     private readonly negociaContextProvider: NegociaContextProvider,
   ) {}
+
+  // ── ConversationOrchestrator ─────────────────────────────────────────────
+
+  async findClienteByTelefone(telefone: string): Promise<{ id: string; empresaId: string } | null> {
+    const devedor = await this.devedorRepository.findByTelefone(telefone);
+    if (!devedor) return null;
+    return { id: devedor.id, empresaId: devedor.empresaId };
+  }
+
+  async findOuCriarSessao(
+    devedorId: string,
+    empresaId: string,
+  ): Promise<{ id: string; mensagemInicial?: string }> {
+    const existente = await this.propostaRepository.findPendentePorDevedor(devedorId);
+    if (existente) return { id: existente.id };
+    const nova = await this.gerarProposta(devedorId, empresaId);
+    return { id: nova.id, mensagemInicial: nova.ultimaMensagemAgente };
+  }
+
+  async responder(propostaId: string, mensagem: string, empresaId: string): Promise<string> {
+    const { mensagemAgente } = await this.conversar(propostaId, empresaId, mensagem);
+    return mensagemAgente;
+  }
+
+  // ── Domínio negocia ──────────────────────────────────────────────────────
 
   async gerarProposta(devedorId: string, empresaId: string) {
     const propostaPendente = await this.propostaRepository.findPendentePorDevedor(devedorId);

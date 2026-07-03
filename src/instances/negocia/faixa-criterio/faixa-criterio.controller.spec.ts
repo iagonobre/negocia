@@ -23,10 +23,10 @@ const mockFaixa = {
 
 const mockFaixaCriterioService = {
   create: jest.fn(),
-  listarPorEmpresa: jest.fn(),
-  buscar: jest.fn(),
-  atualizar: jest.fn(),
-  deletar: jest.fn(),
+  findAll: jest.fn(),
+  findById: jest.fn(),
+  update: jest.fn(),
+  remove: jest.fn(),
 };
 
 const mockAuthGuard = {
@@ -63,7 +63,7 @@ describe('FaixaCriterioController', () => {
     expect(controller).toBeDefined();
   });
 
-  describe('criar', () => {
+  describe('create', () => {
     it('deve criar uma faixa passando empresaId do token', async () => {
       const dto: CreateFaixaCriterioDto = {
         descricao: 'Dívidas pequenas',
@@ -77,7 +77,7 @@ describe('FaixaCriterioController', () => {
 
       mockFaixaCriterioService.create.mockResolvedValue(mockFaixa);
 
-      const resultado = await controller.criar(mockJwtPayload, dto);
+      const resultado = await controller.create(dto, mockJwtPayload);
 
       expect(resultado).toEqual(mockFaixa);
       expect(mockFaixaCriterioService.create).toHaveBeenCalledWith(dto, 'uuid-empresa-123');
@@ -87,93 +87,93 @@ describe('FaixaCriterioController', () => {
       mockFaixaCriterioService.create.mockRejectedValue(new Error('Sobreposição de faixas'));
 
       await expect(
-        controller.criar(mockJwtPayload, {} as CreateFaixaCriterioDto),
+        controller.create({} as CreateFaixaCriterioDto, mockJwtPayload),
       ).rejects.toThrow('Sobreposição de faixas');
     });
   });
 
-  describe('listar', () => {
+  describe('findAll', () => {
     it('deve listar as faixas da empresa logada', async () => {
       const faixas = [mockFaixa];
-      mockFaixaCriterioService.listarPorEmpresa.mockResolvedValue(faixas);
+      mockFaixaCriterioService.findAll.mockResolvedValue(faixas);
 
-      const resultado = await controller.listar(mockJwtPayload);
+      const resultado = await controller.findAll(mockJwtPayload);
 
       expect(resultado).toEqual(faixas);
-      expect(mockFaixaCriterioService.listarPorEmpresa).toHaveBeenCalledWith('uuid-empresa-123');
+      expect(mockFaixaCriterioService.findAll).toHaveBeenCalledWith('uuid-empresa-123');
     });
 
     it('deve retornar lista vazia se empresa não tiver faixas', async () => {
-      mockFaixaCriterioService.listarPorEmpresa.mockResolvedValue([]);
+      mockFaixaCriterioService.findAll.mockResolvedValue([]);
 
-      const resultado = await controller.listar(mockJwtPayload);
+      const resultado = await controller.findAll(mockJwtPayload);
 
       expect(resultado).toEqual([]);
     });
   });
 
-  describe('buscar', () => {
+  describe('findById', () => {
     it('deve buscar uma faixa por id com empresaId do token', async () => {
-      mockFaixaCriterioService.buscar.mockResolvedValue(mockFaixa);
+      mockFaixaCriterioService.findById.mockResolvedValue(mockFaixa);
 
-      const resultado = await controller.buscar('uuid-faixa-123', mockJwtPayload);
+      const resultado = await controller.findById('uuid-faixa-123', mockJwtPayload);
 
       expect(resultado).toEqual(mockFaixa);
-      expect(mockFaixaCriterioService.buscar).toHaveBeenCalledWith('uuid-faixa-123', 'uuid-empresa-123');
+      expect(mockFaixaCriterioService.findById).toHaveBeenCalledWith('uuid-faixa-123', 'uuid-empresa-123');
     });
 
     it('deve propagar erro do service', async () => {
-      mockFaixaCriterioService.buscar.mockRejectedValue(new Error('Faixa não encontrada.'));
+      mockFaixaCriterioService.findById.mockRejectedValue(new Error('Faixa não encontrada.'));
 
       await expect(
-        controller.buscar('uuid-inexistente', mockJwtPayload),
+        controller.findById('uuid-inexistente', mockJwtPayload),
       ).rejects.toThrow('Faixa não encontrada.');
     });
   });
 
-  describe('atualizar', () => {
-    it('deve atualizar uma faixa passando id e empresaId do token', async () => {
+  describe('update', () => {
+    it('deve atualizar uma faixa passando id, dto e empresaId do token', async () => {
       const dto: UpdateFaixaCriterioDto = { descontoMaximo: 20 };
       const faixaAtualizada = { ...mockFaixa, descontoMaximo: 20 };
 
-      mockFaixaCriterioService.atualizar.mockResolvedValue(faixaAtualizada);
+      mockFaixaCriterioService.update.mockResolvedValue(faixaAtualizada);
 
-      const resultado = await controller.atualizar('uuid-faixa-123', mockJwtPayload, dto);
+      const resultado = await controller.update('uuid-faixa-123', dto, mockJwtPayload);
 
       expect(resultado).toEqual(faixaAtualizada);
-      expect(mockFaixaCriterioService.atualizar).toHaveBeenCalledWith(
+      expect(mockFaixaCriterioService.update).toHaveBeenCalledWith(
         'uuid-faixa-123',
-        'uuid-empresa-123',
         dto,
+        'uuid-empresa-123',
       );
     });
 
     it('deve propagar erro do service', async () => {
-      mockFaixaCriterioService.atualizar.mockRejectedValue(new Error('Faixa não encontrada'));
+      mockFaixaCriterioService.update.mockRejectedValue(new Error('Faixa não encontrada'));
 
       await expect(
-        controller.atualizar('uuid-inexistente', mockJwtPayload, {}),
+        controller.update('uuid-inexistente', {}, mockJwtPayload),
       ).rejects.toThrow('Faixa não encontrada');
     });
   });
 
-  describe('deletar', () => {
+  describe('remove', () => {
     it('deve deletar uma faixa passando id e empresaId do token', async () => {
-      mockFaixaCriterioService.deletar.mockResolvedValue(undefined);
+      mockFaixaCriterioService.remove.mockResolvedValue(undefined);
 
-      await controller.deletar('uuid-faixa-123', mockJwtPayload);
+      await controller.remove('uuid-faixa-123', mockJwtPayload);
 
-      expect(mockFaixaCriterioService.deletar).toHaveBeenCalledWith(
+      expect(mockFaixaCriterioService.remove).toHaveBeenCalledWith(
         'uuid-faixa-123',
         'uuid-empresa-123',
       );
     });
 
     it('deve propagar erro do service', async () => {
-      mockFaixaCriterioService.deletar.mockRejectedValue(new Error('Faixa não encontrada'));
+      mockFaixaCriterioService.remove.mockRejectedValue(new Error('Faixa não encontrada'));
 
       await expect(
-        controller.deletar('uuid-inexistente', mockJwtPayload),
+        controller.remove('uuid-inexistente', mockJwtPayload),
       ).rejects.toThrow('Faixa não encontrada');
     });
   });

@@ -210,6 +210,12 @@ export type EmpresaWhereInput = {
   devedores?: Prisma.DevedorListRelationFilter
   faixasCriterio?: Prisma.FaixaCriterioListRelationFilter
   propostas?: Prisma.PropostaListRelationFilter
+  configRetornos?: Prisma.ConfigRetornoListRelationFilter
+  pacientes?: Prisma.PacienteListRelationFilter
+  consultas?: Prisma.ConsultaListRelationFilter
+  servicosConfig?: Prisma.ServicoConfigListRelationFilter
+  clientesOficina?: Prisma.ClienteOficinaListRelationFilter
+  agendamentos?: Prisma.AgendamentoListRelationFilter
 }
 
 export type EmpresaOrderByWithRelationInput = {
@@ -225,6 +231,12 @@ export type EmpresaOrderByWithRelationInput = {
   devedores?: Prisma.DevedorOrderByRelationAggregateInput
   faixasCriterio?: Prisma.FaixaCriterioOrderByRelationAggregateInput
   propostas?: Prisma.PropostaOrderByRelationAggregateInput
+  configRetornos?: Prisma.ConfigRetornoOrderByRelationAggregateInput
+  pacientes?: Prisma.PacienteOrderByRelationAggregateInput
+  consultas?: Prisma.ConsultaOrderByRelationAggregateInput
+  servicosConfig?: Prisma.ServicoConfigOrderByRelationAggregateInput
+  clientesOficina?: Prisma.ClienteOficinaOrderByRelationAggregateInput
+  agendamentos?: Prisma.AgendamentoOrderByRelationAggregateInput
 }
 
 export type EmpresaWhereUniqueInput = Prisma.AtLeast<{
@@ -243,6 +255,12 @@ export type EmpresaWhereUniqueInput = Prisma.AtLeast<{
   devedores?: Prisma.DevedorListRelationFilter
   faixasCriterio?: Prisma.FaixaCriterioListRelationFilter
   propostas?: Prisma.PropostaListRelationFilter
+  configRetornos?: Prisma.ConfigRetornoListRelationFilter
+  pacientes?: Prisma.PacienteListRelationFilter
+  consultas?: Prisma.ConsultaListRelationFilter
+  servicosConfig?: Prisma.ServicoConfigListRelationFilter
+  clientesOficina?: Prisma.ClienteOficinaListRelationFilter
+  agendamentos?: Prisma.AgendamentoListRelationFilter
 }, "id" | "email" | "cnpj">
 
 export type EmpresaOrderByWithAggregationInput = {
@@ -286,6 +304,12 @@ export type EmpresaCreateInput = {
   devedores?: Prisma.DevedorCreateNestedManyWithoutEmpresaInput
   faixasCriterio?: Prisma.FaixaCriterioCreateNestedManyWithoutEmpresaInput
   propostas?: Prisma.PropostaCreateNestedManyWithoutEmpresaInput
+  configRetornos?: Prisma.ConfigRetornoCreateNestedManyWithoutEmpresaInput
+  pacientes?: Prisma.PacienteCreateNestedManyWithoutEmpresaInput
+  consultas?: Prisma.ConsultaCreateNestedManyWithoutEmpresaInput
+  servicosConfig?: Prisma.ServicoConfigCreateNestedManyWithoutEmpresaInput
+  clientesOficina?: Prisma.ClienteOficinaCreateNestedManyWithoutEmpresaInput
+  agendamentos?: Prisma.AgendamentoCreateNestedManyWithoutEmpresaInput
 }
 
 export type EmpresaUncheckedCreateInput = {
@@ -301,6 +325,12 @@ export type EmpresaUncheckedCreateInput = {
   devedores?: Prisma.DevedorUncheckedCreateNestedManyWithoutEmpresaInput
   faixasCriterio?: Prisma.FaixaCriterioUncheckedCreateNestedManyWithoutEmpresaInput
   propostas?: Prisma.PropostaUncheckedCreateNestedManyWithoutEmpresaInput
+  configRetornos?: Prisma.ConfigRetornoUncheckedCreateNestedManyWithoutEmpresaInput
+  pacientes?: Prisma.PacienteUncheckedCreateNestedManyWithoutEmpresaInput
+  consultas?: Prisma.ConsultaUncheckedCreateNestedManyWithoutEmpresaInput
+  servicosConfig?: Prisma.ServicoConfigUncheckedCreateNestedManyWithoutEmpresaInput
+  clientesOficina?: Prisma.ClienteOficinaUncheckedCreateNestedManyWithoutEmpresaInput
+  agendamentos?: Prisma.AgendamentoUncheckedCreateNestedManyWithoutEmpresaInput
 }
 
 export type EmpresaUpdateInput = {
@@ -316,6 +346,12 @@ export type EmpresaUpdateInput = {
   devedores?: Prisma.DevedorUpdateManyWithoutEmpresaNestedInput
   faixasCriterio?: Prisma.FaixaCriterioUpdateManyWithoutEmpresaNestedInput
   propostas?: Prisma.PropostaUpdateManyWithoutEmpresaNestedInput
+  configRetornos?: Prisma.ConfigRetornoUpdateManyWithoutEmpresaNestedInput
+  pacientes?: Prisma.PacienteUpdateManyWithoutEmpresaNestedInput
+  consultas?: Prisma.ConsultaUpdateManyWithoutEmpresaNestedInput
+  servicosConfig?: Prisma.ServicoConfigUpdateManyWithoutEmpresaNestedInput
+  clientesOficina?: Prisma.ClienteOficinaUpdateManyWithoutEmpresaNestedInput
+  agendamentos?: Prisma.AgendamentoUpdateManyWithoutEmpresaNestedInput
 }
 
 export type EmpresaUncheckedUpdateInput = {
@@ -331,6 +367,12 @@ export type EmpresaUncheckedUpdateInput = {
   devedores?: Prisma.DevedorUncheckedUpdateManyWithoutEmpresaNestedInput
   faixasCriterio?: Prisma.FaixaCriterioUncheckedUpdateManyWithoutEmpresaNestedInput
   propostas?: Prisma.PropostaUncheckedUpdateManyWithoutEmpresaNestedInput
+  configRetornos?: Prisma.ConfigRetornoUncheckedUpdateManyWithoutEmpresaNestedInput
+  pacientes?: Prisma.PacienteUncheckedUpdateManyWithoutEmpresaNestedInput
+  consultas?: Prisma.ConsultaUncheckedUpdateManyWithoutEmpresaNestedInput
+  servicosConfig?: Prisma.ServicoConfigUncheckedUpdateManyWithoutEmpresaNestedInput
+  clientesOficina?: Prisma.ClienteOficinaUncheckedUpdateManyWithoutEmpresaNestedInput
+  agendamentos?: Prisma.AgendamentoUncheckedUpdateManyWithoutEmpresaNestedInput
 }
 
 export type EmpresaCreateManyInput = {
@@ -468,6 +510,90 @@ export type EmpresaUpdateOneRequiredWithoutPropostasNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.EmpresaUpdateToOneWithWhereWithoutPropostasInput, Prisma.EmpresaUpdateWithoutPropostasInput>, Prisma.EmpresaUncheckedUpdateWithoutPropostasInput>
 }
 
+export type EmpresaCreateNestedOneWithoutConfigRetornosInput = {
+  create?: Prisma.XOR<Prisma.EmpresaCreateWithoutConfigRetornosInput, Prisma.EmpresaUncheckedCreateWithoutConfigRetornosInput>
+  connectOrCreate?: Prisma.EmpresaCreateOrConnectWithoutConfigRetornosInput
+  connect?: Prisma.EmpresaWhereUniqueInput
+}
+
+export type EmpresaUpdateOneRequiredWithoutConfigRetornosNestedInput = {
+  create?: Prisma.XOR<Prisma.EmpresaCreateWithoutConfigRetornosInput, Prisma.EmpresaUncheckedCreateWithoutConfigRetornosInput>
+  connectOrCreate?: Prisma.EmpresaCreateOrConnectWithoutConfigRetornosInput
+  upsert?: Prisma.EmpresaUpsertWithoutConfigRetornosInput
+  connect?: Prisma.EmpresaWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.EmpresaUpdateToOneWithWhereWithoutConfigRetornosInput, Prisma.EmpresaUpdateWithoutConfigRetornosInput>, Prisma.EmpresaUncheckedUpdateWithoutConfigRetornosInput>
+}
+
+export type EmpresaCreateNestedOneWithoutPacientesInput = {
+  create?: Prisma.XOR<Prisma.EmpresaCreateWithoutPacientesInput, Prisma.EmpresaUncheckedCreateWithoutPacientesInput>
+  connectOrCreate?: Prisma.EmpresaCreateOrConnectWithoutPacientesInput
+  connect?: Prisma.EmpresaWhereUniqueInput
+}
+
+export type EmpresaUpdateOneRequiredWithoutPacientesNestedInput = {
+  create?: Prisma.XOR<Prisma.EmpresaCreateWithoutPacientesInput, Prisma.EmpresaUncheckedCreateWithoutPacientesInput>
+  connectOrCreate?: Prisma.EmpresaCreateOrConnectWithoutPacientesInput
+  upsert?: Prisma.EmpresaUpsertWithoutPacientesInput
+  connect?: Prisma.EmpresaWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.EmpresaUpdateToOneWithWhereWithoutPacientesInput, Prisma.EmpresaUpdateWithoutPacientesInput>, Prisma.EmpresaUncheckedUpdateWithoutPacientesInput>
+}
+
+export type EmpresaCreateNestedOneWithoutConsultasInput = {
+  create?: Prisma.XOR<Prisma.EmpresaCreateWithoutConsultasInput, Prisma.EmpresaUncheckedCreateWithoutConsultasInput>
+  connectOrCreate?: Prisma.EmpresaCreateOrConnectWithoutConsultasInput
+  connect?: Prisma.EmpresaWhereUniqueInput
+}
+
+export type EmpresaUpdateOneRequiredWithoutConsultasNestedInput = {
+  create?: Prisma.XOR<Prisma.EmpresaCreateWithoutConsultasInput, Prisma.EmpresaUncheckedCreateWithoutConsultasInput>
+  connectOrCreate?: Prisma.EmpresaCreateOrConnectWithoutConsultasInput
+  upsert?: Prisma.EmpresaUpsertWithoutConsultasInput
+  connect?: Prisma.EmpresaWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.EmpresaUpdateToOneWithWhereWithoutConsultasInput, Prisma.EmpresaUpdateWithoutConsultasInput>, Prisma.EmpresaUncheckedUpdateWithoutConsultasInput>
+}
+
+export type EmpresaCreateNestedOneWithoutServicosConfigInput = {
+  create?: Prisma.XOR<Prisma.EmpresaCreateWithoutServicosConfigInput, Prisma.EmpresaUncheckedCreateWithoutServicosConfigInput>
+  connectOrCreate?: Prisma.EmpresaCreateOrConnectWithoutServicosConfigInput
+  connect?: Prisma.EmpresaWhereUniqueInput
+}
+
+export type EmpresaUpdateOneRequiredWithoutServicosConfigNestedInput = {
+  create?: Prisma.XOR<Prisma.EmpresaCreateWithoutServicosConfigInput, Prisma.EmpresaUncheckedCreateWithoutServicosConfigInput>
+  connectOrCreate?: Prisma.EmpresaCreateOrConnectWithoutServicosConfigInput
+  upsert?: Prisma.EmpresaUpsertWithoutServicosConfigInput
+  connect?: Prisma.EmpresaWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.EmpresaUpdateToOneWithWhereWithoutServicosConfigInput, Prisma.EmpresaUpdateWithoutServicosConfigInput>, Prisma.EmpresaUncheckedUpdateWithoutServicosConfigInput>
+}
+
+export type EmpresaCreateNestedOneWithoutClientesOficinaInput = {
+  create?: Prisma.XOR<Prisma.EmpresaCreateWithoutClientesOficinaInput, Prisma.EmpresaUncheckedCreateWithoutClientesOficinaInput>
+  connectOrCreate?: Prisma.EmpresaCreateOrConnectWithoutClientesOficinaInput
+  connect?: Prisma.EmpresaWhereUniqueInput
+}
+
+export type EmpresaUpdateOneRequiredWithoutClientesOficinaNestedInput = {
+  create?: Prisma.XOR<Prisma.EmpresaCreateWithoutClientesOficinaInput, Prisma.EmpresaUncheckedCreateWithoutClientesOficinaInput>
+  connectOrCreate?: Prisma.EmpresaCreateOrConnectWithoutClientesOficinaInput
+  upsert?: Prisma.EmpresaUpsertWithoutClientesOficinaInput
+  connect?: Prisma.EmpresaWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.EmpresaUpdateToOneWithWhereWithoutClientesOficinaInput, Prisma.EmpresaUpdateWithoutClientesOficinaInput>, Prisma.EmpresaUncheckedUpdateWithoutClientesOficinaInput>
+}
+
+export type EmpresaCreateNestedOneWithoutAgendamentosInput = {
+  create?: Prisma.XOR<Prisma.EmpresaCreateWithoutAgendamentosInput, Prisma.EmpresaUncheckedCreateWithoutAgendamentosInput>
+  connectOrCreate?: Prisma.EmpresaCreateOrConnectWithoutAgendamentosInput
+  connect?: Prisma.EmpresaWhereUniqueInput
+}
+
+export type EmpresaUpdateOneRequiredWithoutAgendamentosNestedInput = {
+  create?: Prisma.XOR<Prisma.EmpresaCreateWithoutAgendamentosInput, Prisma.EmpresaUncheckedCreateWithoutAgendamentosInput>
+  connectOrCreate?: Prisma.EmpresaCreateOrConnectWithoutAgendamentosInput
+  upsert?: Prisma.EmpresaUpsertWithoutAgendamentosInput
+  connect?: Prisma.EmpresaWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.EmpresaUpdateToOneWithWhereWithoutAgendamentosInput, Prisma.EmpresaUpdateWithoutAgendamentosInput>, Prisma.EmpresaUncheckedUpdateWithoutAgendamentosInput>
+}
+
 export type EmpresaCreateWithoutEnderecoInput = {
   id?: string
   nome: string
@@ -480,6 +606,12 @@ export type EmpresaCreateWithoutEnderecoInput = {
   devedores?: Prisma.DevedorCreateNestedManyWithoutEmpresaInput
   faixasCriterio?: Prisma.FaixaCriterioCreateNestedManyWithoutEmpresaInput
   propostas?: Prisma.PropostaCreateNestedManyWithoutEmpresaInput
+  configRetornos?: Prisma.ConfigRetornoCreateNestedManyWithoutEmpresaInput
+  pacientes?: Prisma.PacienteCreateNestedManyWithoutEmpresaInput
+  consultas?: Prisma.ConsultaCreateNestedManyWithoutEmpresaInput
+  servicosConfig?: Prisma.ServicoConfigCreateNestedManyWithoutEmpresaInput
+  clientesOficina?: Prisma.ClienteOficinaCreateNestedManyWithoutEmpresaInput
+  agendamentos?: Prisma.AgendamentoCreateNestedManyWithoutEmpresaInput
 }
 
 export type EmpresaUncheckedCreateWithoutEnderecoInput = {
@@ -494,6 +626,12 @@ export type EmpresaUncheckedCreateWithoutEnderecoInput = {
   devedores?: Prisma.DevedorUncheckedCreateNestedManyWithoutEmpresaInput
   faixasCriterio?: Prisma.FaixaCriterioUncheckedCreateNestedManyWithoutEmpresaInput
   propostas?: Prisma.PropostaUncheckedCreateNestedManyWithoutEmpresaInput
+  configRetornos?: Prisma.ConfigRetornoUncheckedCreateNestedManyWithoutEmpresaInput
+  pacientes?: Prisma.PacienteUncheckedCreateNestedManyWithoutEmpresaInput
+  consultas?: Prisma.ConsultaUncheckedCreateNestedManyWithoutEmpresaInput
+  servicosConfig?: Prisma.ServicoConfigUncheckedCreateNestedManyWithoutEmpresaInput
+  clientesOficina?: Prisma.ClienteOficinaUncheckedCreateNestedManyWithoutEmpresaInput
+  agendamentos?: Prisma.AgendamentoUncheckedCreateNestedManyWithoutEmpresaInput
 }
 
 export type EmpresaCreateOrConnectWithoutEnderecoInput = {
@@ -524,6 +662,12 @@ export type EmpresaUpdateWithoutEnderecoInput = {
   devedores?: Prisma.DevedorUpdateManyWithoutEmpresaNestedInput
   faixasCriterio?: Prisma.FaixaCriterioUpdateManyWithoutEmpresaNestedInput
   propostas?: Prisma.PropostaUpdateManyWithoutEmpresaNestedInput
+  configRetornos?: Prisma.ConfigRetornoUpdateManyWithoutEmpresaNestedInput
+  pacientes?: Prisma.PacienteUpdateManyWithoutEmpresaNestedInput
+  consultas?: Prisma.ConsultaUpdateManyWithoutEmpresaNestedInput
+  servicosConfig?: Prisma.ServicoConfigUpdateManyWithoutEmpresaNestedInput
+  clientesOficina?: Prisma.ClienteOficinaUpdateManyWithoutEmpresaNestedInput
+  agendamentos?: Prisma.AgendamentoUpdateManyWithoutEmpresaNestedInput
 }
 
 export type EmpresaUncheckedUpdateWithoutEnderecoInput = {
@@ -538,6 +682,12 @@ export type EmpresaUncheckedUpdateWithoutEnderecoInput = {
   devedores?: Prisma.DevedorUncheckedUpdateManyWithoutEmpresaNestedInput
   faixasCriterio?: Prisma.FaixaCriterioUncheckedUpdateManyWithoutEmpresaNestedInput
   propostas?: Prisma.PropostaUncheckedUpdateManyWithoutEmpresaNestedInput
+  configRetornos?: Prisma.ConfigRetornoUncheckedUpdateManyWithoutEmpresaNestedInput
+  pacientes?: Prisma.PacienteUncheckedUpdateManyWithoutEmpresaNestedInput
+  consultas?: Prisma.ConsultaUncheckedUpdateManyWithoutEmpresaNestedInput
+  servicosConfig?: Prisma.ServicoConfigUncheckedUpdateManyWithoutEmpresaNestedInput
+  clientesOficina?: Prisma.ClienteOficinaUncheckedUpdateManyWithoutEmpresaNestedInput
+  agendamentos?: Prisma.AgendamentoUncheckedUpdateManyWithoutEmpresaNestedInput
 }
 
 export type EmpresaCreateWithoutDevedoresInput = {
@@ -552,6 +702,12 @@ export type EmpresaCreateWithoutDevedoresInput = {
   endereco?: Prisma.EnderecoCreateNestedOneWithoutEmpresaInput
   faixasCriterio?: Prisma.FaixaCriterioCreateNestedManyWithoutEmpresaInput
   propostas?: Prisma.PropostaCreateNestedManyWithoutEmpresaInput
+  configRetornos?: Prisma.ConfigRetornoCreateNestedManyWithoutEmpresaInput
+  pacientes?: Prisma.PacienteCreateNestedManyWithoutEmpresaInput
+  consultas?: Prisma.ConsultaCreateNestedManyWithoutEmpresaInput
+  servicosConfig?: Prisma.ServicoConfigCreateNestedManyWithoutEmpresaInput
+  clientesOficina?: Prisma.ClienteOficinaCreateNestedManyWithoutEmpresaInput
+  agendamentos?: Prisma.AgendamentoCreateNestedManyWithoutEmpresaInput
 }
 
 export type EmpresaUncheckedCreateWithoutDevedoresInput = {
@@ -566,6 +722,12 @@ export type EmpresaUncheckedCreateWithoutDevedoresInput = {
   endereco?: Prisma.EnderecoUncheckedCreateNestedOneWithoutEmpresaInput
   faixasCriterio?: Prisma.FaixaCriterioUncheckedCreateNestedManyWithoutEmpresaInput
   propostas?: Prisma.PropostaUncheckedCreateNestedManyWithoutEmpresaInput
+  configRetornos?: Prisma.ConfigRetornoUncheckedCreateNestedManyWithoutEmpresaInput
+  pacientes?: Prisma.PacienteUncheckedCreateNestedManyWithoutEmpresaInput
+  consultas?: Prisma.ConsultaUncheckedCreateNestedManyWithoutEmpresaInput
+  servicosConfig?: Prisma.ServicoConfigUncheckedCreateNestedManyWithoutEmpresaInput
+  clientesOficina?: Prisma.ClienteOficinaUncheckedCreateNestedManyWithoutEmpresaInput
+  agendamentos?: Prisma.AgendamentoUncheckedCreateNestedManyWithoutEmpresaInput
 }
 
 export type EmpresaCreateOrConnectWithoutDevedoresInput = {
@@ -596,6 +758,12 @@ export type EmpresaUpdateWithoutDevedoresInput = {
   endereco?: Prisma.EnderecoUpdateOneWithoutEmpresaNestedInput
   faixasCriterio?: Prisma.FaixaCriterioUpdateManyWithoutEmpresaNestedInput
   propostas?: Prisma.PropostaUpdateManyWithoutEmpresaNestedInput
+  configRetornos?: Prisma.ConfigRetornoUpdateManyWithoutEmpresaNestedInput
+  pacientes?: Prisma.PacienteUpdateManyWithoutEmpresaNestedInput
+  consultas?: Prisma.ConsultaUpdateManyWithoutEmpresaNestedInput
+  servicosConfig?: Prisma.ServicoConfigUpdateManyWithoutEmpresaNestedInput
+  clientesOficina?: Prisma.ClienteOficinaUpdateManyWithoutEmpresaNestedInput
+  agendamentos?: Prisma.AgendamentoUpdateManyWithoutEmpresaNestedInput
 }
 
 export type EmpresaUncheckedUpdateWithoutDevedoresInput = {
@@ -610,6 +778,12 @@ export type EmpresaUncheckedUpdateWithoutDevedoresInput = {
   endereco?: Prisma.EnderecoUncheckedUpdateOneWithoutEmpresaNestedInput
   faixasCriterio?: Prisma.FaixaCriterioUncheckedUpdateManyWithoutEmpresaNestedInput
   propostas?: Prisma.PropostaUncheckedUpdateManyWithoutEmpresaNestedInput
+  configRetornos?: Prisma.ConfigRetornoUncheckedUpdateManyWithoutEmpresaNestedInput
+  pacientes?: Prisma.PacienteUncheckedUpdateManyWithoutEmpresaNestedInput
+  consultas?: Prisma.ConsultaUncheckedUpdateManyWithoutEmpresaNestedInput
+  servicosConfig?: Prisma.ServicoConfigUncheckedUpdateManyWithoutEmpresaNestedInput
+  clientesOficina?: Prisma.ClienteOficinaUncheckedUpdateManyWithoutEmpresaNestedInput
+  agendamentos?: Prisma.AgendamentoUncheckedUpdateManyWithoutEmpresaNestedInput
 }
 
 export type EmpresaCreateWithoutFaixasCriterioInput = {
@@ -624,6 +798,12 @@ export type EmpresaCreateWithoutFaixasCriterioInput = {
   endereco?: Prisma.EnderecoCreateNestedOneWithoutEmpresaInput
   devedores?: Prisma.DevedorCreateNestedManyWithoutEmpresaInput
   propostas?: Prisma.PropostaCreateNestedManyWithoutEmpresaInput
+  configRetornos?: Prisma.ConfigRetornoCreateNestedManyWithoutEmpresaInput
+  pacientes?: Prisma.PacienteCreateNestedManyWithoutEmpresaInput
+  consultas?: Prisma.ConsultaCreateNestedManyWithoutEmpresaInput
+  servicosConfig?: Prisma.ServicoConfigCreateNestedManyWithoutEmpresaInput
+  clientesOficina?: Prisma.ClienteOficinaCreateNestedManyWithoutEmpresaInput
+  agendamentos?: Prisma.AgendamentoCreateNestedManyWithoutEmpresaInput
 }
 
 export type EmpresaUncheckedCreateWithoutFaixasCriterioInput = {
@@ -638,6 +818,12 @@ export type EmpresaUncheckedCreateWithoutFaixasCriterioInput = {
   endereco?: Prisma.EnderecoUncheckedCreateNestedOneWithoutEmpresaInput
   devedores?: Prisma.DevedorUncheckedCreateNestedManyWithoutEmpresaInput
   propostas?: Prisma.PropostaUncheckedCreateNestedManyWithoutEmpresaInput
+  configRetornos?: Prisma.ConfigRetornoUncheckedCreateNestedManyWithoutEmpresaInput
+  pacientes?: Prisma.PacienteUncheckedCreateNestedManyWithoutEmpresaInput
+  consultas?: Prisma.ConsultaUncheckedCreateNestedManyWithoutEmpresaInput
+  servicosConfig?: Prisma.ServicoConfigUncheckedCreateNestedManyWithoutEmpresaInput
+  clientesOficina?: Prisma.ClienteOficinaUncheckedCreateNestedManyWithoutEmpresaInput
+  agendamentos?: Prisma.AgendamentoUncheckedCreateNestedManyWithoutEmpresaInput
 }
 
 export type EmpresaCreateOrConnectWithoutFaixasCriterioInput = {
@@ -668,6 +854,12 @@ export type EmpresaUpdateWithoutFaixasCriterioInput = {
   endereco?: Prisma.EnderecoUpdateOneWithoutEmpresaNestedInput
   devedores?: Prisma.DevedorUpdateManyWithoutEmpresaNestedInput
   propostas?: Prisma.PropostaUpdateManyWithoutEmpresaNestedInput
+  configRetornos?: Prisma.ConfigRetornoUpdateManyWithoutEmpresaNestedInput
+  pacientes?: Prisma.PacienteUpdateManyWithoutEmpresaNestedInput
+  consultas?: Prisma.ConsultaUpdateManyWithoutEmpresaNestedInput
+  servicosConfig?: Prisma.ServicoConfigUpdateManyWithoutEmpresaNestedInput
+  clientesOficina?: Prisma.ClienteOficinaUpdateManyWithoutEmpresaNestedInput
+  agendamentos?: Prisma.AgendamentoUpdateManyWithoutEmpresaNestedInput
 }
 
 export type EmpresaUncheckedUpdateWithoutFaixasCriterioInput = {
@@ -682,6 +874,12 @@ export type EmpresaUncheckedUpdateWithoutFaixasCriterioInput = {
   endereco?: Prisma.EnderecoUncheckedUpdateOneWithoutEmpresaNestedInput
   devedores?: Prisma.DevedorUncheckedUpdateManyWithoutEmpresaNestedInput
   propostas?: Prisma.PropostaUncheckedUpdateManyWithoutEmpresaNestedInput
+  configRetornos?: Prisma.ConfigRetornoUncheckedUpdateManyWithoutEmpresaNestedInput
+  pacientes?: Prisma.PacienteUncheckedUpdateManyWithoutEmpresaNestedInput
+  consultas?: Prisma.ConsultaUncheckedUpdateManyWithoutEmpresaNestedInput
+  servicosConfig?: Prisma.ServicoConfigUncheckedUpdateManyWithoutEmpresaNestedInput
+  clientesOficina?: Prisma.ClienteOficinaUncheckedUpdateManyWithoutEmpresaNestedInput
+  agendamentos?: Prisma.AgendamentoUncheckedUpdateManyWithoutEmpresaNestedInput
 }
 
 export type EmpresaCreateWithoutPropostasInput = {
@@ -696,6 +894,12 @@ export type EmpresaCreateWithoutPropostasInput = {
   endereco?: Prisma.EnderecoCreateNestedOneWithoutEmpresaInput
   devedores?: Prisma.DevedorCreateNestedManyWithoutEmpresaInput
   faixasCriterio?: Prisma.FaixaCriterioCreateNestedManyWithoutEmpresaInput
+  configRetornos?: Prisma.ConfigRetornoCreateNestedManyWithoutEmpresaInput
+  pacientes?: Prisma.PacienteCreateNestedManyWithoutEmpresaInput
+  consultas?: Prisma.ConsultaCreateNestedManyWithoutEmpresaInput
+  servicosConfig?: Prisma.ServicoConfigCreateNestedManyWithoutEmpresaInput
+  clientesOficina?: Prisma.ClienteOficinaCreateNestedManyWithoutEmpresaInput
+  agendamentos?: Prisma.AgendamentoCreateNestedManyWithoutEmpresaInput
 }
 
 export type EmpresaUncheckedCreateWithoutPropostasInput = {
@@ -710,6 +914,12 @@ export type EmpresaUncheckedCreateWithoutPropostasInput = {
   endereco?: Prisma.EnderecoUncheckedCreateNestedOneWithoutEmpresaInput
   devedores?: Prisma.DevedorUncheckedCreateNestedManyWithoutEmpresaInput
   faixasCriterio?: Prisma.FaixaCriterioUncheckedCreateNestedManyWithoutEmpresaInput
+  configRetornos?: Prisma.ConfigRetornoUncheckedCreateNestedManyWithoutEmpresaInput
+  pacientes?: Prisma.PacienteUncheckedCreateNestedManyWithoutEmpresaInput
+  consultas?: Prisma.ConsultaUncheckedCreateNestedManyWithoutEmpresaInput
+  servicosConfig?: Prisma.ServicoConfigUncheckedCreateNestedManyWithoutEmpresaInput
+  clientesOficina?: Prisma.ClienteOficinaUncheckedCreateNestedManyWithoutEmpresaInput
+  agendamentos?: Prisma.AgendamentoUncheckedCreateNestedManyWithoutEmpresaInput
 }
 
 export type EmpresaCreateOrConnectWithoutPropostasInput = {
@@ -740,6 +950,12 @@ export type EmpresaUpdateWithoutPropostasInput = {
   endereco?: Prisma.EnderecoUpdateOneWithoutEmpresaNestedInput
   devedores?: Prisma.DevedorUpdateManyWithoutEmpresaNestedInput
   faixasCriterio?: Prisma.FaixaCriterioUpdateManyWithoutEmpresaNestedInput
+  configRetornos?: Prisma.ConfigRetornoUpdateManyWithoutEmpresaNestedInput
+  pacientes?: Prisma.PacienteUpdateManyWithoutEmpresaNestedInput
+  consultas?: Prisma.ConsultaUpdateManyWithoutEmpresaNestedInput
+  servicosConfig?: Prisma.ServicoConfigUpdateManyWithoutEmpresaNestedInput
+  clientesOficina?: Prisma.ClienteOficinaUpdateManyWithoutEmpresaNestedInput
+  agendamentos?: Prisma.AgendamentoUpdateManyWithoutEmpresaNestedInput
 }
 
 export type EmpresaUncheckedUpdateWithoutPropostasInput = {
@@ -754,6 +970,588 @@ export type EmpresaUncheckedUpdateWithoutPropostasInput = {
   endereco?: Prisma.EnderecoUncheckedUpdateOneWithoutEmpresaNestedInput
   devedores?: Prisma.DevedorUncheckedUpdateManyWithoutEmpresaNestedInput
   faixasCriterio?: Prisma.FaixaCriterioUncheckedUpdateManyWithoutEmpresaNestedInput
+  configRetornos?: Prisma.ConfigRetornoUncheckedUpdateManyWithoutEmpresaNestedInput
+  pacientes?: Prisma.PacienteUncheckedUpdateManyWithoutEmpresaNestedInput
+  consultas?: Prisma.ConsultaUncheckedUpdateManyWithoutEmpresaNestedInput
+  servicosConfig?: Prisma.ServicoConfigUncheckedUpdateManyWithoutEmpresaNestedInput
+  clientesOficina?: Prisma.ClienteOficinaUncheckedUpdateManyWithoutEmpresaNestedInput
+  agendamentos?: Prisma.AgendamentoUncheckedUpdateManyWithoutEmpresaNestedInput
+}
+
+export type EmpresaCreateWithoutConfigRetornosInput = {
+  id?: string
+  nome: string
+  email: string
+  senha: string
+  cnpj: string
+  telefone: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  endereco?: Prisma.EnderecoCreateNestedOneWithoutEmpresaInput
+  devedores?: Prisma.DevedorCreateNestedManyWithoutEmpresaInput
+  faixasCriterio?: Prisma.FaixaCriterioCreateNestedManyWithoutEmpresaInput
+  propostas?: Prisma.PropostaCreateNestedManyWithoutEmpresaInput
+  pacientes?: Prisma.PacienteCreateNestedManyWithoutEmpresaInput
+  consultas?: Prisma.ConsultaCreateNestedManyWithoutEmpresaInput
+  servicosConfig?: Prisma.ServicoConfigCreateNestedManyWithoutEmpresaInput
+  clientesOficina?: Prisma.ClienteOficinaCreateNestedManyWithoutEmpresaInput
+  agendamentos?: Prisma.AgendamentoCreateNestedManyWithoutEmpresaInput
+}
+
+export type EmpresaUncheckedCreateWithoutConfigRetornosInput = {
+  id?: string
+  nome: string
+  email: string
+  senha: string
+  cnpj: string
+  telefone: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  endereco?: Prisma.EnderecoUncheckedCreateNestedOneWithoutEmpresaInput
+  devedores?: Prisma.DevedorUncheckedCreateNestedManyWithoutEmpresaInput
+  faixasCriterio?: Prisma.FaixaCriterioUncheckedCreateNestedManyWithoutEmpresaInput
+  propostas?: Prisma.PropostaUncheckedCreateNestedManyWithoutEmpresaInput
+  pacientes?: Prisma.PacienteUncheckedCreateNestedManyWithoutEmpresaInput
+  consultas?: Prisma.ConsultaUncheckedCreateNestedManyWithoutEmpresaInput
+  servicosConfig?: Prisma.ServicoConfigUncheckedCreateNestedManyWithoutEmpresaInput
+  clientesOficina?: Prisma.ClienteOficinaUncheckedCreateNestedManyWithoutEmpresaInput
+  agendamentos?: Prisma.AgendamentoUncheckedCreateNestedManyWithoutEmpresaInput
+}
+
+export type EmpresaCreateOrConnectWithoutConfigRetornosInput = {
+  where: Prisma.EmpresaWhereUniqueInput
+  create: Prisma.XOR<Prisma.EmpresaCreateWithoutConfigRetornosInput, Prisma.EmpresaUncheckedCreateWithoutConfigRetornosInput>
+}
+
+export type EmpresaUpsertWithoutConfigRetornosInput = {
+  update: Prisma.XOR<Prisma.EmpresaUpdateWithoutConfigRetornosInput, Prisma.EmpresaUncheckedUpdateWithoutConfigRetornosInput>
+  create: Prisma.XOR<Prisma.EmpresaCreateWithoutConfigRetornosInput, Prisma.EmpresaUncheckedCreateWithoutConfigRetornosInput>
+  where?: Prisma.EmpresaWhereInput
+}
+
+export type EmpresaUpdateToOneWithWhereWithoutConfigRetornosInput = {
+  where?: Prisma.EmpresaWhereInput
+  data: Prisma.XOR<Prisma.EmpresaUpdateWithoutConfigRetornosInput, Prisma.EmpresaUncheckedUpdateWithoutConfigRetornosInput>
+}
+
+export type EmpresaUpdateWithoutConfigRetornosInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  nome?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  senha?: Prisma.StringFieldUpdateOperationsInput | string
+  cnpj?: Prisma.StringFieldUpdateOperationsInput | string
+  telefone?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endereco?: Prisma.EnderecoUpdateOneWithoutEmpresaNestedInput
+  devedores?: Prisma.DevedorUpdateManyWithoutEmpresaNestedInput
+  faixasCriterio?: Prisma.FaixaCriterioUpdateManyWithoutEmpresaNestedInput
+  propostas?: Prisma.PropostaUpdateManyWithoutEmpresaNestedInput
+  pacientes?: Prisma.PacienteUpdateManyWithoutEmpresaNestedInput
+  consultas?: Prisma.ConsultaUpdateManyWithoutEmpresaNestedInput
+  servicosConfig?: Prisma.ServicoConfigUpdateManyWithoutEmpresaNestedInput
+  clientesOficina?: Prisma.ClienteOficinaUpdateManyWithoutEmpresaNestedInput
+  agendamentos?: Prisma.AgendamentoUpdateManyWithoutEmpresaNestedInput
+}
+
+export type EmpresaUncheckedUpdateWithoutConfigRetornosInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  nome?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  senha?: Prisma.StringFieldUpdateOperationsInput | string
+  cnpj?: Prisma.StringFieldUpdateOperationsInput | string
+  telefone?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endereco?: Prisma.EnderecoUncheckedUpdateOneWithoutEmpresaNestedInput
+  devedores?: Prisma.DevedorUncheckedUpdateManyWithoutEmpresaNestedInput
+  faixasCriterio?: Prisma.FaixaCriterioUncheckedUpdateManyWithoutEmpresaNestedInput
+  propostas?: Prisma.PropostaUncheckedUpdateManyWithoutEmpresaNestedInput
+  pacientes?: Prisma.PacienteUncheckedUpdateManyWithoutEmpresaNestedInput
+  consultas?: Prisma.ConsultaUncheckedUpdateManyWithoutEmpresaNestedInput
+  servicosConfig?: Prisma.ServicoConfigUncheckedUpdateManyWithoutEmpresaNestedInput
+  clientesOficina?: Prisma.ClienteOficinaUncheckedUpdateManyWithoutEmpresaNestedInput
+  agendamentos?: Prisma.AgendamentoUncheckedUpdateManyWithoutEmpresaNestedInput
+}
+
+export type EmpresaCreateWithoutPacientesInput = {
+  id?: string
+  nome: string
+  email: string
+  senha: string
+  cnpj: string
+  telefone: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  endereco?: Prisma.EnderecoCreateNestedOneWithoutEmpresaInput
+  devedores?: Prisma.DevedorCreateNestedManyWithoutEmpresaInput
+  faixasCriterio?: Prisma.FaixaCriterioCreateNestedManyWithoutEmpresaInput
+  propostas?: Prisma.PropostaCreateNestedManyWithoutEmpresaInput
+  configRetornos?: Prisma.ConfigRetornoCreateNestedManyWithoutEmpresaInput
+  consultas?: Prisma.ConsultaCreateNestedManyWithoutEmpresaInput
+  servicosConfig?: Prisma.ServicoConfigCreateNestedManyWithoutEmpresaInput
+  clientesOficina?: Prisma.ClienteOficinaCreateNestedManyWithoutEmpresaInput
+  agendamentos?: Prisma.AgendamentoCreateNestedManyWithoutEmpresaInput
+}
+
+export type EmpresaUncheckedCreateWithoutPacientesInput = {
+  id?: string
+  nome: string
+  email: string
+  senha: string
+  cnpj: string
+  telefone: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  endereco?: Prisma.EnderecoUncheckedCreateNestedOneWithoutEmpresaInput
+  devedores?: Prisma.DevedorUncheckedCreateNestedManyWithoutEmpresaInput
+  faixasCriterio?: Prisma.FaixaCriterioUncheckedCreateNestedManyWithoutEmpresaInput
+  propostas?: Prisma.PropostaUncheckedCreateNestedManyWithoutEmpresaInput
+  configRetornos?: Prisma.ConfigRetornoUncheckedCreateNestedManyWithoutEmpresaInput
+  consultas?: Prisma.ConsultaUncheckedCreateNestedManyWithoutEmpresaInput
+  servicosConfig?: Prisma.ServicoConfigUncheckedCreateNestedManyWithoutEmpresaInput
+  clientesOficina?: Prisma.ClienteOficinaUncheckedCreateNestedManyWithoutEmpresaInput
+  agendamentos?: Prisma.AgendamentoUncheckedCreateNestedManyWithoutEmpresaInput
+}
+
+export type EmpresaCreateOrConnectWithoutPacientesInput = {
+  where: Prisma.EmpresaWhereUniqueInput
+  create: Prisma.XOR<Prisma.EmpresaCreateWithoutPacientesInput, Prisma.EmpresaUncheckedCreateWithoutPacientesInput>
+}
+
+export type EmpresaUpsertWithoutPacientesInput = {
+  update: Prisma.XOR<Prisma.EmpresaUpdateWithoutPacientesInput, Prisma.EmpresaUncheckedUpdateWithoutPacientesInput>
+  create: Prisma.XOR<Prisma.EmpresaCreateWithoutPacientesInput, Prisma.EmpresaUncheckedCreateWithoutPacientesInput>
+  where?: Prisma.EmpresaWhereInput
+}
+
+export type EmpresaUpdateToOneWithWhereWithoutPacientesInput = {
+  where?: Prisma.EmpresaWhereInput
+  data: Prisma.XOR<Prisma.EmpresaUpdateWithoutPacientesInput, Prisma.EmpresaUncheckedUpdateWithoutPacientesInput>
+}
+
+export type EmpresaUpdateWithoutPacientesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  nome?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  senha?: Prisma.StringFieldUpdateOperationsInput | string
+  cnpj?: Prisma.StringFieldUpdateOperationsInput | string
+  telefone?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endereco?: Prisma.EnderecoUpdateOneWithoutEmpresaNestedInput
+  devedores?: Prisma.DevedorUpdateManyWithoutEmpresaNestedInput
+  faixasCriterio?: Prisma.FaixaCriterioUpdateManyWithoutEmpresaNestedInput
+  propostas?: Prisma.PropostaUpdateManyWithoutEmpresaNestedInput
+  configRetornos?: Prisma.ConfigRetornoUpdateManyWithoutEmpresaNestedInput
+  consultas?: Prisma.ConsultaUpdateManyWithoutEmpresaNestedInput
+  servicosConfig?: Prisma.ServicoConfigUpdateManyWithoutEmpresaNestedInput
+  clientesOficina?: Prisma.ClienteOficinaUpdateManyWithoutEmpresaNestedInput
+  agendamentos?: Prisma.AgendamentoUpdateManyWithoutEmpresaNestedInput
+}
+
+export type EmpresaUncheckedUpdateWithoutPacientesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  nome?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  senha?: Prisma.StringFieldUpdateOperationsInput | string
+  cnpj?: Prisma.StringFieldUpdateOperationsInput | string
+  telefone?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endereco?: Prisma.EnderecoUncheckedUpdateOneWithoutEmpresaNestedInput
+  devedores?: Prisma.DevedorUncheckedUpdateManyWithoutEmpresaNestedInput
+  faixasCriterio?: Prisma.FaixaCriterioUncheckedUpdateManyWithoutEmpresaNestedInput
+  propostas?: Prisma.PropostaUncheckedUpdateManyWithoutEmpresaNestedInput
+  configRetornos?: Prisma.ConfigRetornoUncheckedUpdateManyWithoutEmpresaNestedInput
+  consultas?: Prisma.ConsultaUncheckedUpdateManyWithoutEmpresaNestedInput
+  servicosConfig?: Prisma.ServicoConfigUncheckedUpdateManyWithoutEmpresaNestedInput
+  clientesOficina?: Prisma.ClienteOficinaUncheckedUpdateManyWithoutEmpresaNestedInput
+  agendamentos?: Prisma.AgendamentoUncheckedUpdateManyWithoutEmpresaNestedInput
+}
+
+export type EmpresaCreateWithoutConsultasInput = {
+  id?: string
+  nome: string
+  email: string
+  senha: string
+  cnpj: string
+  telefone: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  endereco?: Prisma.EnderecoCreateNestedOneWithoutEmpresaInput
+  devedores?: Prisma.DevedorCreateNestedManyWithoutEmpresaInput
+  faixasCriterio?: Prisma.FaixaCriterioCreateNestedManyWithoutEmpresaInput
+  propostas?: Prisma.PropostaCreateNestedManyWithoutEmpresaInput
+  configRetornos?: Prisma.ConfigRetornoCreateNestedManyWithoutEmpresaInput
+  pacientes?: Prisma.PacienteCreateNestedManyWithoutEmpresaInput
+  servicosConfig?: Prisma.ServicoConfigCreateNestedManyWithoutEmpresaInput
+  clientesOficina?: Prisma.ClienteOficinaCreateNestedManyWithoutEmpresaInput
+  agendamentos?: Prisma.AgendamentoCreateNestedManyWithoutEmpresaInput
+}
+
+export type EmpresaUncheckedCreateWithoutConsultasInput = {
+  id?: string
+  nome: string
+  email: string
+  senha: string
+  cnpj: string
+  telefone: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  endereco?: Prisma.EnderecoUncheckedCreateNestedOneWithoutEmpresaInput
+  devedores?: Prisma.DevedorUncheckedCreateNestedManyWithoutEmpresaInput
+  faixasCriterio?: Prisma.FaixaCriterioUncheckedCreateNestedManyWithoutEmpresaInput
+  propostas?: Prisma.PropostaUncheckedCreateNestedManyWithoutEmpresaInput
+  configRetornos?: Prisma.ConfigRetornoUncheckedCreateNestedManyWithoutEmpresaInput
+  pacientes?: Prisma.PacienteUncheckedCreateNestedManyWithoutEmpresaInput
+  servicosConfig?: Prisma.ServicoConfigUncheckedCreateNestedManyWithoutEmpresaInput
+  clientesOficina?: Prisma.ClienteOficinaUncheckedCreateNestedManyWithoutEmpresaInput
+  agendamentos?: Prisma.AgendamentoUncheckedCreateNestedManyWithoutEmpresaInput
+}
+
+export type EmpresaCreateOrConnectWithoutConsultasInput = {
+  where: Prisma.EmpresaWhereUniqueInput
+  create: Prisma.XOR<Prisma.EmpresaCreateWithoutConsultasInput, Prisma.EmpresaUncheckedCreateWithoutConsultasInput>
+}
+
+export type EmpresaUpsertWithoutConsultasInput = {
+  update: Prisma.XOR<Prisma.EmpresaUpdateWithoutConsultasInput, Prisma.EmpresaUncheckedUpdateWithoutConsultasInput>
+  create: Prisma.XOR<Prisma.EmpresaCreateWithoutConsultasInput, Prisma.EmpresaUncheckedCreateWithoutConsultasInput>
+  where?: Prisma.EmpresaWhereInput
+}
+
+export type EmpresaUpdateToOneWithWhereWithoutConsultasInput = {
+  where?: Prisma.EmpresaWhereInput
+  data: Prisma.XOR<Prisma.EmpresaUpdateWithoutConsultasInput, Prisma.EmpresaUncheckedUpdateWithoutConsultasInput>
+}
+
+export type EmpresaUpdateWithoutConsultasInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  nome?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  senha?: Prisma.StringFieldUpdateOperationsInput | string
+  cnpj?: Prisma.StringFieldUpdateOperationsInput | string
+  telefone?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endereco?: Prisma.EnderecoUpdateOneWithoutEmpresaNestedInput
+  devedores?: Prisma.DevedorUpdateManyWithoutEmpresaNestedInput
+  faixasCriterio?: Prisma.FaixaCriterioUpdateManyWithoutEmpresaNestedInput
+  propostas?: Prisma.PropostaUpdateManyWithoutEmpresaNestedInput
+  configRetornos?: Prisma.ConfigRetornoUpdateManyWithoutEmpresaNestedInput
+  pacientes?: Prisma.PacienteUpdateManyWithoutEmpresaNestedInput
+  servicosConfig?: Prisma.ServicoConfigUpdateManyWithoutEmpresaNestedInput
+  clientesOficina?: Prisma.ClienteOficinaUpdateManyWithoutEmpresaNestedInput
+  agendamentos?: Prisma.AgendamentoUpdateManyWithoutEmpresaNestedInput
+}
+
+export type EmpresaUncheckedUpdateWithoutConsultasInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  nome?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  senha?: Prisma.StringFieldUpdateOperationsInput | string
+  cnpj?: Prisma.StringFieldUpdateOperationsInput | string
+  telefone?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endereco?: Prisma.EnderecoUncheckedUpdateOneWithoutEmpresaNestedInput
+  devedores?: Prisma.DevedorUncheckedUpdateManyWithoutEmpresaNestedInput
+  faixasCriterio?: Prisma.FaixaCriterioUncheckedUpdateManyWithoutEmpresaNestedInput
+  propostas?: Prisma.PropostaUncheckedUpdateManyWithoutEmpresaNestedInput
+  configRetornos?: Prisma.ConfigRetornoUncheckedUpdateManyWithoutEmpresaNestedInput
+  pacientes?: Prisma.PacienteUncheckedUpdateManyWithoutEmpresaNestedInput
+  servicosConfig?: Prisma.ServicoConfigUncheckedUpdateManyWithoutEmpresaNestedInput
+  clientesOficina?: Prisma.ClienteOficinaUncheckedUpdateManyWithoutEmpresaNestedInput
+  agendamentos?: Prisma.AgendamentoUncheckedUpdateManyWithoutEmpresaNestedInput
+}
+
+export type EmpresaCreateWithoutServicosConfigInput = {
+  id?: string
+  nome: string
+  email: string
+  senha: string
+  cnpj: string
+  telefone: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  endereco?: Prisma.EnderecoCreateNestedOneWithoutEmpresaInput
+  devedores?: Prisma.DevedorCreateNestedManyWithoutEmpresaInput
+  faixasCriterio?: Prisma.FaixaCriterioCreateNestedManyWithoutEmpresaInput
+  propostas?: Prisma.PropostaCreateNestedManyWithoutEmpresaInput
+  configRetornos?: Prisma.ConfigRetornoCreateNestedManyWithoutEmpresaInput
+  pacientes?: Prisma.PacienteCreateNestedManyWithoutEmpresaInput
+  consultas?: Prisma.ConsultaCreateNestedManyWithoutEmpresaInput
+  clientesOficina?: Prisma.ClienteOficinaCreateNestedManyWithoutEmpresaInput
+  agendamentos?: Prisma.AgendamentoCreateNestedManyWithoutEmpresaInput
+}
+
+export type EmpresaUncheckedCreateWithoutServicosConfigInput = {
+  id?: string
+  nome: string
+  email: string
+  senha: string
+  cnpj: string
+  telefone: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  endereco?: Prisma.EnderecoUncheckedCreateNestedOneWithoutEmpresaInput
+  devedores?: Prisma.DevedorUncheckedCreateNestedManyWithoutEmpresaInput
+  faixasCriterio?: Prisma.FaixaCriterioUncheckedCreateNestedManyWithoutEmpresaInput
+  propostas?: Prisma.PropostaUncheckedCreateNestedManyWithoutEmpresaInput
+  configRetornos?: Prisma.ConfigRetornoUncheckedCreateNestedManyWithoutEmpresaInput
+  pacientes?: Prisma.PacienteUncheckedCreateNestedManyWithoutEmpresaInput
+  consultas?: Prisma.ConsultaUncheckedCreateNestedManyWithoutEmpresaInput
+  clientesOficina?: Prisma.ClienteOficinaUncheckedCreateNestedManyWithoutEmpresaInput
+  agendamentos?: Prisma.AgendamentoUncheckedCreateNestedManyWithoutEmpresaInput
+}
+
+export type EmpresaCreateOrConnectWithoutServicosConfigInput = {
+  where: Prisma.EmpresaWhereUniqueInput
+  create: Prisma.XOR<Prisma.EmpresaCreateWithoutServicosConfigInput, Prisma.EmpresaUncheckedCreateWithoutServicosConfigInput>
+}
+
+export type EmpresaUpsertWithoutServicosConfigInput = {
+  update: Prisma.XOR<Prisma.EmpresaUpdateWithoutServicosConfigInput, Prisma.EmpresaUncheckedUpdateWithoutServicosConfigInput>
+  create: Prisma.XOR<Prisma.EmpresaCreateWithoutServicosConfigInput, Prisma.EmpresaUncheckedCreateWithoutServicosConfigInput>
+  where?: Prisma.EmpresaWhereInput
+}
+
+export type EmpresaUpdateToOneWithWhereWithoutServicosConfigInput = {
+  where?: Prisma.EmpresaWhereInput
+  data: Prisma.XOR<Prisma.EmpresaUpdateWithoutServicosConfigInput, Prisma.EmpresaUncheckedUpdateWithoutServicosConfigInput>
+}
+
+export type EmpresaUpdateWithoutServicosConfigInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  nome?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  senha?: Prisma.StringFieldUpdateOperationsInput | string
+  cnpj?: Prisma.StringFieldUpdateOperationsInput | string
+  telefone?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endereco?: Prisma.EnderecoUpdateOneWithoutEmpresaNestedInput
+  devedores?: Prisma.DevedorUpdateManyWithoutEmpresaNestedInput
+  faixasCriterio?: Prisma.FaixaCriterioUpdateManyWithoutEmpresaNestedInput
+  propostas?: Prisma.PropostaUpdateManyWithoutEmpresaNestedInput
+  configRetornos?: Prisma.ConfigRetornoUpdateManyWithoutEmpresaNestedInput
+  pacientes?: Prisma.PacienteUpdateManyWithoutEmpresaNestedInput
+  consultas?: Prisma.ConsultaUpdateManyWithoutEmpresaNestedInput
+  clientesOficina?: Prisma.ClienteOficinaUpdateManyWithoutEmpresaNestedInput
+  agendamentos?: Prisma.AgendamentoUpdateManyWithoutEmpresaNestedInput
+}
+
+export type EmpresaUncheckedUpdateWithoutServicosConfigInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  nome?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  senha?: Prisma.StringFieldUpdateOperationsInput | string
+  cnpj?: Prisma.StringFieldUpdateOperationsInput | string
+  telefone?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endereco?: Prisma.EnderecoUncheckedUpdateOneWithoutEmpresaNestedInput
+  devedores?: Prisma.DevedorUncheckedUpdateManyWithoutEmpresaNestedInput
+  faixasCriterio?: Prisma.FaixaCriterioUncheckedUpdateManyWithoutEmpresaNestedInput
+  propostas?: Prisma.PropostaUncheckedUpdateManyWithoutEmpresaNestedInput
+  configRetornos?: Prisma.ConfigRetornoUncheckedUpdateManyWithoutEmpresaNestedInput
+  pacientes?: Prisma.PacienteUncheckedUpdateManyWithoutEmpresaNestedInput
+  consultas?: Prisma.ConsultaUncheckedUpdateManyWithoutEmpresaNestedInput
+  clientesOficina?: Prisma.ClienteOficinaUncheckedUpdateManyWithoutEmpresaNestedInput
+  agendamentos?: Prisma.AgendamentoUncheckedUpdateManyWithoutEmpresaNestedInput
+}
+
+export type EmpresaCreateWithoutClientesOficinaInput = {
+  id?: string
+  nome: string
+  email: string
+  senha: string
+  cnpj: string
+  telefone: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  endereco?: Prisma.EnderecoCreateNestedOneWithoutEmpresaInput
+  devedores?: Prisma.DevedorCreateNestedManyWithoutEmpresaInput
+  faixasCriterio?: Prisma.FaixaCriterioCreateNestedManyWithoutEmpresaInput
+  propostas?: Prisma.PropostaCreateNestedManyWithoutEmpresaInput
+  configRetornos?: Prisma.ConfigRetornoCreateNestedManyWithoutEmpresaInput
+  pacientes?: Prisma.PacienteCreateNestedManyWithoutEmpresaInput
+  consultas?: Prisma.ConsultaCreateNestedManyWithoutEmpresaInput
+  servicosConfig?: Prisma.ServicoConfigCreateNestedManyWithoutEmpresaInput
+  agendamentos?: Prisma.AgendamentoCreateNestedManyWithoutEmpresaInput
+}
+
+export type EmpresaUncheckedCreateWithoutClientesOficinaInput = {
+  id?: string
+  nome: string
+  email: string
+  senha: string
+  cnpj: string
+  telefone: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  endereco?: Prisma.EnderecoUncheckedCreateNestedOneWithoutEmpresaInput
+  devedores?: Prisma.DevedorUncheckedCreateNestedManyWithoutEmpresaInput
+  faixasCriterio?: Prisma.FaixaCriterioUncheckedCreateNestedManyWithoutEmpresaInput
+  propostas?: Prisma.PropostaUncheckedCreateNestedManyWithoutEmpresaInput
+  configRetornos?: Prisma.ConfigRetornoUncheckedCreateNestedManyWithoutEmpresaInput
+  pacientes?: Prisma.PacienteUncheckedCreateNestedManyWithoutEmpresaInput
+  consultas?: Prisma.ConsultaUncheckedCreateNestedManyWithoutEmpresaInput
+  servicosConfig?: Prisma.ServicoConfigUncheckedCreateNestedManyWithoutEmpresaInput
+  agendamentos?: Prisma.AgendamentoUncheckedCreateNestedManyWithoutEmpresaInput
+}
+
+export type EmpresaCreateOrConnectWithoutClientesOficinaInput = {
+  where: Prisma.EmpresaWhereUniqueInput
+  create: Prisma.XOR<Prisma.EmpresaCreateWithoutClientesOficinaInput, Prisma.EmpresaUncheckedCreateWithoutClientesOficinaInput>
+}
+
+export type EmpresaUpsertWithoutClientesOficinaInput = {
+  update: Prisma.XOR<Prisma.EmpresaUpdateWithoutClientesOficinaInput, Prisma.EmpresaUncheckedUpdateWithoutClientesOficinaInput>
+  create: Prisma.XOR<Prisma.EmpresaCreateWithoutClientesOficinaInput, Prisma.EmpresaUncheckedCreateWithoutClientesOficinaInput>
+  where?: Prisma.EmpresaWhereInput
+}
+
+export type EmpresaUpdateToOneWithWhereWithoutClientesOficinaInput = {
+  where?: Prisma.EmpresaWhereInput
+  data: Prisma.XOR<Prisma.EmpresaUpdateWithoutClientesOficinaInput, Prisma.EmpresaUncheckedUpdateWithoutClientesOficinaInput>
+}
+
+export type EmpresaUpdateWithoutClientesOficinaInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  nome?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  senha?: Prisma.StringFieldUpdateOperationsInput | string
+  cnpj?: Prisma.StringFieldUpdateOperationsInput | string
+  telefone?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endereco?: Prisma.EnderecoUpdateOneWithoutEmpresaNestedInput
+  devedores?: Prisma.DevedorUpdateManyWithoutEmpresaNestedInput
+  faixasCriterio?: Prisma.FaixaCriterioUpdateManyWithoutEmpresaNestedInput
+  propostas?: Prisma.PropostaUpdateManyWithoutEmpresaNestedInput
+  configRetornos?: Prisma.ConfigRetornoUpdateManyWithoutEmpresaNestedInput
+  pacientes?: Prisma.PacienteUpdateManyWithoutEmpresaNestedInput
+  consultas?: Prisma.ConsultaUpdateManyWithoutEmpresaNestedInput
+  servicosConfig?: Prisma.ServicoConfigUpdateManyWithoutEmpresaNestedInput
+  agendamentos?: Prisma.AgendamentoUpdateManyWithoutEmpresaNestedInput
+}
+
+export type EmpresaUncheckedUpdateWithoutClientesOficinaInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  nome?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  senha?: Prisma.StringFieldUpdateOperationsInput | string
+  cnpj?: Prisma.StringFieldUpdateOperationsInput | string
+  telefone?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endereco?: Prisma.EnderecoUncheckedUpdateOneWithoutEmpresaNestedInput
+  devedores?: Prisma.DevedorUncheckedUpdateManyWithoutEmpresaNestedInput
+  faixasCriterio?: Prisma.FaixaCriterioUncheckedUpdateManyWithoutEmpresaNestedInput
+  propostas?: Prisma.PropostaUncheckedUpdateManyWithoutEmpresaNestedInput
+  configRetornos?: Prisma.ConfigRetornoUncheckedUpdateManyWithoutEmpresaNestedInput
+  pacientes?: Prisma.PacienteUncheckedUpdateManyWithoutEmpresaNestedInput
+  consultas?: Prisma.ConsultaUncheckedUpdateManyWithoutEmpresaNestedInput
+  servicosConfig?: Prisma.ServicoConfigUncheckedUpdateManyWithoutEmpresaNestedInput
+  agendamentos?: Prisma.AgendamentoUncheckedUpdateManyWithoutEmpresaNestedInput
+}
+
+export type EmpresaCreateWithoutAgendamentosInput = {
+  id?: string
+  nome: string
+  email: string
+  senha: string
+  cnpj: string
+  telefone: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  endereco?: Prisma.EnderecoCreateNestedOneWithoutEmpresaInput
+  devedores?: Prisma.DevedorCreateNestedManyWithoutEmpresaInput
+  faixasCriterio?: Prisma.FaixaCriterioCreateNestedManyWithoutEmpresaInput
+  propostas?: Prisma.PropostaCreateNestedManyWithoutEmpresaInput
+  configRetornos?: Prisma.ConfigRetornoCreateNestedManyWithoutEmpresaInput
+  pacientes?: Prisma.PacienteCreateNestedManyWithoutEmpresaInput
+  consultas?: Prisma.ConsultaCreateNestedManyWithoutEmpresaInput
+  servicosConfig?: Prisma.ServicoConfigCreateNestedManyWithoutEmpresaInput
+  clientesOficina?: Prisma.ClienteOficinaCreateNestedManyWithoutEmpresaInput
+}
+
+export type EmpresaUncheckedCreateWithoutAgendamentosInput = {
+  id?: string
+  nome: string
+  email: string
+  senha: string
+  cnpj: string
+  telefone: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  endereco?: Prisma.EnderecoUncheckedCreateNestedOneWithoutEmpresaInput
+  devedores?: Prisma.DevedorUncheckedCreateNestedManyWithoutEmpresaInput
+  faixasCriterio?: Prisma.FaixaCriterioUncheckedCreateNestedManyWithoutEmpresaInput
+  propostas?: Prisma.PropostaUncheckedCreateNestedManyWithoutEmpresaInput
+  configRetornos?: Prisma.ConfigRetornoUncheckedCreateNestedManyWithoutEmpresaInput
+  pacientes?: Prisma.PacienteUncheckedCreateNestedManyWithoutEmpresaInput
+  consultas?: Prisma.ConsultaUncheckedCreateNestedManyWithoutEmpresaInput
+  servicosConfig?: Prisma.ServicoConfigUncheckedCreateNestedManyWithoutEmpresaInput
+  clientesOficina?: Prisma.ClienteOficinaUncheckedCreateNestedManyWithoutEmpresaInput
+}
+
+export type EmpresaCreateOrConnectWithoutAgendamentosInput = {
+  where: Prisma.EmpresaWhereUniqueInput
+  create: Prisma.XOR<Prisma.EmpresaCreateWithoutAgendamentosInput, Prisma.EmpresaUncheckedCreateWithoutAgendamentosInput>
+}
+
+export type EmpresaUpsertWithoutAgendamentosInput = {
+  update: Prisma.XOR<Prisma.EmpresaUpdateWithoutAgendamentosInput, Prisma.EmpresaUncheckedUpdateWithoutAgendamentosInput>
+  create: Prisma.XOR<Prisma.EmpresaCreateWithoutAgendamentosInput, Prisma.EmpresaUncheckedCreateWithoutAgendamentosInput>
+  where?: Prisma.EmpresaWhereInput
+}
+
+export type EmpresaUpdateToOneWithWhereWithoutAgendamentosInput = {
+  where?: Prisma.EmpresaWhereInput
+  data: Prisma.XOR<Prisma.EmpresaUpdateWithoutAgendamentosInput, Prisma.EmpresaUncheckedUpdateWithoutAgendamentosInput>
+}
+
+export type EmpresaUpdateWithoutAgendamentosInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  nome?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  senha?: Prisma.StringFieldUpdateOperationsInput | string
+  cnpj?: Prisma.StringFieldUpdateOperationsInput | string
+  telefone?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endereco?: Prisma.EnderecoUpdateOneWithoutEmpresaNestedInput
+  devedores?: Prisma.DevedorUpdateManyWithoutEmpresaNestedInput
+  faixasCriterio?: Prisma.FaixaCriterioUpdateManyWithoutEmpresaNestedInput
+  propostas?: Prisma.PropostaUpdateManyWithoutEmpresaNestedInput
+  configRetornos?: Prisma.ConfigRetornoUpdateManyWithoutEmpresaNestedInput
+  pacientes?: Prisma.PacienteUpdateManyWithoutEmpresaNestedInput
+  consultas?: Prisma.ConsultaUpdateManyWithoutEmpresaNestedInput
+  servicosConfig?: Prisma.ServicoConfigUpdateManyWithoutEmpresaNestedInput
+  clientesOficina?: Prisma.ClienteOficinaUpdateManyWithoutEmpresaNestedInput
+}
+
+export type EmpresaUncheckedUpdateWithoutAgendamentosInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  nome?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  senha?: Prisma.StringFieldUpdateOperationsInput | string
+  cnpj?: Prisma.StringFieldUpdateOperationsInput | string
+  telefone?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endereco?: Prisma.EnderecoUncheckedUpdateOneWithoutEmpresaNestedInput
+  devedores?: Prisma.DevedorUncheckedUpdateManyWithoutEmpresaNestedInput
+  faixasCriterio?: Prisma.FaixaCriterioUncheckedUpdateManyWithoutEmpresaNestedInput
+  propostas?: Prisma.PropostaUncheckedUpdateManyWithoutEmpresaNestedInput
+  configRetornos?: Prisma.ConfigRetornoUncheckedUpdateManyWithoutEmpresaNestedInput
+  pacientes?: Prisma.PacienteUncheckedUpdateManyWithoutEmpresaNestedInput
+  consultas?: Prisma.ConsultaUncheckedUpdateManyWithoutEmpresaNestedInput
+  servicosConfig?: Prisma.ServicoConfigUncheckedUpdateManyWithoutEmpresaNestedInput
+  clientesOficina?: Prisma.ClienteOficinaUncheckedUpdateManyWithoutEmpresaNestedInput
 }
 
 
@@ -765,12 +1563,24 @@ export type EmpresaCountOutputType = {
   devedores: number
   faixasCriterio: number
   propostas: number
+  configRetornos: number
+  pacientes: number
+  consultas: number
+  servicosConfig: number
+  clientesOficina: number
+  agendamentos: number
 }
 
 export type EmpresaCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   devedores?: boolean | EmpresaCountOutputTypeCountDevedoresArgs
   faixasCriterio?: boolean | EmpresaCountOutputTypeCountFaixasCriterioArgs
   propostas?: boolean | EmpresaCountOutputTypeCountPropostasArgs
+  configRetornos?: boolean | EmpresaCountOutputTypeCountConfigRetornosArgs
+  pacientes?: boolean | EmpresaCountOutputTypeCountPacientesArgs
+  consultas?: boolean | EmpresaCountOutputTypeCountConsultasArgs
+  servicosConfig?: boolean | EmpresaCountOutputTypeCountServicosConfigArgs
+  clientesOficina?: boolean | EmpresaCountOutputTypeCountClientesOficinaArgs
+  agendamentos?: boolean | EmpresaCountOutputTypeCountAgendamentosArgs
 }
 
 /**
@@ -804,6 +1614,48 @@ export type EmpresaCountOutputTypeCountPropostasArgs<ExtArgs extends runtime.Typ
   where?: Prisma.PropostaWhereInput
 }
 
+/**
+ * EmpresaCountOutputType without action
+ */
+export type EmpresaCountOutputTypeCountConfigRetornosArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ConfigRetornoWhereInput
+}
+
+/**
+ * EmpresaCountOutputType without action
+ */
+export type EmpresaCountOutputTypeCountPacientesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PacienteWhereInput
+}
+
+/**
+ * EmpresaCountOutputType without action
+ */
+export type EmpresaCountOutputTypeCountConsultasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ConsultaWhereInput
+}
+
+/**
+ * EmpresaCountOutputType without action
+ */
+export type EmpresaCountOutputTypeCountServicosConfigArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ServicoConfigWhereInput
+}
+
+/**
+ * EmpresaCountOutputType without action
+ */
+export type EmpresaCountOutputTypeCountClientesOficinaArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ClienteOficinaWhereInput
+}
+
+/**
+ * EmpresaCountOutputType without action
+ */
+export type EmpresaCountOutputTypeCountAgendamentosArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AgendamentoWhereInput
+}
+
 
 export type EmpresaSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -818,6 +1670,12 @@ export type EmpresaSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   devedores?: boolean | Prisma.Empresa$devedoresArgs<ExtArgs>
   faixasCriterio?: boolean | Prisma.Empresa$faixasCriterioArgs<ExtArgs>
   propostas?: boolean | Prisma.Empresa$propostasArgs<ExtArgs>
+  configRetornos?: boolean | Prisma.Empresa$configRetornosArgs<ExtArgs>
+  pacientes?: boolean | Prisma.Empresa$pacientesArgs<ExtArgs>
+  consultas?: boolean | Prisma.Empresa$consultasArgs<ExtArgs>
+  servicosConfig?: boolean | Prisma.Empresa$servicosConfigArgs<ExtArgs>
+  clientesOficina?: boolean | Prisma.Empresa$clientesOficinaArgs<ExtArgs>
+  agendamentos?: boolean | Prisma.Empresa$agendamentosArgs<ExtArgs>
   _count?: boolean | Prisma.EmpresaCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["empresa"]>
 
@@ -860,6 +1718,12 @@ export type EmpresaInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
   devedores?: boolean | Prisma.Empresa$devedoresArgs<ExtArgs>
   faixasCriterio?: boolean | Prisma.Empresa$faixasCriterioArgs<ExtArgs>
   propostas?: boolean | Prisma.Empresa$propostasArgs<ExtArgs>
+  configRetornos?: boolean | Prisma.Empresa$configRetornosArgs<ExtArgs>
+  pacientes?: boolean | Prisma.Empresa$pacientesArgs<ExtArgs>
+  consultas?: boolean | Prisma.Empresa$consultasArgs<ExtArgs>
+  servicosConfig?: boolean | Prisma.Empresa$servicosConfigArgs<ExtArgs>
+  clientesOficina?: boolean | Prisma.Empresa$clientesOficinaArgs<ExtArgs>
+  agendamentos?: boolean | Prisma.Empresa$agendamentosArgs<ExtArgs>
   _count?: boolean | Prisma.EmpresaCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type EmpresaIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -872,6 +1736,12 @@ export type $EmpresaPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     devedores: Prisma.$DevedorPayload<ExtArgs>[]
     faixasCriterio: Prisma.$FaixaCriterioPayload<ExtArgs>[]
     propostas: Prisma.$PropostaPayload<ExtArgs>[]
+    configRetornos: Prisma.$ConfigRetornoPayload<ExtArgs>[]
+    pacientes: Prisma.$PacientePayload<ExtArgs>[]
+    consultas: Prisma.$ConsultaPayload<ExtArgs>[]
+    servicosConfig: Prisma.$ServicoConfigPayload<ExtArgs>[]
+    clientesOficina: Prisma.$ClienteOficinaPayload<ExtArgs>[]
+    agendamentos: Prisma.$AgendamentoPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1280,6 +2150,12 @@ export interface Prisma__EmpresaClient<T, Null = never, ExtArgs extends runtime.
   devedores<T extends Prisma.Empresa$devedoresArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Empresa$devedoresArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DevedorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   faixasCriterio<T extends Prisma.Empresa$faixasCriterioArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Empresa$faixasCriterioArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FaixaCriterioPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   propostas<T extends Prisma.Empresa$propostasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Empresa$propostasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PropostaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  configRetornos<T extends Prisma.Empresa$configRetornosArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Empresa$configRetornosArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ConfigRetornoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  pacientes<T extends Prisma.Empresa$pacientesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Empresa$pacientesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PacientePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  consultas<T extends Prisma.Empresa$consultasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Empresa$consultasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ConsultaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  servicosConfig<T extends Prisma.Empresa$servicosConfigArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Empresa$servicosConfigArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ServicoConfigPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  clientesOficina<T extends Prisma.Empresa$clientesOficinaArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Empresa$clientesOficinaArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ClienteOficinaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  agendamentos<T extends Prisma.Empresa$agendamentosArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Empresa$agendamentosArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AgendamentoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1798,6 +2674,150 @@ export type Empresa$propostasArgs<ExtArgs extends runtime.Types.Extensions.Inter
   take?: number
   skip?: number
   distinct?: Prisma.PropostaScalarFieldEnum | Prisma.PropostaScalarFieldEnum[]
+}
+
+/**
+ * Empresa.configRetornos
+ */
+export type Empresa$configRetornosArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ConfigRetorno
+   */
+  select?: Prisma.ConfigRetornoSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ConfigRetorno
+   */
+  omit?: Prisma.ConfigRetornoOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ConfigRetornoInclude<ExtArgs> | null
+  where?: Prisma.ConfigRetornoWhereInput
+  orderBy?: Prisma.ConfigRetornoOrderByWithRelationInput | Prisma.ConfigRetornoOrderByWithRelationInput[]
+  cursor?: Prisma.ConfigRetornoWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ConfigRetornoScalarFieldEnum | Prisma.ConfigRetornoScalarFieldEnum[]
+}
+
+/**
+ * Empresa.pacientes
+ */
+export type Empresa$pacientesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Paciente
+   */
+  select?: Prisma.PacienteSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Paciente
+   */
+  omit?: Prisma.PacienteOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PacienteInclude<ExtArgs> | null
+  where?: Prisma.PacienteWhereInput
+  orderBy?: Prisma.PacienteOrderByWithRelationInput | Prisma.PacienteOrderByWithRelationInput[]
+  cursor?: Prisma.PacienteWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PacienteScalarFieldEnum | Prisma.PacienteScalarFieldEnum[]
+}
+
+/**
+ * Empresa.consultas
+ */
+export type Empresa$consultasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Consulta
+   */
+  select?: Prisma.ConsultaSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Consulta
+   */
+  omit?: Prisma.ConsultaOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ConsultaInclude<ExtArgs> | null
+  where?: Prisma.ConsultaWhereInput
+  orderBy?: Prisma.ConsultaOrderByWithRelationInput | Prisma.ConsultaOrderByWithRelationInput[]
+  cursor?: Prisma.ConsultaWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ConsultaScalarFieldEnum | Prisma.ConsultaScalarFieldEnum[]
+}
+
+/**
+ * Empresa.servicosConfig
+ */
+export type Empresa$servicosConfigArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ServicoConfig
+   */
+  select?: Prisma.ServicoConfigSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ServicoConfig
+   */
+  omit?: Prisma.ServicoConfigOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ServicoConfigInclude<ExtArgs> | null
+  where?: Prisma.ServicoConfigWhereInput
+  orderBy?: Prisma.ServicoConfigOrderByWithRelationInput | Prisma.ServicoConfigOrderByWithRelationInput[]
+  cursor?: Prisma.ServicoConfigWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ServicoConfigScalarFieldEnum | Prisma.ServicoConfigScalarFieldEnum[]
+}
+
+/**
+ * Empresa.clientesOficina
+ */
+export type Empresa$clientesOficinaArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ClienteOficina
+   */
+  select?: Prisma.ClienteOficinaSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ClienteOficina
+   */
+  omit?: Prisma.ClienteOficinaOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ClienteOficinaInclude<ExtArgs> | null
+  where?: Prisma.ClienteOficinaWhereInput
+  orderBy?: Prisma.ClienteOficinaOrderByWithRelationInput | Prisma.ClienteOficinaOrderByWithRelationInput[]
+  cursor?: Prisma.ClienteOficinaWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ClienteOficinaScalarFieldEnum | Prisma.ClienteOficinaScalarFieldEnum[]
+}
+
+/**
+ * Empresa.agendamentos
+ */
+export type Empresa$agendamentosArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Agendamento
+   */
+  select?: Prisma.AgendamentoSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Agendamento
+   */
+  omit?: Prisma.AgendamentoOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AgendamentoInclude<ExtArgs> | null
+  where?: Prisma.AgendamentoWhereInput
+  orderBy?: Prisma.AgendamentoOrderByWithRelationInput | Prisma.AgendamentoOrderByWithRelationInput[]
+  cursor?: Prisma.AgendamentoWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AgendamentoScalarFieldEnum | Prisma.AgendamentoScalarFieldEnum[]
 }
 
 /**

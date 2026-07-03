@@ -55,7 +55,13 @@ export const ModelName = {
   Endereco: 'Endereco',
   Devedor: 'Devedor',
   FaixaCriterio: 'FaixaCriterio',
-  Proposta: 'Proposta'
+  Proposta: 'Proposta',
+  ConfigRetorno: 'ConfigRetorno',
+  Paciente: 'Paciente',
+  Consulta: 'Consulta',
+  ServicoConfig: 'ServicoConfig',
+  ClienteOficina: 'ClienteOficina',
+  Agendamento: 'Agendamento'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -159,6 +165,100 @@ export const PropostaScalarFieldEnum = {
 } as const
 
 export type PropostaScalarFieldEnum = (typeof PropostaScalarFieldEnum)[keyof typeof PropostaScalarFieldEnum]
+
+
+export const ConfigRetornoScalarFieldEnum = {
+  id: 'id',
+  descricao: 'descricao',
+  diasParaRetorno: 'diasParaRetorno',
+  tomComunicacao: 'tomComunicacao',
+  mensagemInicial: 'mensagemInicial',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  empresaId: 'empresaId'
+} as const
+
+export type ConfigRetornoScalarFieldEnum = (typeof ConfigRetornoScalarFieldEnum)[keyof typeof ConfigRetornoScalarFieldEnum]
+
+
+export const PacienteScalarFieldEnum = {
+  id: 'id',
+  nome: 'nome',
+  telefone: 'telefone',
+  email: 'email',
+  cpf: 'cpf',
+  convenio: 'convenio',
+  status: 'status',
+  ultimaConsulta: 'ultimaConsulta',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  configRetornoId: 'configRetornoId',
+  empresaId: 'empresaId'
+} as const
+
+export type PacienteScalarFieldEnum = (typeof PacienteScalarFieldEnum)[keyof typeof PacienteScalarFieldEnum]
+
+
+export const ConsultaScalarFieldEnum = {
+  id: 'id',
+  historico: 'historico',
+  limites: 'limites',
+  dataAgendada: 'dataAgendada',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  pacienteId: 'pacienteId',
+  empresaId: 'empresaId'
+} as const
+
+export type ConsultaScalarFieldEnum = (typeof ConsultaScalarFieldEnum)[keyof typeof ConsultaScalarFieldEnum]
+
+
+export const ServicoConfigScalarFieldEnum = {
+  id: 'id',
+  descricao: 'descricao',
+  prazoRevisaoDias: 'prazoRevisaoDias',
+  tomComunicacao: 'tomComunicacao',
+  mensagemInicial: 'mensagemInicial',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  empresaId: 'empresaId'
+} as const
+
+export type ServicoConfigScalarFieldEnum = (typeof ServicoConfigScalarFieldEnum)[keyof typeof ServicoConfigScalarFieldEnum]
+
+
+export const ClienteOficinaScalarFieldEnum = {
+  id: 'id',
+  nome: 'nome',
+  telefone: 'telefone',
+  email: 'email',
+  modeloVeiculo: 'modeloVeiculo',
+  placa: 'placa',
+  status: 'status',
+  ultimaRevisao: 'ultimaRevisao',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  empresaId: 'empresaId'
+} as const
+
+export type ClienteOficinaScalarFieldEnum = (typeof ClienteOficinaScalarFieldEnum)[keyof typeof ClienteOficinaScalarFieldEnum]
+
+
+export const AgendamentoScalarFieldEnum = {
+  id: 'id',
+  historico: 'historico',
+  limites: 'limites',
+  dataAgendada: 'dataAgendada',
+  tipoServico: 'tipoServico',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  clienteId: 'clienteId',
+  empresaId: 'empresaId'
+} as const
+
+export type AgendamentoScalarFieldEnum = (typeof AgendamentoScalarFieldEnum)[keyof typeof AgendamentoScalarFieldEnum]
 
 
 export const SortOrder = {

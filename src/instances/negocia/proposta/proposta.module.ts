@@ -3,10 +3,11 @@ import { PropostaController } from './proposta.controller';
 import { PropostaService } from './proposta.service';
 import { PropostaRepository } from './proposta.repository';
 import { NegotiationModule } from '../../../core/negotiation/negotiation.module';
+import { DevedorModule } from '../devedor/devedor.module';
 import { NegociaContextProvider } from '../negocia-context.provider';
 
 @Module({
-  imports: [NegotiationModule],
+  imports: [NegotiationModule, DevedorModule],
   controllers: [PropostaController],
   providers: [PropostaService, PropostaRepository, NegociaContextProvider],
   exports: [PropostaService, PropostaRepository],

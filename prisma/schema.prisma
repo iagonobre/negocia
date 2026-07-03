@@ -31,6 +31,12 @@ model Empresa {
   devedores       Devedor[]
   faixasCriterio  FaixaCriterio[]
   propostas       Proposta[]
+  configRetornos  ConfigRetorno[]
+  pacientes       Paciente[]
+  consultas       Consulta[]
+  servicosConfig  ServicoConfig[]
+  clientesOficina ClienteOficina[]
+  agendamentos    Agendamento[]
 }
 
 model Endereco {
@@ -140,7 +146,125 @@ model Proposta {
 }
 
 // ============================================================
-// INSTANCE: <NOME> — nova instância futura
-// Adicionar aqui os modelos da próxima instância,
-// sempre com FK empresaId → Empresa.id
+// INSTANCE: SAÚDE — marcação de consultas e monitoramento de retorno
 // ============================================================
+
+enum StatusPaciente {
+  ATIVO
+  RETORNO_PENDENTE
+  RETORNO_AGENDADO
+  ABANDONOU
+}
+
+model ConfigRetorno {
+  id              String     @id @default(uuid())
+  descricao       String
+  diasParaRetorno Int
+  tomComunicacao  String
+  mensagemInicial String?
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  empresaId       String
+  empresa         Empresa    @relation(fields: [empresaId], references: [id], onDelete: Cascade)
+  pacientes       Paciente[]
+}
+
+model Paciente {
+  id              String         @id @default(uuid())
+  nome            String
+  telefone        String
+  email           String?
+  cpf             String?
+  convenio        String?
+  status          StatusPaciente @default(ATIVO)
+  ultimaConsulta  DateTime?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  configRetornoId String?
+  configRetorno   ConfigRetorno? @relation(fields: [configRetornoId], references: [id])
+  empresaId       String
+  empresa         Empresa        @relation(fields: [empresaId], references: [id], onDelete: Cascade)
+  consultas       Consulta[]
+}
+
+enum StatusConsulta {
+  PENDENTE
+  CONFIRMADA
+  REALIZADA
+  CANCELADA
+}
+
+model Consulta {
+  id           String         @id @default(uuid())
+  historico    Json           @default("[]")
+  limites      Json           @default("[]")
+  dataAgendada DateTime?
+  status       StatusConsulta @default(PENDENTE)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  pacienteId   String
+  paciente     Paciente       @relation(fields: [pacienteId], references: [id], onDelete: Cascade)
+  empresaId    String
+  empresa      Empresa        @relation(fields: [empresaId], references: [id], onDelete: Cascade)
+}
+
+// ============================================================
+// INSTANCE: OFICINA — agendamento de serviços para oficinas mecânicas
+// ============================================================
+
+enum StatusClienteOficina {
+  ATIVO
+  REVISAO_PENDENTE
+  AGENDADO
+  INATIVO
+}
+
+model ServicoConfig {
+  id               String   @id @default(uuid())
+  descricao        String
+  prazoRevisaoDias Int
+  tomComunicacao   String
+  mensagemInicial  String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  empresaId        String
+  empresa          Empresa  @relation(fields: [empresaId], references: [id], onDelete: Cascade)
+}
+
+model ClienteOficina {
+  id            String               @id @default(uuid())
+  nome          String
+  telefone      String
+  email         String?
+  modeloVeiculo String
+  placa         String
+  status        StatusClienteOficina @default(ATIVO)
+  ultimaRevisao DateTime?
+  createdAt     DateTime             @default(now())
+  updatedAt     DateTime             @updatedAt
+  empresaId     String
+  empresa       Empresa              @relation(fields: [empresaId], references: [id], onDelete: Cascade)
+  agendamentos  Agendamento[]
+}
+
+enum StatusAgendamento {
+  PENDENTE
+  CONFIRMADO
+  REALIZADO
+  CANCELADO
+}
+
+model Agendamento {
+  id           String            @id @default(uuid())
+  historico    Json              @default("[]")
+  limites      Json              @default("[]")
+  dataAgendada DateTime?
+  tipoServico  String?
+  status       StatusAgendamento @default(PENDENTE)
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+  clienteId    String
+  cliente      ClienteOficina    @relation(fields: [clienteId], references: [id], onDelete: Cascade)
+  empresaId    String
+  empresa      Empresa           @relation(fields: [empresaId], references: [id], onDelete: Cascade)
+}

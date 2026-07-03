@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { CobrancaController } from './cobranca.controller';
 import { CobrancaService } from './cobranca.service';
-import { WhatsAppModule } from '../../../core/whatsapp/whatsapp.module';
+import { NotificationModule } from '../../../core/notification/notification.module';
 import { PropostaModule } from '../proposta/proposta.module';
 
 @Module({
-  imports: [WhatsAppModule, PropostaModule],
+  imports: [NotificationModule, PropostaModule],
   controllers: [CobrancaController],
   providers: [CobrancaService],
 })

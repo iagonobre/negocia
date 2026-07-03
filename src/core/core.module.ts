@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { EmpresaModule } from './empresa/empresa.module';
 import { WhatsAppModule } from './whatsapp/whatsapp.module';
 import { NegotiationModule } from './negotiation/negotiation.module';
+import { NotificationModule } from './notification/notification.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { NegotiationModule } from './negotiation/negotiation.module';
     EmpresaModule,
     WhatsAppModule,
     NegotiationModule,
+    NotificationModule,
   ],
   exports: [
     PrismaModule,
@@ -30,6 +32,7 @@ import { NegotiationModule } from './negotiation/negotiation.module';
     EmpresaModule,
     WhatsAppModule,
     NegotiationModule,
+    NotificationModule,
   ],
 })
 export class CoreModule {}

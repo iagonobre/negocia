@@ -42,3 +42,33 @@ export type FaixaCriterio = Prisma.FaixaCriterioModel
  * 
  */
 export type Proposta = Prisma.PropostaModel
+/**
+ * Model ConfigRetorno
+ * 
+ */
+export type ConfigRetorno = Prisma.ConfigRetornoModel
+/**
+ * Model Paciente
+ * 
+ */
+export type Paciente = Prisma.PacienteModel
+/**
+ * Model Consulta
+ * 
+ */
+export type Consulta = Prisma.ConsultaModel
+/**
+ * Model ServicoConfig
+ * 
+ */
+export type ServicoConfig = Prisma.ServicoConfigModel
+/**
+ * Model ClienteOficina
+ * 
+ */
+export type ClienteOficina = Prisma.ClienteOficinaModel
+/**
+ * Model Agendamento
+ * 
+ */
+export type Agendamento = Prisma.AgendamentoModel
