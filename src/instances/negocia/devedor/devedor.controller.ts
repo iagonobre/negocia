@@ -1,73 +1,37 @@
-import { Body, Controller, Delete, Get, MaxFileSizeValidator, Param, ParseFilePipe, Patch, Post, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  MaxFileSizeValidator,
+  Param,
+  ParseFilePipe,
+  Post,
+  UploadedFile,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { DevedorService } from './devedor.service';
-import { CreateDevedorDto } from './dto/create-devedor.dto';
-import { AuthGuard } from 'src/core/auth/auth.guard';
-import { UpdateDevedorDto } from './dto/update-devedor.dto';
-import { Empresa } from 'src/core/auth/decorators/empresa.decorator';
-import type { JwtPayload } from 'src/core/auth/interfaces/jwt-payload.interface';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { Devedor } from '../../../generated/prisma/client';
+import { DevedorService } from './devedor.service';
+import { CrudController } from '../../../core/crud/crud.controller';
+import { AuthGuard } from '../../../core/auth/auth.guard';
+import { Empresa } from '../../../core/auth/decorators/empresa.decorator';
+import type { JwtPayload } from '../../../core/auth/interfaces/jwt-payload.interface';
 
 @ApiTags('Devedor')
 @Controller('devedor')
 @UseGuards(AuthGuard)
 @ApiBearerAuth()
-export class DevedorController {
-    constructor (private readonly devedorService: DevedorService) {}
+export class DevedorController extends CrudController<Devedor>() {
+  constructor(readonly service: DevedorService) {
+    super();
+  }
 
-    @Get()
-    @ApiOperation({ summary: 'Listar todos os devedores da empresa' })
-    async listar(@Empresa() empresa: JwtPayload) {
-      return this.devedorService.listar(empresa.sub);
-    }
-
-    @Get(':id')
-    @ApiOperation({ summary: 'Buscar devedor por ID' })
-    async buscar(
-      @Param('id') id: string,
-      @Empresa() empresa: JwtPayload,
-    ) {
-      return this.devedorService.buscar(id, empresa.sub);
-    }
-
-    @Get(':id/historico')
-    @ApiOperation({ summary: 'Histórico completo de negociações do devedor' })
-    async historico(
-      @Param('id') id: string,
-      @Empresa() empresa: JwtPayload,
-    ) {
-      return this.devedorService.historico(id, empresa.sub);
-    }
-
-    @Post('cadastrar')
-    @ApiOperation({ summary: 'Cadastro de novo devedor' })
-    @ApiBody({ type: CreateDevedorDto })
-    async cadastrar(
-      @Empresa() empresa: JwtPayload,
-      @Body() dto: CreateDevedorDto
-    ) {
-      return this.devedorService.cadastrar(dto, empresa.sub);
-    }
-
-    @Patch('/atualizar/:id')
-    @ApiOperation({ summary: 'Edição de devedor existente' })
-    @ApiBody({ type: UpdateDevedorDto })
-    async atualizar(
-      @Param('id') id: string,
-      @Empresa() empresa: JwtPayload,
-      @Body() dto: UpdateDevedorDto
-    ) {
-      return this.devedorService.atualizar(id, empresa.sub, dto);
-    }
-
-  @Delete(':id')
-    @ApiOperation({ summary: 'Deletar devedor' })
-    async deletar(
-      @Param('id') id: string,
-      @Empresa() empresa: JwtPayload,
-    ) {
-      return this.devedorService.deletar(id, empresa.sub);
-    }
+  @Get(':id/historico')
+  @ApiOperation({ summary: 'Histórico completo de negociações do devedor' })
+  async historico(@Param('id') id: string, @Empresa() empresa: JwtPayload) {
+    return this.service.historico(id, empresa.sub);
+  }
 
   @Post('importar')
   @UseInterceptors(FileInterceptor('file'))
@@ -76,21 +40,18 @@ export class DevedorController {
   @ApiBody({
     schema: {
       type: 'object',
-      properties: {
-        file: { type: 'string', format: 'binary' },
-      },
+      properties: { file: { type: 'string', format: 'binary' } },
     },
   })
   async importar(
     @UploadedFile(
       new ParseFilePipe({
-        validators: [
-          new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 100 }),
-        ],
+        validators: [new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 100 })],
       }),
-    ) file: Express.Multer.File,
+    )
+    file: Express.Multer.File,
     @Empresa() empresa: JwtPayload,
   ) {
-    return this.devedorService.importarCsv(file, empresa.sub);
+    return this.service.importarCsv(file, empresa.sub);
   }
 }

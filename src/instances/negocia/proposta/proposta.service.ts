@@ -1,21 +1,21 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { PropostaRepository } from './proposta.repository';
 import { DevedorRepository } from '../devedor/devedor.repository';
-import { NegotiationEngine } from '../../../core/negotiation/negotiation.engine';
 import { NegociaContextProvider } from '../negocia-context.provider';
-import { ConversationOrchestrator } from '../../../core/whatsapp/conversation-orchestrator.interface';
+import { ConversationService } from '../../../core/conversation/conversation.service';
 import { NegociacaoEmAndamentoException } from '../exceptions/negociacao-em-andamento.exception';
 import { FaixaCriterioNaoEncontradaException } from '../exceptions/faixa-criterio-nao-encontrada.exception';
 import { PropostaJaFinalizadaException } from '../exceptions/proposta-ja-finalizada.exception';
 
 @Injectable()
-export class PropostaService implements ConversationOrchestrator {
+export class PropostaService extends ConversationService {
   constructor(
     private readonly propostaRepository: PropostaRepository,
     private readonly devedorRepository: DevedorRepository,
-    private readonly negotiationEngine: NegotiationEngine,
     private readonly negociaContextProvider: NegociaContextProvider,
-  ) {}
+  ) {
+    super();
+  }
 
   // ── ConversationOrchestrator ─────────────────────────────────────────────
 
@@ -25,82 +25,60 @@ export class PropostaService implements ConversationOrchestrator {
     return { id: devedor.id, empresaId: devedor.empresaId };
   }
 
-  async findOuCriarSessao(
-    devedorId: string,
-    empresaId: string,
-  ): Promise<{ id: string; mensagemInicial?: string }> {
-    const existente = await this.propostaRepository.findPendentePorDevedor(devedorId);
-    if (existente) return { id: existente.id };
-    const nova = await this.gerarProposta(devedorId, empresaId);
-    return { id: nova.id, mensagemInicial: nova.ultimaMensagemAgente };
+  // ── ConversationService — abstratos ──────────────────────────────────────
+
+  async findSessaoPendente(devedorId: string) {
+    return this.propostaRepository.findPendentePorDevedor(devedorId);
   }
 
-  async responder(propostaId: string, mensagem: string, empresaId: string): Promise<string> {
-    const { mensagemAgente } = await this.conversar(propostaId, empresaId, mensagem);
-    return mensagemAgente;
+  async carregarEntidadeComConfig(devedorId: string, empresaId: string) {
+    const resultado = await this.propostaRepository.findDevedorComFaixa(devedorId, empresaId);
+    if (!resultado) throw new NotFoundException('Devedor não encontrado.');
+    const { devedor, faixa } = resultado;
+    if (!faixa) throw new FaixaCriterioNaoEncontradaException(devedor.valorDivida);
+    return {
+      entidade: devedor,
+      config: faixa,
+      telefone: devedor.telefone,
+      extras: {
+        valorOriginal: devedor.valorDivida,
+        descontoMaximo: faixa.descontoMaximo,
+        parcelasMaximas: faixa.parcelasMaximas,
+        prazoMaximoDias: faixa.prazoMaximoDias,
+      },
+    };
+  }
+
+  async persistirSessao(devedorId: string, empresaId: string, historico: any[], limites: any) {
+    return this.propostaRepository.create(devedorId, empresaId, limites, historico);
+  }
+
+  async getSessao(propostaId: string, empresaId: string) {
+    const proposta = await this.propostaRepository.findById(propostaId, empresaId);
+    if (proposta && proposta.status !== 'PENDENTE') {
+      throw new PropostaJaFinalizadaException(proposta.status);
+    }
+    return proposta;
+  }
+
+  getLimitesDaSessao(proposta: any): Record<string, any> {
+    return proposta.limites as Record<string, any>;
+  }
+
+  getContextProvider() {
+    return this.negociaContextProvider;
+  }
+
+  async atualizarHistorico(propostaId: string, historico: any[]) {
+    await this.propostaRepository.atualizarHistorico(propostaId, historico);
   }
 
   // ── Domínio negocia ──────────────────────────────────────────────────────
 
   async gerarProposta(devedorId: string, empresaId: string) {
-    const propostaPendente = await this.propostaRepository.findPendentePorDevedor(devedorId);
-    if (propostaPendente) {
-      throw new NegociacaoEmAndamentoException();
-    }
-
-    const resultado = await this.propostaRepository.findDevedorComFaixa(devedorId, empresaId);
-    if (!resultado) {
-      throw new NotFoundException('Devedor não encontrado.');
-    }
-
-    const { devedor, faixa } = resultado;
-    if (!faixa) {
-      throw new FaixaCriterioNaoEncontradaException(devedor.valorDivida);
-    }
-
-    const limites = {
-      valorOriginal: devedor.valorDivida,
-      descontoMaximo: faixa.descontoMaximo,
-      parcelasMaximas: faixa.parcelasMaximas,
-      prazoMaximoDias: faixa.prazoMaximoDias,
-    };
-
-    const context = this.negociaContextProvider.buildContext(devedor, faixa);
-    const { historico, mensagemAgente } = await this.negotiationEngine.iniciar(context);
-
-    const proposta = await this.propostaRepository.create(devedorId, empresaId, limites, historico);
-
-    return {
-      id: proposta.id,
-      status: proposta.status,
-      ultimaMensagemAgente: mensagemAgente,
-    };
-  }
-
-  async conversar(propostaId: string, empresaId: string, mensagemUsuario: string) {
-    const proposta = await this.propostaRepository.findById(propostaId, empresaId);
-
-    if (!proposta) throw new NotFoundException('Proposta não encontrada.');
-    if (proposta.status !== 'PENDENTE') {
-      throw new PropostaJaFinalizadaException(proposta.status);
-    }
-
-    const historico = proposta.historico as any[];
-    const limites = proposta.limites as any;
-
-    const validator = (toolName: string, args: Record<string, any>) =>
-      this.negociaContextProvider.validateTool(toolName, args, limites);
-
-    const { historico: historicoAtualizado, mensagemAgente } = await this.negotiationEngine.conversar(
-      mensagemUsuario,
-      historico,
-      this.negociaContextProvider.getTools(),
-      validator,
-    );
-
-    await this.propostaRepository.atualizarHistorico(propostaId, historicoAtualizado);
-
-    return { id: propostaId, mensagemAgente };
+    const pendente = await this.findSessaoPendente(devedorId);
+    if (pendente) throw new NegociacaoEmAndamentoException();
+    return this.iniciarEEnviar(devedorId, empresaId);
   }
 
   async listarPropostas(empresaId: string) {

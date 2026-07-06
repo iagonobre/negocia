@@ -1,0 +1,339 @@
+title Multi-Instance Framework Data Model
+
+// ─── Hot Spots (Interfaces) ───────────────────────────────────────────────
+
+ConversationOrchestrator [icon: message-circle, color: orange] {
+  id string pk
+  findClienteByTelefone string
+  findOuCriarSessao string
+  responder string
+}
+
+NegotiationContextProvider [icon: settings, color: orange] {
+  id string pk
+  buildContext string
+  getTools string
+  validateTool string
+}
+
+NotificationSchedulerProvider [icon: bell, color: orange] {
+  id string pk
+  getEmpresasAtivas string
+  getClientesPendentes string
+  buildMessage string
+}
+
+// ─── Core Services ────────────────────────────────────────────────────────
+
+LlmService [icon: brain, color: green] {
+  id string pk
+  chamarLLM string
+}
+
+WhatsAppService [icon: smartphone, color: green] {
+  id string pk
+  enviarMensagem string
+}
+
+NegotiationEngine [icon: cpu, color: green] {
+  id string pk
+  iniciar string
+  conversar string
+}
+
+NotificationEngine [icon: zap, color: green] {
+  id string pk
+  enviarNotificacoes string
+  enviarNotificacoesParaEmpresa string
+}
+
+// ─── Framework Abstract Classes ───────────────────────────────────────────
+
+ConversationService [icon: message-square, color: blue] {
+  id string pk
+  type string
+  findClienteByTelefone string
+  findSessaoPendente string
+  carregarEntidadeComConfig string
+  persistirSessao string
+  getSessao string
+  getLimitesDaSessao string
+  getContextProvider string
+  atualizarHistorico string
+  findOuCriarSessao string
+  responder string
+  criarSessao string
+  iniciarEEnviar string
+  conversar string
+}
+
+NotificationCronService [icon: clock, color: blue] {
+  id string pk
+  type string
+  getEmpresasAtivas string
+  getClientesPendentes string
+  buildMessage string
+  executarCron string
+  dispararLembretesManual string
+}
+
+CrudService [icon: database, color: blue] {
+  id string pk
+  type string
+  findAll string
+  findById string
+  create string
+  update string
+  remove string
+  importarCsv string
+  historico string
+}
+
+CrudController [icon: layout, color: blue] {
+  id string pk
+  type string
+  findAll string
+  findById string
+  create string
+  update string
+  remove string
+}
+
+// ─── Instance: Negocia ────────────────────────────────────────────────────
+
+NegociaContextProvider [icon: user-check, color: purple] {
+  id string pk
+  buildContext string
+  getTools string
+  validateTool string
+}
+
+PropostaService [icon: file-text, color: purple] {
+  id string pk
+  conversationServiceId string fk
+  findClienteByTelefone string
+  findSessaoPendente string
+  carregarEntidadeComConfig string
+  persistirSessao string
+  getSessao string
+  getLimitesDaSessao string
+  getContextProvider string
+  atualizarHistorico string
+  gerarProposta string
+  listarPropostas string
+  buscarProposta string
+  atualizarStatus string
+}
+
+CobrancaService [icon: dollar-sign, color: purple] {
+  id string pk
+  notificationCronServiceId string fk
+  enviarLembretesParcelados string
+  getEmpresasAtivas string
+  getClientesPendentes string
+  buildMessage string
+}
+
+DevedorService [icon: users, color: purple] {
+  id string pk
+  crudServiceId string fk
+  findAll string
+  findById string
+  create string
+  update string
+  remove string
+  parseCsvRow string
+  upsertMany string
+  findComHistorico string
+}
+
+FaixaCriterioService [icon: sliders, color: purple] {
+  id string pk
+  crudServiceId string fk
+  findAll string
+  findById string
+  create string
+  update string
+  remove string
+  validarFaixa string
+}
+
+FaixaCriterioController [icon: server, color: purple] {
+  id string pk
+  crudControllerId string fk
+}
+
+DevedorController [icon: server, color: purple] {
+  id string pk
+  crudControllerId string fk
+  historico string
+  importar string
+}
+
+// ─── Instance: Saude ──────────────────────────────────────────────────────
+
+SaudeContextProvider [icon: user-check, color: red] {
+  id string pk
+  buildContext string
+  getTools string
+  validateTool string
+}
+
+ConsultaService [icon: heart, color: red] {
+  id string pk
+  conversationServiceId string fk
+  findClienteByTelefone string
+  findSessaoPendente string
+  carregarEntidadeComConfig string
+  persistirSessao string
+  getSessao string
+  getLimitesDaSessao string
+  getContextProvider string
+  atualizarHistorico string
+}
+
+PacienteService [icon: user, color: red] {
+  id string pk
+  crudServiceId string fk
+  findAll string
+  findById string
+  create string
+  update string
+  remove string
+}
+
+PacienteController [icon: server, color: red] {
+  id string pk
+  crudControllerId string fk
+}
+
+ConfigRetornoService [icon: settings-2, color: red] {
+  id string pk
+  crudServiceId string fk
+  findAll string
+  findById string
+  create string
+  update string
+  remove string
+}
+
+ConfigRetornoController [icon: server, color: red] {
+  id string pk
+  crudControllerId string fk
+}
+
+NotificacaoSaudeService [icon: activity, color: red] {
+  id string pk
+  notificationCronServiceId string fk
+  getEmpresasAtivas string
+  getClientesPendentes string
+  buildMessage string
+}
+
+// ─── Instance: Oficina ────────────────────────────────────────────────────
+
+OficinaContextProvider [icon: user-check, color: yellow] {
+  id string pk
+  buildContext string
+  getTools string
+  validateTool string
+}
+
+AgendamentoService [icon: tool, color: yellow] {
+  id string pk
+  conversationServiceId string fk
+  findClienteByTelefone string
+  findSessaoPendente string
+  carregarEntidadeComConfig string
+  persistirSessao string
+  getSessao string
+  getLimitesDaSessao string
+  getContextProvider string
+  atualizarHistorico string
+}
+
+ClienteOficinaService [icon: user, color: yellow] {
+  id string pk
+  crudServiceId string fk
+  findAll string
+  findById string
+  create string
+  update string
+  remove string
+}
+
+ClienteOficinaController [icon: server, color: yellow] {
+  id string pk
+  crudControllerId string fk
+}
+
+ServicoConfigService [icon: settings-2, color: yellow] {
+  id string pk
+  crudServiceId string fk
+  findAll string
+  findById string
+  create string
+  update string
+  remove string
+}
+
+ServicoConfigController [icon: server, color: yellow] {
+  id string pk
+  crudControllerId string fk
+}
+
+NotificacaoOficinaService [icon: wrench, color: yellow] {
+  id string pk
+  notificationCronServiceId string fk
+  getEmpresasAtivas string
+  getClientesPendentes string
+  buildMessage string
+}
+
+// ─── Relationships ────────────────────────────────────────────────────────
+
+// Core dependencies
+NegotiationEngine.id > LlmService.id
+NotificationEngine.id > WhatsAppService.id
+
+// Framework uses core
+ConversationService.id > NegotiationEngine.id
+ConversationService.id > WhatsAppService.id
+ConversationService.id > NegotiationContextProvider.id
+NotificationCronService.id > NotificationEngine.id
+NotificationEngine.id > NotificationSchedulerProvider.id
+
+// Framework implements interfaces
+ConversationService.id - ConversationOrchestrator.id
+NotificationCronService.id - NotificationSchedulerProvider.id
+
+// Negocia extends framework
+PropostaService.conversationServiceId > ConversationService.id
+CobrancaService.notificationCronServiceId > NotificationCronService.id
+DevedorService.crudServiceId > CrudService.id
+FaixaCriterioService.crudServiceId > CrudService.id
+DevedorController.crudControllerId > CrudController.id
+FaixaCriterioController.crudControllerId > CrudController.id
+NegociaContextProvider.id - NegotiationContextProvider.id
+
+// Saude — implementação de interface (HS2)
+SaudeContextProvider.id - NegotiationContextProvider.id
+
+// Saude extends framework
+ConsultaService.conversationServiceId > ConversationService.id
+PacienteService.crudServiceId > CrudService.id
+PacienteController.crudControllerId > CrudController.id
+ConfigRetornoService.crudServiceId > CrudService.id
+ConfigRetornoController.crudControllerId > CrudController.id
+NotificacaoSaudeService.notificationCronServiceId > NotificationCronService.id
+
+// Oficina — implementação de interface (HS2)
+OficinaContextProvider.id - NegotiationContextProvider.id
+
+// Oficina extends framework
+AgendamentoService.conversationServiceId > ConversationService.id
+ClienteOficinaService.crudServiceId > CrudService.id
+ClienteOficinaController.crudControllerId > CrudController.id
+ServicoConfigService.crudServiceId > CrudService.id
+ServicoConfigController.crudControllerId > CrudController.id
+NotificacaoOficinaService.notificationCronServiceId > NotificationCronService.id

@@ -28,7 +28,17 @@ export class NegociaContextProvider implements NegotiationContextProvider {
   }
 
   validateTool(
-    _toolName: string,
+    toolName: string,
+    args: Record<string, any>,
+    limits: Record<string, any>,
+  ): { aprovado: boolean; motivo: string } {
+    if (toolName === 'validar_contraproposta') {
+      return this.validarContraproposta(args, limits);
+    }
+    return { aprovado: false, motivo: `Ferramenta desconhecida: ${toolName}` };
+  }
+
+  private validarContraproposta(
     args: Record<string, any>,
     limits: Record<string, any>,
   ): { aprovado: boolean; motivo: string } {

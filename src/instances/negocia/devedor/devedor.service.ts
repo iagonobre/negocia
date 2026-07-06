@@ -1,112 +1,78 @@
-import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
-import csv from 'csv-parser';
-import { Readable } from 'stream';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateDevedorDto } from './dto/create-devedor.dto';
 import { UpdateDevedorDto } from './dto/update-devedor.dto';
-import { Devedor } from 'src/generated/prisma/client';
-import { StatusDevedor, OrigemDevedor, TipoPessoa } from 'src/generated/prisma/enums';
+import { Devedor } from '../../../generated/prisma/client';
+import { StatusDevedor, OrigemDevedor, TipoPessoa } from '../../../generated/prisma/enums';
 import { DevedorCsvRow } from './types/devedor-csv-row.type';
 import { DevedorRepository } from './devedor.repository';
-
-type ImportacaoResultado = { mensagem: string; importados: number };
+import { CrudService } from '../../../core/crud/crud.service';
 
 @Injectable()
-export class DevedorService {
-  constructor(private repository: DevedorRepository) {}
+export class DevedorService extends CrudService<Devedor> {
+  constructor(private readonly repository: DevedorRepository) {
+    super();
+  }
 
-  async cadastrar(dto: CreateDevedorDto, empresaId: string): Promise<Devedor> {
+  // ── CrudService<Devedor> — obrigatórios ──────────────────────────────────
+
+  async findAll(empresaId: string): Promise<Devedor[]> {
+    return this.repository.findAll(empresaId);
+  }
+
+  async findById(id: string, empresaId: string): Promise<Devedor | null> {
+    return this.repository.findOne(id, empresaId);
+  }
+
+  async create(dto: CreateDevedorDto, empresaId: string): Promise<Devedor> {
     const { empresaId: _ignored, ...rest } = dto;
-    return await this.repository.create({
+    return this.repository.create({
       ...rest,
       vencimento: new Date(dto.vencimento),
       empresa: { connect: { id: empresaId } },
     });
   }
 
-  async listar(empresaId: string): Promise<Devedor[]> {
-    return await this.repository.findAll(empresaId);
-  }
-
-  async buscar(id: string, empresaId: string): Promise<Devedor> {
+  async update(id: string, dto: UpdateDevedorDto, empresaId: string): Promise<Devedor> {
     const devedor = await this.repository.findOne(id, empresaId);
-    if (!devedor) throw new NotFoundException('Devedor não encontrado');
-    return devedor;
-  }
-
-  async historico(id: string, empresaId: string) {
-    const resultado = await this.repository.findHistorico(id, empresaId);
-    if (!resultado) throw new NotFoundException('Devedor não encontrado');
-    return resultado;
-  }
-
-  async atualizar(id: string, empresaId: string, dto: UpdateDevedorDto): Promise<Devedor> {
-    const devedor = await this.repository.findOne(id, empresaId);
-
-    if (!devedor) {
-      throw new NotFoundException('Devedor não encontrado');
-    }
-
+    if (!devedor) throw new NotFoundException('Devedor não encontrado.');
     const { empresaId: _ignored, ...rest } = dto;
-    return await this.repository.update({
+    return this.repository.update({
       where: { id, empresaId },
-      data: {
-        ...rest,
-        ...(dto.vencimento && { vencimento: new Date(dto.vencimento) }),
-      },
+      data: { ...rest, ...(dto.vencimento && { vencimento: new Date(dto.vencimento) }) },
     });
   }
 
-  async deletar(id: string, empresaId: string): Promise<void> {
+  async remove(id: string, empresaId: string): Promise<void> {
     const devedor = await this.repository.findOne(id, empresaId);
-
-    if (!devedor) {
-      throw new NotFoundException('Devedor não encontrado');
-    }
-
+    if (!devedor) throw new NotFoundException('Devedor não encontrado.');
     await this.repository.delete(id, empresaId);
   }
 
-  async importarCsv(file: Express.Multer.File, empresaId: string): Promise<ImportacaoResultado> {
-    if (!file.buffer || file.buffer.length === 0) {
-      throw new BadRequestException('Arquivo CSV vazio ou inválido.');
-    }
+  // ── CrudService<Devedor> — hooks opcionais ────────────────────────────────
 
-    const devedores: DevedorCsvRow[] = [];
-    const stream = Readable.from(file.buffer);
+  protected parseCsvRow(data: any): DevedorCsvRow {
+    return {
+      ...data,
+      email: data.email?.trim(),
+      valorDivida: parseFloat(data.valorDivida),
+      tentativas: data.tentativas ? parseInt(data.tentativas, 10) : 0,
+      numeroParcelas: data.numeroParcelas ? parseInt(data.numeroParcelas, 10) : null,
+      vencimento: new Date(data.vencimento),
+      cpf: data.cpf?.trim() || null,
+      cnpj: data.cnpj?.trim() || null,
+      descricaoDivida: data.descricaoDivida?.trim() || null,
+      ultimoContato: data.ultimoContato?.trim() ? new Date(data.ultimoContato) : null,
+      status: data.status?.trim() as StatusDevedor,
+      origem: data.origem?.trim() as OrigemDevedor,
+      tipoPessoa: data.tipoPessoa?.trim() as TipoPessoa,
+    };
+  }
 
-    return new Promise((resolve, reject) => {
-      stream
-        .pipe(csv())
-        .on('data', (data) => {
-          const status = data.status?.trim() as StatusDevedor;
-          const origem = data.origem?.trim() as OrigemDevedor;
-          const tipoPessoa = data.tipoPessoa?.trim() as TipoPessoa;
+  protected async upsertMany(rows: DevedorCsvRow[], empresaId: string) {
+    return this.repository.upsertMany(rows, empresaId);
+  }
 
-          devedores.push({
-            ...data,
-            email: data.email?.trim(),
-            valorDivida: parseFloat(data.valorDivida),
-            tentativas: data.tentativas ? parseInt(data.tentativas, 10) : 0,
-            numeroParcelas: data.numeroParcelas ? parseInt(data.numeroParcelas, 10) : null,
-            vencimento: new Date(data.vencimento),
-            cpf: data.cpf && data.cpf.trim() !== '' ? data.cpf.trim() : null,
-            cnpj: data.cnpj && data.cnpj.trim() !== '' ? data.cnpj.trim() : null,
-            descricaoDivida: data.descricaoDivida && data.descricaoDivida.trim() !== '' ? data.descricaoDivida.trim() : null,
-            ultimoContato: data.ultimoContato && data.ultimoContato.trim() !== '' ? new Date(data.ultimoContato) : null,
-            status,
-            origem,
-            tipoPessoa,
-          });
-        })
-        .on('end', async () => {
-          try {
-            await this.repository.upsertMany(devedores, empresaId);
-            resolve({ mensagem: 'Importação concluída com sucesso', importados: devedores.length });
-          } catch (error) {
-            reject(error);
-          }
-        })
-        .on('error', (error) => reject(error));
-    });
+  protected async findComHistorico(id: string, empresaId: string) {
+    return this.repository.findHistorico(id, empresaId);
   }
 }

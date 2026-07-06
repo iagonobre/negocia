@@ -14,86 +14,49 @@ export class FaixaCriterioService extends CrudService<FaixaCriterio> {
   // ── CrudService<FaixaCriterio> ───────────────────────────────────────────
 
   async findAll(empresaId: string): Promise<FaixaCriterio[]> {
-    return this.listarPorEmpresa(empresaId);
+    return this.repository.listarPorEmpresa(empresaId);
   }
 
   async findById(id: string, empresaId: string): Promise<FaixaCriterio | null> {
-    return this.buscar(id, empresaId);
+    const faixa = await this.repository.buscarPorId(id);
+    if (!faixa) throw new NotFoundException('Faixa de critério não encontrada.');
+    if (faixa.empresaId !== empresaId) throw new ForbiddenException('Você não tem permissão para acessar essa faixa.');
+    return faixa;
   }
-
-  async update(id: string, dto: any, empresaId: string): Promise<FaixaCriterio> {
-    return this.atualizar(id, empresaId, dto);
-  }
-
-  async remove(id: string, empresaId: string): Promise<void> {
-    return this.deletar(id, empresaId);
-  }
-
-  // ── Domínio faixa-criterio ───────────────────────────────────────────────
 
   async create(dados: CreateFaixaCriterioDto, empresaId: string): Promise<FaixaCriterio> {
     await this.validarFaixa(dados, empresaId);
     return this.repository.create(dados, empresaId);
   }
 
-  async listarPorEmpresa(empresaId: string): Promise<FaixaCriterio[]> {
-    return this.repository.listarPorEmpresa(empresaId);
-  }
-
-  async buscar(id: string, empresaId: string): Promise<FaixaCriterio> {
-    const faixa = await this.repository.buscarPorId(id);
-
-    if (!faixa) {
-      throw new NotFoundException('Faixa de critério não encontrada.');
-    }
-
-    if (faixa.empresaId !== empresaId) {
-      throw new ForbiddenException('Você não tem permissão para acessar essa faixa.');
-    }
-
-    return faixa;
-  }
-
-  async atualizar(id: string, empresaId: string, dados: UpdateFaixaCriterioDto): Promise<FaixaCriterio> {
-    const faixaExistente = await this.repository.buscarPorId(id);
-
-    if (!faixaExistente) {
-      throw new NotFoundException('Faixa de critério não encontrada.');
-    }
-
-    if (faixaExistente.empresaId !== empresaId) {
-      throw new ForbiddenException('Você não tem permissão para alterar essa faixa.');
-    }
+  async update(id: string, dados: UpdateFaixaCriterioDto, empresaId: string): Promise<FaixaCriterio> {
+    const existente = await this.repository.buscarPorId(id);
+    if (!existente) throw new NotFoundException('Faixa de critério não encontrada.');
+    if (existente.empresaId !== empresaId) throw new ForbiddenException('Você não tem permissão para alterar essa faixa.');
 
     const dadosParaValidar: CreateFaixaCriterioDto = {
-      descricao: dados.descricao ?? faixaExistente.descricao,
-      valorMinimo: dados.valorMinimo ?? faixaExistente.valorMinimo,
-      valorMaximo: dados.valorMaximo ?? faixaExistente.valorMaximo,
-      prazoMaximoDias: dados.prazoMaximoDias ?? faixaExistente.prazoMaximoDias,
-      parcelasMaximas: dados.parcelasMaximas ?? faixaExistente.parcelasMaximas,
-      descontoMaximo: dados.descontoMaximo ?? faixaExistente.descontoMaximo,
-      tomComunicacao: dados.tomComunicacao ?? faixaExistente.tomComunicacao,
-      mensagemInicial: dados.mensagemInicial ?? faixaExistente.mensagemInicial ?? undefined,
+      descricao: dados.descricao ?? existente.descricao,
+      valorMinimo: dados.valorMinimo ?? existente.valorMinimo,
+      valorMaximo: dados.valorMaximo ?? existente.valorMaximo,
+      prazoMaximoDias: dados.prazoMaximoDias ?? existente.prazoMaximoDias,
+      parcelasMaximas: dados.parcelasMaximas ?? existente.parcelasMaximas,
+      descontoMaximo: dados.descontoMaximo ?? existente.descontoMaximo,
+      tomComunicacao: dados.tomComunicacao ?? existente.tomComunicacao,
+      mensagemInicial: dados.mensagemInicial ?? existente.mensagemInicial ?? undefined,
     };
 
     await this.validarFaixa(dadosParaValidar, empresaId, id);
-
     return this.repository.atualizar(id, dados);
   }
 
-  async deletar(id: string, empresaId: string): Promise<void> {
-    const existe = await this.repository.buscarPorId(id);
-
-    if (!existe) {
-      throw new NotFoundException('Faixa de critério não encontrada.');
-    }
-
-    if (existe.empresaId !== empresaId) {
-      throw new ForbiddenException('Você não tem permissão para deletar esta faixa de crédito.');
-    }
-
+  async remove(id: string, empresaId: string): Promise<void> {
+    const existente = await this.repository.buscarPorId(id);
+    if (!existente) throw new NotFoundException('Faixa de critério não encontrada.');
+    if (existente.empresaId !== empresaId) throw new ForbiddenException('Você não tem permissão para deletar esta faixa de crédito.');
     await this.repository.deletar(id);
   }
+
+  // ── Domínio faixa-criterio ───────────────────────────────────────────────
 
   private async validarFaixa(
     dados: CreateFaixaCriterioDto | UpdateFaixaCriterioDto,
@@ -102,40 +65,30 @@ export class FaixaCriterioService extends CrudService<FaixaCriterio> {
   ): Promise<void> {
     const { valorMinimo, valorMaximo, prazoMaximoDias, parcelasMaximas, descontoMaximo } = dados;
 
-    if (valorMinimo !== undefined && valorMaximo !== undefined && valorMinimo >= valorMaximo) {
+    if (valorMinimo !== undefined && valorMaximo !== undefined && valorMinimo >= valorMaximo)
       throw new BadRequestException('O valor mínimo deve ser menor que o valor máximo.');
-    }
 
-    if (prazoMaximoDias !== undefined && prazoMaximoDias <= 0) {
+    if (prazoMaximoDias !== undefined && prazoMaximoDias <= 0)
       throw new BadRequestException('O prazo máximo em dias deve ser maior que zero.');
-    }
 
-    if (parcelasMaximas !== undefined && parcelasMaximas <= 0) {
+    if (parcelasMaximas !== undefined && parcelasMaximas <= 0)
       throw new BadRequestException('O número máximo de parcelas deve ser maior que zero.');
-    }
 
-    if (descontoMaximo !== undefined && (descontoMaximo < 0 || descontoMaximo > 100)) {
+    if (descontoMaximo !== undefined && (descontoMaximo < 0 || descontoMaximo > 100))
       throw new BadRequestException('O desconto máximo deve ser entre 0 e 100.');
-    }
 
     if (valorMinimo !== undefined && valorMaximo !== undefined) {
       const sobrepostas = await this.repository.buscarSobrepostas(empresaId, valorMinimo, valorMaximo, ignorarId);
-
-      if (sobrepostas.length > 0) {
+      if (sobrepostas.length > 0)
         throw new BadRequestException('Já existe uma faixa cadastrada que se sobrepõe a esse intervalo de valores.');
-      }
 
-      const faixasExistentes = await this.repository.listarPorEmpresa(empresaId);
-      const outras = faixasExistentes.filter((f) => f.id !== ignorarId);
-
+      const outras = (await this.repository.listarPorEmpresa(empresaId)).filter((f) => f.id !== ignorarId);
       if (outras.length > 0) {
         const temVizinha =
           outras.some((f) => f.valorMaximo === valorMinimo) ||
           outras.some((f) => f.valorMinimo === valorMaximo);
-
-        if (!temVizinha) {
+        if (!temVizinha)
           throw new BadRequestException('A faixa deve ser contígua às faixas já existentes, sem buracos entre elas.');
-        }
       }
     }
   }

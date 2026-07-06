@@ -1,0 +1,260 @@
+@startuml classes-framework
+title Framework Multi-Instância — Diagrama de Classes
+
+skinparam classAttributeIconSize 0
+skinparam groupInheritance 2
+
+' ── Hot Spots (Interfaces) ──────────────────────────────────────────────────
+
+package "Hot Spots" #FFD580 {
+  interface ConversationOrchestrator {
+    +findClienteByTelefone()
+    +findOuCriarSessao()
+    +responder()
+  }
+
+  interface NegotiationContextProvider {
+    +buildContext()
+    +getTools()
+    +validateTool()
+  }
+
+  interface NotificationSchedulerProvider {
+    +getEmpresasAtivas()
+    +getClientesPendentes()
+    +buildMessage()
+  }
+}
+
+' ── Core Services ────────────────────────────────────────────────────────────
+
+package "Core" #90EE90 {
+  class LlmService {
+    +chamarLLM()
+  }
+
+  class WhatsAppService {
+    +enviarMensagem()
+  }
+
+  class NegotiationEngine {
+    +iniciar()
+    +conversar()
+  }
+
+  class NotificationEngine {
+    +enviarNotificacoes()
+    +enviarNotificacoesParaEmpresa()
+  }
+}
+
+' ── Framework (Classes Abstratas) ────────────────────────────────────────────
+
+package "Framework" #ADD8E6 {
+  abstract class ConversationService {
+    +{abstract} findClienteByTelefone()
+    +{abstract} findSessaoPendente()
+    +{abstract} carregarEntidadeComConfig()
+    +{abstract} persistirSessao()
+    +{abstract} getSessao()
+    +{abstract} getLimitesDaSessao()
+    +{abstract} getContextProvider()
+    +{abstract} atualizarHistorico()
+    +findOuCriarSessao()
+    +responder()
+    +criarSessao()
+    +iniciarEEnviar()
+    +conversar()
+  }
+
+  abstract class NotificationCronService {
+    +{abstract} getEmpresasAtivas()
+    +{abstract} getClientesPendentes()
+    +{abstract} buildMessage()
+    +executarCron()
+    +dispararLembretesManual()
+  }
+
+  abstract class CrudService {
+    +{abstract} findAll()
+    +{abstract} findById()
+    +{abstract} create()
+    +{abstract} update()
+    +{abstract} remove()
+    +importarCsv()
+    +historico()
+  }
+
+  abstract class CrudController {
+    +findAll()
+    +findById()
+    +create()
+    +update()
+    +remove()
+  }
+}
+
+' ── Instance: Negocia ────────────────────────────────────────────────────────
+
+package "Negocia" #DDA0DD {
+  class NegociaContextProvider {
+    +buildContext()
+    +getTools()
+    +validateTool()
+    -validarContraproposta()
+  }
+
+  class PropostaService {
+    +gerarProposta()
+    +listarPropostas()
+    +buscarProposta()
+    +atualizarStatus()
+  }
+
+  class CobrancaService {
+    +enviarLembretesParcelados()
+    +getEmpresasAtivas()
+    +getClientesPendentes()
+    +buildMessage()
+  }
+
+  class DevedorService {
+    #parseCsvRow()
+    #upsertMany()
+    #findComHistorico()
+  }
+
+  class FaixaCriterioService {
+    -validarFaixa()
+  }
+
+  class DevedorController {
+    +historico()
+    +importar()
+  }
+
+  class FaixaCriterioController {
+  }
+}
+
+' ── Instance: Saude ──────────────────────────────────────────────────────────
+
+package "Saude" #FFB6C1 {
+  class SaudeContextProvider {
+    +buildContext()
+    +getTools()
+    +validateTool()
+  }
+
+  class ConsultaService {
+    +listar()
+    +buscar()
+  }
+
+  class PacienteService {
+  }
+
+  class PacienteController {
+  }
+
+  class ConfigRetornoService {
+  }
+
+  class ConfigRetornoController {
+  }
+
+  class NotificacaoSaudeService {
+    +getEmpresasAtivas()
+    +getClientesPendentes()
+    +buildMessage()
+  }
+}
+
+' ── Instance: Oficina ────────────────────────────────────────────────────────
+
+package "Oficina" #FFFACD {
+  class OficinaContextProvider {
+    +buildContext()
+    +getTools()
+    +validateTool()
+  }
+
+  class AgendamentoService {
+    +listar()
+    +buscar()
+  }
+
+  class ClienteOficinaService {
+  }
+
+  class ClienteOficinaController {
+  }
+
+  class ServicoConfigService {
+  }
+
+  class ServicoConfigController {
+  }
+
+  class NotificacaoOficinaService {
+    +getEmpresasAtivas()
+    +getClientesPendentes()
+    +buildMessage()
+  }
+}
+
+' ── Framework implementa interfaces (tracejada + triângulo) ──────────────────
+
+ConversationService ..|> ConversationOrchestrator : implements
+NotificationCronService ..|> NotificationSchedulerProvider : implements
+
+' ── Instâncias implementam hot spot HS2 (tracejada + triângulo) ──────────────
+
+NegociaContextProvider ..|> NegotiationContextProvider : implements
+SaudeContextProvider ..|> NegotiationContextProvider : implements
+OficinaContextProvider ..|> NegotiationContextProvider : implements
+
+' ── Core — dependências diretas (sólida) ─────────────────────────────────────
+
+NegotiationEngine --> LlmService : usa
+NotificationEngine --> WhatsAppService : usa
+
+' ── Framework usa core via @Inject (sólida) ──────────────────────────────────
+
+ConversationService --> NegotiationEngine : @Inject
+ConversationService --> WhatsAppService : @Inject
+NotificationCronService --> NotificationEngine : @Inject
+
+' ── Framework chama hot spots (tracejada) ────────────────────────────────────
+
+ConversationService ..> NegotiationContextProvider : getContextProvider()
+NotificationEngine ..> NotificationSchedulerProvider : parâmetro
+
+' ── Negocia — herança (sólida + triângulo) ───────────────────────────────────
+
+PropostaService --|> ConversationService
+CobrancaService --|> NotificationCronService
+DevedorService --|> CrudService
+FaixaCriterioService --|> CrudService
+DevedorController --|> CrudController
+FaixaCriterioController --|> CrudController
+
+' ── Saude — herança (sólida + triângulo) ─────────────────────────────────────
+
+ConsultaService --|> ConversationService
+PacienteService --|> CrudService
+PacienteController --|> CrudController
+ConfigRetornoService --|> CrudService
+ConfigRetornoController --|> CrudController
+NotificacaoSaudeService --|> NotificationCronService
+
+' ── Oficina — herança (sólida + triângulo) ───────────────────────────────────
+
+AgendamentoService --|> ConversationService
+ClienteOficinaService --|> CrudService
+ClienteOficinaController --|> CrudController
+ServicoConfigService --|> CrudService
+ServicoConfigController --|> CrudController
+NotificacaoOficinaService --|> NotificationCronService
+
+@enduml

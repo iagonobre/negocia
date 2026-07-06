@@ -1,7 +1,6 @@
-import { Controller, NotFoundException, Param, Post, UseGuards } from '@nestjs/common';
+import { Controller, Param, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { PropostaService } from '../proposta/proposta.service';
-import { DevedorRepository } from '../devedor/devedor.repository';
 import { WhatsAppService } from '../../../core/whatsapp/whatsapp.service';
 import { WhatsAppWebhookService } from '../../../core/whatsapp/whatsapp-webhook.service';
 import { WhatsAppWebhookController } from '../../../core/whatsapp/whatsapp-webhook.controller';
@@ -16,7 +15,6 @@ export class WhatsAppController extends WhatsAppWebhookController() {
     readonly orchestrator: PropostaService,
     readonly whatsappService: WhatsAppService,
     readonly webhookService: WhatsAppWebhookService,
-    private readonly devedorRepository: DevedorRepository,
   ) {
     super();
   }
@@ -30,12 +28,6 @@ export class WhatsAppController extends WhatsAppWebhookController() {
     @Empresa() empresa: JwtPayload,
   ) {
     const proposta = await this.orchestrator.gerarProposta(devedorId, empresa.sub);
-
-    const devedor = await this.devedorRepository.findOne(devedorId, empresa.sub);
-    if (!devedor) throw new NotFoundException('Devedor não encontrado.');
-
-    await this.whatsappService.enviarMensagem(`+${devedor.telefone}`, proposta.ultimaMensagemAgente);
-
     return { propostaId: proposta.id, status: proposta.status };
   }
 }

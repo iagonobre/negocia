@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
 import { CobrancaController } from './cobranca.controller';
 import { CobrancaService } from './cobranca.service';
-import { NotificationModule } from '../../../core/notification/notification.module';
 import { PropostaModule } from '../proposta/proposta.module';
+
+import { NotificationModule } from '../../../core/notification/notification.module';
 
 @Module({
   imports: [NotificationModule, PropostaModule],
