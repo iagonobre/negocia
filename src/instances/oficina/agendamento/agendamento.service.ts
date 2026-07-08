@@ -61,6 +61,10 @@ export class AgendamentoService extends ConversationService {
     await this.agendamentoRepository.atualizarHistorico(agendamentoId, historico);
   }
 
+  async finalizarSessao(agendamentoId: string, _empresaId: string, dados: Record<string, any>): Promise<void> {
+    await this.agendamentoRepository.atualizarDataAgendada(agendamentoId, new Date(dados.dataHora), dados.tipoServico);
+  }
+
   // ── Domínio oficina ──────────────────────────────────────────────────────
 
   async listar(empresaId: string) {

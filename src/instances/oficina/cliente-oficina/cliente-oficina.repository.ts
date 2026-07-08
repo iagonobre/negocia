@@ -17,6 +17,13 @@ export class ClienteOficinaRepository {
   }
 
   async findByTelefone(telefone: string): Promise<ClienteOficina | null> {
+    // Se mais de um cliente compartilha o telefone, prioriza quem já tem um
+    // agendamento em andamento — é quem está de fato esperando essa resposta.
+    const comAgendamentoAtivo = await this.prisma.clienteOficina.findFirst({
+      where: { telefone, agendamentos: { some: { status: 'PENDENTE' } } },
+    });
+    if (comAgendamentoAtivo) return comAgendamentoAtivo;
+
     return this.prisma.clienteOficina.findFirst({ where: { telefone } });
   }
 

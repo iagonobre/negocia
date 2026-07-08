@@ -17,6 +17,13 @@ export class PacienteRepository {
   }
 
   async findByTelefone(telefone: string): Promise<Paciente | null> {
+    // Se mais de um paciente compartilha o telefone, prioriza quem já tem
+    // uma consulta em andamento — é quem está de fato esperando essa resposta.
+    const comConsultaAtiva = await this.prisma.paciente.findFirst({
+      where: { telefone, consultas: { some: { status: 'PENDENTE' } } },
+    });
+    if (comConsultaAtiva) return comConsultaAtiva;
+
     return this.prisma.paciente.findFirst({ where: { telefone } });
   }
 

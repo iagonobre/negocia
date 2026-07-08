@@ -6,7 +6,6 @@ const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL as str
 const prisma = new PrismaClient({ adapter });
 
 const SENHA_PADRAO = 'demo12345';
-const TELEFONE_TESTE = '558496505083';
 
 async function seedNegocia() {
   const senhaHash = await bcrypt.hash(SENHA_PADRAO, 10);
@@ -74,7 +73,7 @@ async function seedNegocia() {
       {
         empresaId: empresa.id,
         nome: 'Carlos Silva',
-        telefone: TELEFONE_TESTE,
+        telefone: '5511988880001',
         tipoPessoa: 'FISICA',
         cpf: '12345678900',
         valorDivida: 450.0,
@@ -111,7 +110,7 @@ async function seedNegocia() {
       {
         empresaId: empresa.id,
         nome: 'Roberto Farias',
-        telefone: TELEFONE_TESTE,
+        telefone: '5511988880004',
         tipoPessoa: 'FISICA',
         cpf: '32165498700',
         valorDivida: 320.0,
@@ -123,7 +122,7 @@ async function seedNegocia() {
       {
         empresaId: empresa.id,
         nome: 'Distribuidora Alvorada Ltda',
-        telefone: TELEFONE_TESTE,
+        telefone: '5511988880005',
         tipoPessoa: 'JURIDICA',
         cnpj: '55666777000188',
         valorDivida: 3800.0,
@@ -135,7 +134,7 @@ async function seedNegocia() {
       {
         empresaId: empresa.id,
         nome: 'Juliana Ramos',
-        telefone: TELEFONE_TESTE,
+        telefone: '5511988880006',
         tipoPessoa: 'FISICA',
         cpf: '65498732100',
         valorDivida: 950.0,
@@ -207,7 +206,7 @@ async function seedSaude() {
       {
         empresaId: empresa.id,
         nome: 'Marina Alves',
-        telefone: TELEFONE_TESTE,
+        telefone: '5521988880001',
         email: 'marina.alves@demo.com',
         cpf: '11122233344',
         convenio: 'Unimed',
@@ -236,7 +235,7 @@ async function seedSaude() {
       {
         empresaId: empresa.id,
         nome: 'Rafael Costa',
-        telefone: TELEFONE_TESTE,
+        telefone: '5521988880004',
         email: 'rafael.costa@demo.com',
         convenio: 'Bradesco Saúde',
         status: 'RETORNO_PENDENTE',
@@ -246,7 +245,7 @@ async function seedSaude() {
       {
         empresaId: empresa.id,
         nome: 'Camila Duarte',
-        telefone: TELEFONE_TESTE,
+        telefone: '5521988880005',
         cpf: '77788899911',
         convenio: 'Particular',
         status: 'RETORNO_PENDENTE',
@@ -256,7 +255,7 @@ async function seedSaude() {
       {
         empresaId: empresa.id,
         nome: 'Eduardo Ribeiro',
-        telefone: TELEFONE_TESTE,
+        telefone: '5521988880006',
         status: 'RETORNO_PENDENTE',
         ultimaConsulta: diasAtras(93),
         configRetornoId: retornoRotina.id,
@@ -322,7 +321,7 @@ async function seedOficina() {
       {
         empresaId: empresa.id,
         nome: 'Ricardo Nunes',
-        telefone: TELEFONE_TESTE,
+        telefone: '5531988880001',
         modeloVeiculo: 'Honda Civic 2020',
         placa: 'ABC1D23',
         status: 'REVISAO_PENDENTE',
@@ -349,7 +348,7 @@ async function seedOficina() {
       {
         empresaId: empresa.id,
         nome: 'Fabiana Cardoso',
-        telefone: TELEFONE_TESTE,
+        telefone: '5531988880004',
         modeloVeiculo: 'Chevrolet Onix 2021',
         placa: 'FCD2E45',
         status: 'REVISAO_PENDENTE',
@@ -358,7 +357,7 @@ async function seedOficina() {
       {
         empresaId: empresa.id,
         nome: 'Marcelo Teixeira',
-        telefone: TELEFONE_TESTE,
+        telefone: '5531988880005',
         modeloVeiculo: 'Toyota Corolla 2018',
         placa: 'MTX8B90',
         status: 'REVISAO_PENDENTE',
@@ -367,7 +366,7 @@ async function seedOficina() {
       {
         empresaId: empresa.id,
         nome: 'Vanessa Rocha',
-        telefone: TELEFONE_TESTE,
+        telefone: '5531988880006',
         modeloVeiculo: 'Hyundai HB20 2023',
         placa: 'VRC5F12',
         status: 'REVISAO_PENDENTE',

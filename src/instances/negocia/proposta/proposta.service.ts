@@ -75,6 +75,10 @@ export class PropostaService extends ConversationService {
     await this.propostaRepository.atualizarHistorico(propostaId, historico);
   }
 
+  async finalizarSessao(propostaId: string, empresaId: string, dados: Record<string, any>): Promise<void> {
+    await this.atualizarStatus(propostaId, empresaId, 'ACEITA', dados.valorAcordado, dados.parcelasAcordadas);
+  }
+
   // ── Domínio negocia ──────────────────────────────────────────────────────
 
   async gerarProposta(devedorId: string, empresaId: string) {

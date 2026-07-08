@@ -33,6 +33,11 @@ export abstract class ConversationService implements ConversationOrchestrator {
   abstract getLimitesDaSessao(sessao: any): Record<string, any>;
   abstract getContextProvider(): NegotiationContextProvider;
   abstract atualizarHistorico(sessaoId: string, historico: any[]): Promise<void>;
+  // Chamado quando o provider sinaliza (via `finalizar` no retorno de
+  // validateTool) que a negociação/agendamento foi concluído pela IA.
+  // Cada instância decide o que "concluído" significa no seu domínio e
+  // persiste isso usando seu próprio repositório.
+  abstract finalizarSessao(sessaoId: string, empresaId: string, dados: Record<string, any>): Promise<void>;
 
   // ── Concretos — framework implementa ─────────────────────────────────────
 
@@ -82,7 +87,7 @@ export abstract class ConversationService implements ConversationOrchestrator {
     const validator = (toolName: string, args: Record<string, any>) =>
       provider.validateTool(toolName, args, limites);
 
-    const { historico: historicoAtualizado, mensagemAgente } = await this.negotiationEngine.conversar(
+    const { historico: historicoAtualizado, mensagemAgente, finalizar } = await this.negotiationEngine.conversar(
       mensagemUsuario,
       sessao.historico as any[],
       provider.getTools(),
@@ -90,6 +95,11 @@ export abstract class ConversationService implements ConversationOrchestrator {
     );
 
     await this.atualizarHistorico(sessaoId, historicoAtualizado);
+
+    if (finalizar) {
+      await this.finalizarSessao(sessaoId, empresaId, finalizar);
+    }
+
     return { id: sessaoId, mensagemAgente };
   }
 }

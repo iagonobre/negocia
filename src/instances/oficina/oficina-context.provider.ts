@@ -27,10 +27,11 @@ export class OficinaContextProvider implements NegotiationContextProvider {
     _toolName: string,
     args: Record<string, any>,
     _limits: Record<string, any>,
-  ): { aprovado: boolean; motivo: string } {
+  ): { aprovado: boolean; motivo: string; finalizar?: Record<string, any> } {
     return {
       aprovado: true,
       motivo: `Agendamento confirmado para ${args.dataHora} — ${args.tipoServico}.`,
+      finalizar: { dataHora: args.dataHora, tipoServico: args.tipoServico },
     };
   }
 }

@@ -41,7 +41,7 @@ export class NegociaContextProvider implements NegotiationContextProvider {
   private validarContraproposta(
     args: Record<string, any>,
     limits: Record<string, any>,
-  ): { aprovado: boolean; motivo: string } {
+  ): { aprovado: boolean; motivo: string; finalizar?: Record<string, any> } {
     const parcelas = Number(args.parcelas);
     const valorTotalOferecido = Number(args.valorTotalOferecido);
 
@@ -64,6 +64,7 @@ export class NegociaContextProvider implements NegotiationContextProvider {
     return {
       aprovado: true,
       motivo: `Aprovado! O acordo de ${parcelas}x de R$ ${(valorTotalOferecido / parcelas).toFixed(2)} pode ser fechado.`,
+      finalizar: { valorAcordado: valorTotalOferecido, parcelasAcordadas: parcelas },
     };
   }
 }

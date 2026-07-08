@@ -2,6 +2,11 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { LlmService } from '../llm/llm.service';
 import { NegotiationContext } from './negotiation-context.interface';
 
+type ToolValidator = (
+  toolName: string,
+  args: Record<string, any>,
+) => { aprovado: boolean; motivo: string; finalizar?: Record<string, any> };
+
 @Injectable()
 export class NegotiationEngine {
   constructor(private readonly llmService: LlmService) {}
@@ -25,10 +30,11 @@ export class NegotiationEngine {
     mensagemUsuario: string,
     historico: any[],
     tools: any[],
-    validator: (toolName: string, args: Record<string, any>) => { aprovado: boolean; motivo: string },
+    validator: ToolValidator,
   ): Promise<{
     historico: any[];
     mensagemAgente: string;
+    finalizar?: Record<string, any>;
   }> {
     historico.push({ role: 'user', content: mensagemUsuario });
 
@@ -38,8 +44,12 @@ export class NegotiationEngine {
       throw new BadRequestException('O agente de IA não retornou uma resposta. Tente novamente.');
     }
 
+    let finalizar: Record<string, any> | undefined;
+
     if (resposta.tool_calls && resposta.tool_calls.length > 0) {
-      resposta = await this.processarToolCall(resposta, historico, validator);
+      const resultadoToolCall = await this.processarToolCall(resposta, historico, validator);
+      resposta = resultadoToolCall.resposta;
+      finalizar = resultadoToolCall.finalizar;
 
       if (!resposta) {
         throw new BadRequestException('O agente de IA não retornou uma resposta. Tente novamente.');
@@ -50,17 +60,17 @@ export class NegotiationEngine {
       historico.push(resposta);
     }
 
-    return { historico, mensagemAgente: resposta.content };
+    return { historico, mensagemAgente: resposta.content, finalizar };
   }
 
   private async processarToolCall(
     respostaAgente: any,
     historico: any[],
-    validator: (toolName: string, args: Record<string, any>) => { aprovado: boolean; motivo: string },
-  ): Promise<any> {
+    validator: ToolValidator,
+  ): Promise<{ resposta: any; finalizar?: Record<string, any> }> {
     const toolCall = respostaAgente.tool_calls[0];
     const args = JSON.parse(toolCall.function.arguments);
-    const resultado = validator(toolCall.function.name, args);
+    const { finalizar, ...resultado } = validator(toolCall.function.name, args);
 
     historico.push(respostaAgente);
     historico.push({
@@ -70,6 +80,7 @@ export class NegotiationEngine {
       content: JSON.stringify(resultado),
     });
 
-    return this.llmService.chamarLLM(historico);
+    const resposta = await this.llmService.chamarLLM(historico);
+    return { resposta, finalizar };
   }
 }

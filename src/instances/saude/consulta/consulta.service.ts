@@ -61,6 +61,10 @@ export class ConsultaService extends ConversationService {
     await this.consultaRepository.atualizarHistorico(consultaId, historico);
   }
 
+  async finalizarSessao(consultaId: string, _empresaId: string, dados: Record<string, any>): Promise<void> {
+    await this.consultaRepository.atualizarStatus(consultaId, 'CONFIRMADA', new Date(dados.dataHora));
+  }
+
   // ── Domínio saúde ────────────────────────────────────────────────────────
 
   async listar(empresaId: string) {

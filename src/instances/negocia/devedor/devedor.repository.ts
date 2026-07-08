@@ -28,6 +28,13 @@ export class DevedorRepository {
   }
 
   async findByTelefone(telefone: string): Promise<Devedor | null> {
+    // Se mais de um devedor compartilha o telefone, prioriza quem já tem uma
+    // negociação em andamento — é quem está de fato esperando essa resposta.
+    const comNegociacaoAtiva = await this.prisma.devedor.findFirst({
+      where: { telefone, propostas: { some: { status: 'PENDENTE' } } },
+    });
+    if (comNegociacaoAtiva) return comNegociacaoAtiva;
+
     return this.prisma.devedor.findFirst({ where: { telefone } });
   }
 
@@ -43,8 +50,19 @@ export class DevedorRepository {
         nome: true,
         email: true,
         telefone: true,
+        tipoPessoa: true,
+        cpf: true,
+        cnpj: true,
         valorDivida: true,
+        descricaoDivida: true,
+        vencimento: true,
+        numeroParcelas: true,
         status: true,
+        origem: true,
+        tentativas: true,
+        ultimoContato: true,
+        createdAt: true,
+        updatedAt: true,
         propostas: {
           orderBy: { createdAt: 'desc' },
           select: {

@@ -23,10 +23,15 @@ export class SaudeContextProvider implements NegotiationContextProvider {
     return [CONFIRMAR_HORARIO_TOOL];
   }
 
-  validateTool(_toolName: string, args: Record<string, any>, _limits: Record<string, any>): { aprovado: boolean; motivo: string } {
+  validateTool(
+    _toolName: string,
+    args: Record<string, any>,
+    _limits: Record<string, any>,
+  ): { aprovado: boolean; motivo: string; finalizar?: Record<string, any> } {
     return {
       aprovado: true,
       motivo: `Consulta agendada para ${args.dataHora}.`,
+      finalizar: { dataHora: args.dataHora },
     };
   }
 }
