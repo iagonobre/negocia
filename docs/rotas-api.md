@@ -298,6 +298,21 @@ Gera a proposta e envia a primeira mensagem ao devedor via WhatsApp automaticame
 
 ---
 
+#### `POST /whatsapp/reiniciar/:devedorId` 🔒
+Cancela a negociação pendente do devedor (se houver) e inicia uma nova do zero, reenviando a mensagem inicial via WhatsApp. Use quando a mensagem original não chegou ao devedor — **apaga o histórico da conversa pendente atual**.
+
+**Parâmetros:** `devedorId` — UUID do devedor.
+
+**Resposta:**
+```json
+{
+  "propostaId": "uuid",
+  "status": "PENDENTE"
+}
+```
+
+---
+
 #### `POST /whatsapp/webhook`
 Webhook do Twilio. Recebe as mensagens enviadas pelo devedor via WhatsApp e aciona o agente de IA automaticamente. **Não chame manualmente** — é configurado no painel do Twilio.
 
@@ -649,6 +664,7 @@ Dispara manualmente lembretes de revisão para todos os clientes com revisão pe
 | GET | `/proposta/:id` | 🔒 | Negocia | Busca proposta |
 | PATCH | `/proposta/:id/status` | 🔒 | Negocia | Atualiza status da proposta |
 | POST | `/whatsapp/iniciar/:devedorId` | 🔒 | Negocia | Inicia negociação via WhatsApp |
+| POST | `/whatsapp/reiniciar/:devedorId` | 🔒 | Negocia | Cancela a pendente e reinicia negociação do zero |
 | POST | `/whatsapp/webhook` | — | Negocia | Webhook Twilio (automático) |
 | POST | `/cobranca/lembretes/manual` | 🔒 | Negocia | Dispara lembretes de parcela |
 | GET | `/paciente` | 🔒 | Saúde | Lista pacientes |

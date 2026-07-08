@@ -30,4 +30,16 @@ export class WhatsAppController extends WhatsAppWebhookController() {
     const proposta = await this.orchestrator.gerarProposta(devedorId, empresa.sub);
     return { propostaId: proposta.id, status: proposta.status };
   }
+
+  @Post('reiniciar/:devedorId')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Cancela a negociação pendente (se houver) e inicia uma nova do zero, reenviando a mensagem inicial' })
+  async reiniciarNegociacao(
+    @Param('devedorId') devedorId: string,
+    @Empresa() empresa: JwtPayload,
+  ) {
+    const proposta = await this.orchestrator.reiniciarNegociacao(devedorId, empresa.sub);
+    return { propostaId: proposta.id, status: proposta.status };
+  }
 }

@@ -17,12 +17,14 @@ import { CrudController } from '../../../core/crud/crud.controller';
 import { AuthGuard } from '../../../core/auth/auth.guard';
 import { Empresa } from '../../../core/auth/decorators/empresa.decorator';
 import type { JwtPayload } from '../../../core/auth/interfaces/jwt-payload.interface';
+import { CreateDevedorDto } from './dto/create-devedor.dto';
+import { UpdateDevedorDto } from './dto/update-devedor.dto';
 
 @ApiTags('Devedor')
 @Controller('devedor')
 @UseGuards(AuthGuard)
 @ApiBearerAuth()
-export class DevedorController extends CrudController<Devedor>() {
+export class DevedorController extends CrudController<Devedor>(CreateDevedorDto, UpdateDevedorDto) {
   constructor(readonly service: DevedorService) {
     super();
   }

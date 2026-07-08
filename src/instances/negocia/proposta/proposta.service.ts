@@ -50,7 +50,9 @@ export class PropostaService extends ConversationService {
   }
 
   async persistirSessao(devedorId: string, empresaId: string, historico: any[], limites: any) {
-    return this.propostaRepository.create(devedorId, empresaId, limites, historico);
+    const proposta = await this.propostaRepository.create(devedorId, empresaId, limites, historico);
+    await this.propostaRepository.atualizarStatusDevedor(devedorId, 'EM_NEGOCIACAO');
+    return proposta;
   }
 
   async getSessao(propostaId: string, empresaId: string) {
@@ -78,6 +80,16 @@ export class PropostaService extends ConversationService {
   async gerarProposta(devedorId: string, empresaId: string) {
     const pendente = await this.findSessaoPendente(devedorId);
     if (pendente) throw new NegociacaoEmAndamentoException();
+    return this.iniciarEEnviar(devedorId, empresaId);
+  }
+
+  async reiniciarNegociacao(devedorId: string, empresaId: string) {
+    const devedor = await this.devedorRepository.findOne(devedorId, empresaId);
+    if (!devedor) throw new NotFoundException('Devedor não encontrado.');
+
+    const pendente = await this.findSessaoPendente(devedorId);
+    if (pendente) await this.propostaRepository.deletar(pendente.id);
+
     return this.iniciarEEnviar(devedorId, empresaId);
   }
 

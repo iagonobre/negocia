@@ -90,6 +90,10 @@ export class PropostaRepository {
     });
   }
 
+  async deletar(id: string) {
+    await this.prisma.proposta.delete({ where: { id } });
+  }
+
   async atualizarStatusDevedor(devedorId: string, status: string) {
     return this.prisma.devedor.update({
       where: { id: devedorId },

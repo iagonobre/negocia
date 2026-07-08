@@ -84,9 +84,11 @@ export class FaixaCriterioService extends CrudService<FaixaCriterio> {
 
       const outras = (await this.repository.listarPorEmpresa(empresaId)).filter((f) => f.id !== ignorarId);
       if (outras.length > 0) {
+        // tolerância de 1 centavo: faixas costumam ser definidas como "0-1000" e "1000.01-5000"
+        const TOLERANCIA = 0.01;
         const temVizinha =
-          outras.some((f) => f.valorMaximo === valorMinimo) ||
-          outras.some((f) => f.valorMinimo === valorMaximo);
+          outras.some((f) => Math.abs(f.valorMaximo - valorMinimo) <= TOLERANCIA) ||
+          outras.some((f) => Math.abs(f.valorMinimo - valorMaximo) <= TOLERANCIA);
         if (!temVizinha)
           throw new BadRequestException('A faixa deve ser contígua às faixas já existentes, sem buracos entre elas.');
       }
