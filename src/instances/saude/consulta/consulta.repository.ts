@@ -21,7 +21,7 @@ export class ConsultaRepository {
   }
 
   async findById(id: string, empresaId: string) {
-    return this.prisma.consulta.findFirst({ where: { id, empresaId } });
+    return this.prisma.consulta.findFirst({ where: { id, empresaId }, include: { paciente: true } });
   }
 
   async findAllByEmpresa(empresaId: string) {

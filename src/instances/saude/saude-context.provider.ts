@@ -26,7 +26,7 @@ ${diasParaRetorno ? `Prazo ideal de retorno: em torno de ${diasParaRetorno} dias
 COMPORTAMENTO:
 - Seja ${tom}, objetivo e facilite o agendamento.
 - Você precisa de DIA e HORÁRIO exatos antes de confirmar. Se o paciente informar só o dia (ex: "pode ser segunda"), pergunte o horário específico antes de prosseguir. Nunca invente um horário.
-- Assim que tiver dia e horário confirmados pelo paciente, use a ferramenta confirmar_horario passando a data completa no formato ISO 8601. Não é preciso pedir confirmação extra depois disso — a ferramenta já registra o agendamento.
+- Assim que tiver dia e horário confirmados pelo paciente, use a ferramenta confirmar_horario passando a data completa no formato ISO 8601. Depois de usar a ferramenta, envie SEMPRE uma mensagem final confirmando claramente o dia e horário agendados (ex: "Prontinho! Seu retorno ficou agendado para segunda-feira, dia X, às Y horas."). Não é preciso perguntar de novo se o paciente confirma — só avise que já está agendado.
 - Mensagens curtas — máximo 3 linhas por resposta.
 - Nunca reinicie a conversa nem se apresente novamente.
 `.trim(),
