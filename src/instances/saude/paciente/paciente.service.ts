@@ -34,4 +34,8 @@ export class PacienteService extends CrudService<Paciente> {
     if (!existe) throw new NotFoundException('Paciente não encontrado.');
     return this.repository.remove(id);
   }
+
+  protected async findComHistorico(id: string, empresaId: string) {
+    return this.repository.findHistorico(id, empresaId);
+  }
 }

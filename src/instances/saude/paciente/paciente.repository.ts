@@ -16,6 +16,18 @@ export class PacienteRepository {
     return this.prisma.paciente.findFirst({ where: { id, empresaId } });
   }
 
+  async findHistorico(id: string, empresaId: string) {
+    return this.prisma.paciente.findFirst({
+      where: { id, empresaId },
+      include: {
+        configRetorno: true,
+        consultas: {
+          orderBy: { createdAt: 'desc' },
+        },
+      },
+    });
+  }
+
   async findByTelefone(telefone: string): Promise<Paciente | null> {
     // Se mais de um paciente compartilha o telefone, prioriza quem já tem
     // uma consulta em andamento — é quem está de fato esperando essa resposta.
